@@ -1,0 +1,130 @@
+.success-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% -10%, rgba(228,85,61,0.1), transparent 34%), var(--paper);
+}
+.confetti { position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; pointer-events: none; }
+.confetti-piece {
+  position: absolute;
+  top: -10rpx;
+  width: 8rpx;
+  height: 16rpx;
+  border-radius: 4rpx;
+  animation-name: confettiFall;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+@keyframes confettiFall {
+  from { opacity: 0; transform: translateY(-20rpx) rotate(0deg); }
+  10% { opacity: 1; }
+  to { opacity: 0.2; transform: translateY(1380rpx) rotate(540deg); }
+}
+.success-inner {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  padding-bottom: calc(26rpx + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+}
+.success-close {
+  position: absolute;
+  top: 0;
+  right: 36rpx;
+  width: 66rpx;
+  height: 66rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(255,253,248,0.6);
+}
+.success-close__icon { width: 28rpx; height: 28rpx; }
+.success-brand {
+  margin-top: 0;
+  text-align: center;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 48rpx;
+  font-weight: 600;
+  letter-spacing: -3rpx;
+}
+.success-brand text { color: var(--tomato); }
+.success-check {
+  width: 104rpx;
+  height: 104rpx;
+  margin: 30rpx auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 14rpx rgba(29,28,24,0.05);
+  animation: checkIn 0.55s cubic-bezier(0.16,1.22,0.3,1) both 0.1s;
+}
+@keyframes checkIn {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+.success-check__icon { width: 44rpx; height: 44rpx; }
+.success-title {
+  margin-top: 24rpx;
+  text-align: center;
+  font-size: 50rpx;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.06em;
+}
+.success-em { color: var(--tomato); font-family: Georgia, "Songti SC", serif; font-style: italic; font-weight: 400; }
+.success-sub {
+  max-width: 540rpx;
+  margin: 10rpx auto 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 20rpx;
+  line-height: 1.65;
+}
+
+.ticket {
+  position: relative;
+  margin: 28rpx 4rpx 0;
+  padding: 24rpx 24rpx 20rpx;
+  border-radius: 36rpx;
+  background: var(--card);
+  box-shadow: 0 24rpx 70rpx -50rpx rgba(45,38,26,0.45);
+}
+.ticket-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20rpx; }
+.ticket-label { color: var(--muted-light); font-size: 15rpx; font-weight: 600; letter-spacing: 0.14em; }
+.ticket-id { margin-top: 4rpx; font-family: Georgia, serif; font-size: 30rpx; font-weight: 600; }
+.ticket-time { text-align: right; color: var(--muted); font-size: 15rpx; line-height: 1.5; }
+.ticket-time__strong { color: var(--ink-soft); font-size: 19rpx; font-weight: 600; }
+.ticket-items { margin-top: 18rpx; padding-top: 14rpx; border-top: 2rpx dashed var(--line-strong); }
+.ticket-item { display: flex; align-items: center; justify-content: space-between; gap: 18rpx; padding: 8rpx 0; }
+.ticket-item__name { color: var(--ink-soft); font-size: 20rpx; }
+.ticket-item__name text { color: var(--muted); font-size: 16rpx; }
+.ticket-item__qty { color: var(--muted); font-family: Georgia, serif; font-size: 23rpx; }
+.ticket-message {
+  margin-top: 16rpx;
+  padding: 16rpx 20rpx;
+  border-left: 4rpx solid var(--tomato);
+  border-radius: 0 20rpx 20rpx 0;
+  background: rgba(247,217,208,0.28);
+  color: var(--ink-soft);
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 21rpx;
+  font-style: italic;
+  line-height: 1.65;
+}
+.ticket-note { display: flex; align-items: center; gap: 14rpx; margin-top: 18rpx; padding-top: 14rpx; border-top: 2rpx dashed var(--line-strong); }
+.ticket-note__icon { width: 50rpx; height: 50rpx; display: flex; align-items: center; justify-content: center; border-radius: 16rpx; background: var(--sage-soft); }
+.ticket-note__img { width: 26rpx; height: 26rpx; }
+.ticket-note__copy { flex: 1; }
+.ticket-note__title { font-size: 18rpx; font-weight: 600; }
+.ticket-note__sub { margin-top: 3rpx; color: var(--muted); font-size: 16rpx; }
+
+.success-actions { display: flex; flex-direction: column; gap: 12rpx; margin-top: auto; padding-top: 28rpx; }
+.btn-icon { width: 28rpx; height: 28rpx; }
+.success-hint { margin-top: 10rpx; color: var(--muted-light); font-size: 15rpx; text-align: center; }

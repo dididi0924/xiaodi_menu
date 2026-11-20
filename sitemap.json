@@ -1,0 +1,9 @@
+{
+  "desc": "TWO. native page shell",
+  "rules": [
+    {
+      "action": "disallow",
+      "page": "*"
+    }
+  ]
+}

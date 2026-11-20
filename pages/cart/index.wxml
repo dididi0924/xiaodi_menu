@@ -1,0 +1,109 @@
+<view class="cart-page">
+  <view class="cart-nav" style="padding-top: {{navTop}}px;">
+    <view class="nav-side" bindtap="goBack" aria-role="button" aria-label="返回">
+      <image class="nav-icon" src="/assets/icons/chevron-left-ink.png" mode="aspectFit"></image>
+    </view>
+    <view class="nav-title"></view>
+    <view class="nav-side nav-side--text" bindtap="addMore">继续加菜</view>
+  </view>
+
+  <block wx:if="{{!empty}}">
+    <view class="cart-head">
+      <view class="cart-title">今晚的菜单</view>
+      <view class="cart-sub">{{count}} 道菜 · 预计 {{eta}} 分钟</view>
+    </view>
+
+    <view class="cart-list">
+      <view wx:for="{{items}}" wx:key="dishId" class="cart-item">
+        <view class="cart-thumb">
+          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill"></image>
+          <view wx:else class="custom-cover" style="background: {{item.coverGradient}};">
+            <text class="thumb-char">{{item.initial}}</text>
+          </view>
+        </view>
+        <view class="cart-info">
+          <view class="cart-name">{{item.name}}</view>
+          <view class="cart-note">{{item.note || item.category + ' · ' + item.time + ' 分钟'}}</view>
+        </view>
+        <view class="cart-actions">
+          <view class="mini-stepper">
+            <view class="mini-btn" data-id="{{item.dishId}}" data-delta="-1" bindtap="changeQty">−</view>
+            <text class="mini-num">{{item.qty}}</text>
+            <view class="mini-btn" data-id="{{item.dishId}}" data-delta="1" bindtap="changeQty">+</view>
+          </view>
+          <view class="cart-remove" data-id="{{item.dishId}}" bindtap="removeItem" aria-role="button" aria-label="移除">
+            <image class="remove-icon" src="/assets/icons/trash-muted.png" mode="aspectFit"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="order-target">
+      <image class="target-avatar" src="{{partner.avatar}}" mode="aspectFill"></image>
+      <view class="target-copy">
+        <view class="target-label">这顿饭交给</view>
+        <view class="target-name">{{partner.name}}</view>
+        <view class="target-sub">18:30 后在家 · 会收到微信通知</view>
+      </view>
+      <view class="target-status">在家</view>
+    </view>
+
+    <view class="message-block">
+      <view class="field-label">给他留句话 <text>会显示在订单上</text></view>
+      <textarea
+        class="message-box"
+        value="{{message}}"
+        maxlength="120"
+        placeholder="今天想早点吃，或者……只是想说声辛苦啦。"
+        placeholder-class="message-placeholder"
+        bindinput="onMessage"
+        cursor-spacing="180"
+      ></textarea>
+      <view class="message-meta"><text>一句就够，他会看到</text><text>{{charCount}} / 120</text></view>
+      <scroll-view class="quick-notes" scroll-x="{{true}}" enable-flex="{{true}}" show-scrollbar="{{false}}">
+        <view class="quick-notes-inner">
+          <view wx:for="{{quickNotes}}" wx:key="*this" class="quick-note" data-note="{{item}}" bindtap="useQuickNote">{{item}}</view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="notify-row">
+      <view class="notify-icon-wrap">
+        <image class="notify-icon" src="/assets/icons/bell-ink.png" mode="aspectFit"></image>
+      </view>
+      <view class="notify-copy">
+        <view class="notify-title">通知林深</view>
+        <view class="notify-sub">下单后立刻发送微信服务通知</view>
+      </view>
+      <view class="switch {{notify ? 'is-on' : ''}}" bindtap="toggleNotify" aria-role="switch" aria-checked="{{notify}}">
+        <view class="switch-knob"></view>
+      </view>
+    </view>
+
+    <view class="cart-bottom-space"></view>
+
+    <view class="checkout-bar">
+      <view class="checkout-meta">
+        <view class="checkout-eta">
+          <image class="clock-icon" src="/assets/icons/clock-muted.png" mode="aspectFit"></image>
+          约 {{eta}} 分钟
+        </view>
+        <view class="checkout-total">{{count}} 道菜 · 下单给林深</view>
+      </view>
+      <view class="checkout-btn" bindtap="placeOrder">
+        <image class="checkout-icon" src="/assets/icons/send-white.png" mode="aspectFit"></image>
+        把订单发给林深
+      </view>
+      <view class="checkout-hint">{{notify ? '发送后，林深会收到一条微信服务通知。' : '通知已关闭，林深只会在应用内看到订单。'}}</view>
+    </view>
+  </block>
+
+  <view wx:else class="cart-empty">
+    <view class="empty-state__icon">
+      <image class="icon" src="/assets/icons/bag-ink.png" mode="aspectFit"></image>
+    </view>
+    <view class="cart-empty__title">今晚的菜单还是空的</view>
+    <view class="cart-empty__text">去挑一道想吃的，或者让他做拿手菜。</view>
+    <view class="btn btn--primary cart-empty__btn" bindtap="goBack">去选菜</view>
+  </view>
+</view>

@@ -1,0 +1,44 @@
+<view class="notifications-page">
+  <view class="notifications-nav" style="padding-top: {{navTop}}px;">
+    <view class="nav-side" bindtap="goBack">
+      <image class="nav-icon" src="/assets/icons/chevron-left-ink.png" mode="aspectFit"></image>
+    </view>
+    <view class="nav-title"></view>
+    <view class="nav-side nav-side--action" bindtap="markAllRead" wx:if="{{unread}}">全部已读</view>
+    <view wx:else class="nav-side"></view>
+  </view>
+
+  <view class="notifications-head">
+    <view class="notifications-title">通知</view>
+    <view class="notifications-sub">订单、留言和厨房里的动静</view>
+  </view>
+
+  <view wx:if="{{items.length}}" class="notif-list">
+    <view
+      wx:for="{{items}}"
+      wx:key="id"
+      class="notif-item {{item.read ? '' : 'is-unread'}}"
+      data-id="{{item.id}}"
+      data-order="{{item.orderId}}"
+      bindtap="openItem"
+    >
+      <view class="notif-icon">
+        <image class="notif-img" src="{{item.iconPath}}" mode="aspectFit"></image>
+      </view>
+      <view class="notif-copy">
+        <view class="notif-title">{{item.title}}</view>
+        <view class="notif-body">{{item.body}}</view>
+        <view class="notif-time">{{item.timeText}}</view>
+      </view>
+      <view wx:if="{{!item.read}}" class="notif-dot"></view>
+    </view>
+  </view>
+
+  <view wx:else class="empty-state notif-empty">
+    <view class="empty-state__icon"><image class="icon" src="/assets/icons/bell-ink.png" mode="aspectFit"></image></view>
+    <text class="empty-state__title">这里还很安静</text>
+    <view class="empty-state__text">下单、接单和留言的通知，都会出现在这里。</view>
+  </view>
+
+  <view class="notif-footer">正式版将同步微信服务通知；当前原型为应用内通知。</view>
+</view>

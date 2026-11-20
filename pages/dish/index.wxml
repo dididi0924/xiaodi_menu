@@ -1,0 +1,81 @@
+<view class="dish-page">
+  <view class="dish-hero">
+    <image wx:if="{{dish.image}}" class="dish-hero__img" src="{{dish.image}}" mode="aspectFill"></image>
+    <view wx:else class="custom-cover dish-hero__cover" style="background: {{dish.coverGradient}};">
+      <text class="custom-cover__char">{{dish.initial}}</text>
+      <text class="custom-cover__label">House special</text>
+    </view>
+    <view class="dish-hero__shade"></view>
+    <view class="nav-actions" style="top: {{navTop}}px;">
+      <view class="round-btn" bindtap="goBack" aria-role="button" aria-label="返回">
+        <image class="round-icon" src="/assets/icons/chevron-left-ink.png" mode="aspectFit"></image>
+      </view>
+      <view class="round-btn {{liked ? 'is-liked' : ''}}" bindtap="toggleFavorite" aria-role="button" aria-label="收藏">
+        <image class="round-icon" src="{{liked ? '/assets/icons/heart-tomato.png' : '/assets/icons/heart-ink.png'}}" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{dish}}" class="dish-content">
+    <view class="dish-eyebrow">{{dish.category}}<text class="dot"></text>{{dish.time}} 分钟<text class="dot"></text>2 人份</view>
+    <view class="dish-title">{{dish.name}}</view>
+    <view class="dish-en">{{dish.en}}</view>
+    <view class="dish-desc">{{dish.description}}</view>
+
+    <view class="tag-row">
+      <view wx:for="{{dish.tags}}" wx:key="*this" class="tag">{{item}}</view>
+      <view class="tag tag--warm">
+        <image class="tag-icon" src="/assets/icons/flame-tomato.png" mode="aspectFit"></image>
+        点过 {{countText}}
+      </view>
+    </view>
+
+    <view class="chef-note">
+      <image class="chef-avatar" src="{{chef.avatar}}" mode="aspectFill"></image>
+      <view class="chef-copy">
+        <view class="chef-label">CHEF’S NOTE · 林深</view>
+        <view class="chef-text">{{dish.chefNote}}</view>
+      </view>
+    </view>
+
+    <view class="detail-divider"></view>
+    <view class="option-row">
+      <view>
+        <view class="option-title">要几份？</view>
+        <view class="option-hint">默认 2 人份，不够可以再加</view>
+      </view>
+      <view class="stepper">
+        <view class="stepper-btn" data-delta="-1" bindtap="changeQty">
+          <text class="stepper-symbol">−</text>
+        </view>
+        <text class="stepper-num">{{qty}}</text>
+        <view class="stepper-btn" data-delta="1" bindtap="changeQty">
+          <image class="stepper-icon" src="/assets/icons/plus-ink.png" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+
+    <view class="detail-divider"></view>
+    <view class="note-label">口味备注 <text>（可选）</text></view>
+    <textarea
+      class="note-input"
+      value="{{note}}"
+      maxlength="60"
+      placeholder="少辣、不要香菜、煎得脆一点……"
+      placeholder-class="note-placeholder"
+      bindinput="onNote"
+      cursor-spacing="160"
+    ></textarea>
+  </view>
+
+  <view class="dish-footer">
+    <view class="dish-from">
+      <view class="dish-from__strong">2 人份</view>
+      <view>{{dish.time}} 分钟</view>
+    </view>
+    <view class="add-btn" bindtap="addToCart">
+      <image class="add-icon" src="/assets/icons/plus-white.png" mode="aspectFit"></image>
+      加入今晚菜单 · {{qty}} 份
+    </view>
+  </view>
+</view>

@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/dish/index",
+    "pages/cart/index",
+    "pages/success/index",
+    "pages/orders/index",
+    "pages/me/index",
+    "pages/invite/index",
+    "pages/notifications/index",
+    "pages/custom/index"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "TWO.",
+    "navigationBarBackgroundColor": "#F4F0E7",
+    "backgroundColor": "#F4F0E7",
+    "backgroundTextStyle": "dark"
+  },
+  "usingComponents": {
+    "app-topbar": "/components/app-topbar/index",
+    "app-tabbar": "/components/app-tabbar/index"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

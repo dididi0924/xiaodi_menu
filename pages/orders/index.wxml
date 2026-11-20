@@ -1,0 +1,109 @@
+<app-topbar unread="{{unread}}" bind:search="onTopSearch" bind:bell="openNotifications" />
+
+<view class="page page--tabbar">
+  <view class="page-head">
+    <view class="page-kicker">{{isCook ? 'THE KITCHEN' : 'YOUR ORDERS'}}</view>
+    <view class="page-title">{{isCook ? '今晚的厨房' : '今晚的订单'}}</view>
+    <view class="page-sub">{{isCook ? '接单、开火、上菜。小满会收到每一步。' : '从下单到上桌，都在这里。'}}</view>
+  </view>
+
+  <view class="segmented">
+    <view class="segment {{tab === 'active' ? 'is-active' : ''}}" data-tab="active" bindtap="onTab">
+      进行中<text wx:if="{{activeCount}}"> · 1</text>
+    </view>
+    <view class="segment {{tab === 'history' ? 'is-active' : ''}}" data-tab="history" bindtap="onTab">历史订单</view>
+  </view>
+
+  <block wx:if="{{tab === 'active'}}">
+    <view wx:if="{{activeOrder}}" class="order-card">
+      <view class="order-top">
+        <text class="order-id">{{activeOrder.id}}</text>
+        <view class="status-pill status-pill--{{activeOrder.statusClass}}">{{activeOrder.statusLabel}}</view>
+      </view>
+
+      <view class="status-track">
+        <view wx:for="{{activeOrder.steps}}" wx:key="label" class="status-step {{item.className}}">
+          <view class="status-dot"></view>
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+
+      <view class="order-person">
+        <image class="order-avatar" src="{{activeOrder.personAvatar}}" mode="aspectFill"></image>
+        <view class="order-person__copy">
+          <view class="order-person__name">{{activeOrder.personName}}{{isCook ? '的晚餐订单' : ' · ' + activeOrder.meta.desc}}</view>
+          <view class="order-person__line">{{activeOrder.personLine}}</view>
+        </view>
+      </view>
+
+      <view wx:if="{{activeOrder.message}}" class="order-message">
+        <view class="order-message__text">“{{activeOrder.message}}”</view>
+        <view class="order-message__by">小满 留</view>
+      </view>
+
+      <view class="order-dishes">
+        <view wx:for="{{activeOrder.items}}" wx:key="dishId" class="order-dish">
+          <image wx:if="{{item.image}}" class="order-thumb" src="{{item.image}}" mode="aspectFill"></image>
+          <view wx:else class="order-thumb order-thumb--custom" style="background: {{item.coverGradient}};">{{item.initial}}</view>
+          <view class="order-dish__copy">
+            <view class="order-dish__name">{{item.name}}</view>
+            <view class="order-dish__sub">{{item.note || '2 人份 · ' + item.time + ' 分钟'}}</view>
+          </view>
+          <text class="order-dish__qty">× {{item.qty}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{activeOrder.action}}" class="order-action {{isCook ? 'order-action--tomato' : ''}}" bindtap="onPrimary">
+        <image class="order-action__icon" src="{{activeOrder.action.icon}}" mode="aspectFit"></image>
+        {{activeOrder.action.primary}}
+      </view>
+      <view wx:if="{{activeOrder.canCancel}}" class="order-cancel" data-id="{{activeOrder.id}}" bindtap="cancelOrder">取消这一单</view>
+
+      <view class="order-foot">
+        <text>{{activeOrder.fullTime}}</text>
+        <text>{{activeOrder.count}} 道菜</text>
+      </view>
+    </view>
+
+    <view wx:else class="empty-state">
+      <view class="empty-state__icon">
+        <image class="icon" src="{{isCook ? '/assets/icons/chef-ink.png' : '/assets/icons/receipt-ink.png'}}" mode="aspectFit"></image>
+      </view>
+      <text class="empty-state__title">{{isCook ? '厨房还很安静' : '今晚还没有订单'}}</text>
+      <view class="empty-state__text">{{isCook ? '小满点好菜后，订单会直接出现在这里。' : '挑几道想吃的，写句话给他。'}}</view>
+      <view class="btn btn--primary btn--small" bindtap="goHome">{{isCook ? '去看看菜单' : '去点菜'}}</view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view wx:if="{{history.length}}" class="history-list">
+      <view wx:for="{{history}}" wx:key="id" class="history-card">
+        <view class="history-head">
+          <view class="history-title">{{item.id}} · {{item.count}} 道菜</view>
+          <view class="history-date">{{item.dateText}} · {{item.statusLabel}}</view>
+        </view>
+        <view class="history-thumbs">
+          <block wx:for="{{item.thumbs}}" wx:for-item="thumb" wx:for-index="thumbIndex" wx:key="dishId">
+            <image wx:if="{{thumb.image}}" class="history-thumb" src="{{thumb.image}}" mode="aspectFill"></image>
+            <view wx:else class="history-thumb history-thumb--custom" style="background: {{thumb.coverGradient}};">{{thumb.initial}}</view>
+          </block>
+          <view wx:if="{{item.moreCount}}" class="history-more">+{{item.moreCount}}</view>
+        </view>
+        <view class="history-foot">
+          <view class="history-msg">{{item.message || '没有留言，但吃得很满足。'}}</view>
+          <view class="history-again" data-id="{{item.id}}" bindtap="reorder">
+            再来一单
+            <image class="history-again__icon" src="/assets/icons/refresh-ink.png" mode="aspectFit"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-state">
+      <view class="empty-state__icon"><image class="icon" src="/assets/icons/clock-ink.png" mode="aspectFit"></image></view>
+      <text class="empty-state__title">还没有历史订单</text>
+      <view class="empty-state__text">吃过的每一顿，都会留在这里。</view>
+    </view>
+  </block>
+</view>
+
+<app-tabbar active="orders" role="{{role}}" orderDot="{{orderDot}}" />

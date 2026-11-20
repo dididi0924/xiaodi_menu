@@ -1,0 +1,61 @@
+<view class="success-page">
+  <view class="confetti">
+    <view
+      wx:for="{{confetti}}"
+      wx:key="index"
+      class="confetti-piece"
+      style="left: {{item.left}}%; background: {{item.color}}; animation-delay: {{item.delay}}s; animation-duration: {{item.duration}}s;"
+    ></view>
+  </view>
+
+  <view class="success-inner" style="padding-top: {{navTop}}px;">
+    <view class="success-close" style="top: {{navTop}}px;" bindtap="goHome" aria-role="button" aria-label="关闭">
+      <image class="success-close__icon" src="/assets/icons/x-ink.png" mode="aspectFit"></image>
+    </view>
+
+    <view class="success-brand">two<text>.</text></view>
+    <view class="success-check">
+      <image class="success-check__icon" src="/assets/icons/check-white.png" mode="aspectFit"></image>
+    </view>
+    <view class="success-title">已经<text class="success-em">告诉他了。</text></view>
+    <view class="success-sub">{{notify ? '林深会收到一条通知，等他有空就会接单。' : '订单已经放进他的厨房，等他有空就会看见。'}}</view>
+
+    <view class="ticket">
+      <view class="ticket-top">
+        <view>
+          <view class="ticket-label">DINNER ORDER</view>
+          <view class="ticket-id">{{order.id}}</view>
+        </view>
+        <view class="ticket-time">
+          <view class="ticket-time__strong">{{timeText}}</view>
+          <view>{{dateText}}</view>
+        </view>
+      </view>
+      <view class="ticket-items">
+        <view wx:for="{{order.items}}" wx:key="dishId" class="ticket-item">
+          <view class="ticket-item__name">{{item.name}}<text wx:if="{{item.note}}"> · {{item.note}}</text></view>
+          <text class="ticket-item__qty">× {{item.qty}}</text>
+        </view>
+      </view>
+      <view wx:if="{{order.message}}" class="ticket-message">“{{order.message}}”</view>
+      <view class="ticket-note">
+        <view class="ticket-note__icon">
+          <image class="ticket-note__img" src="/assets/icons/bell-ink.png" mode="aspectFit"></image>
+        </view>
+        <view class="ticket-note__copy">
+          <view class="ticket-note__title">{{notify ? '微信服务通知已发送' : '应用内通知已发送'}}</view>
+          <view class="ticket-note__sub">{{count}} 道菜 · 已送达林深</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="success-actions">
+      <view class="btn btn--primary btn--block" bindtap="viewCook">
+        看看他的视角
+        <image class="btn-icon" src="/assets/icons/arrowRight-white.png" mode="aspectFit"></image>
+      </view>
+      <view class="btn btn--ghost btn--block" bindtap="goHome">回到首页</view>
+    </view>
+    <view class="success-hint">订单号 {{order.id}} · 可以随时在「订单」里查看进度</view>
+  </view>
+</view>

@@ -1,0 +1,89 @@
+<block wx:if="{{mode === 'join'}}">
+  <view class="join-page">
+    <view class="join-hero">
+      <image class="join-hero__img" src="/assets/hero-table.jpg" mode="aspectFill"></image>
+      <view class="join-hero__shade"></view>
+      <view class="join-brand" style="top: {{navTop}}px;">two<text>.</text></view>
+      <view class="join-close" style="top: {{navTop}}px;" bindtap="goBack">
+        <image class="join-close__icon" src="/assets/icons/x-white.png" mode="aspectFit"></image>
+      </view>
+      <view class="join-hero__note">A TABLE FOR TWO · 邀请你加入</view>
+    </view>
+    <view class="join-panel">
+      <view class="join-card">
+        <view class="join-kicker">YOU ARE INVITED</view>
+        <view class="join-title">林深 邀请你<text class="join-title__em">加入今晚的餐桌</text></view>
+        <view class="join-sub">加入之后，你可以点菜、留一句话，他回家就能看见。今晚吃什么，不用再猜。</view>
+        <view class="join-member">
+          <image class="join-avatar" src="{{lin.avatar}}" mode="aspectFill"></image>
+          <view class="join-member__copy">
+            <view class="join-member__name">林深</view>
+            <view class="join-member__sub">做饭的人 · 已在这张餐桌</view>
+          </view>
+          <view class="join-member__status">已加入</view>
+        </view>
+        <view class="join-action" bindtap="joinTable">加入这张餐桌
+          <image class="join-action__icon" src="/assets/icons/arrowRight-white.png" mode="aspectFit"></image>
+        </view>
+        <view class="join-legal">加入即表示你愿意和对方共享这张菜单与订单。</view>
+      </view>
+    </view>
+  </view>
+</block>
+
+<block wx:else>
+  <view class="invite-page">
+    <view class="invite-nav" style="padding-top: {{navTop}}px;">
+      <view class="invite-nav__side" bindtap="goBack">
+        <image class="invite-nav__icon" src="/assets/icons/chevron-left-ink.png" mode="aspectFit"></image>
+      </view>
+      <view class="invite-nav__title"></view>
+      <view class="invite-nav__side"></view>
+    </view>
+
+    <view class="invite-head">
+      <view class="invite-head__title">邀请对方</view>
+      <view class="invite-head__sub">把这张餐桌，变成两个人的</view>
+    </view>
+
+    <view class="invite-art">
+      <view class="invite-art__top">
+        <image class="invite-art__avatar" src="{{lin.avatar}}" mode="aspectFill"></image>
+        <image class="invite-art__avatar invite-art__avatar--second" src="{{man.avatar}}" mode="aspectFill"></image>
+        <view class="invite-art__copy">
+          <view class="invite-art__label">YOUR TABLE</view>
+          <view class="invite-art__name">{{group.name}}</view>
+        </view>
+      </view>
+      <view class="invite-art__body">
+        <view class="invite-art__title">今晚，<text>一起吃点好的。</text></view>
+        <view class="qr-frame">
+          <image class="qr-img" src="{{qr}}" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+
+    <view class="invite-code-row">
+      <view class="invite-code">
+        <view class="invite-code__label">INVITE CODE</view>
+        <view class="invite-code__value">{{code}}</view>
+      </view>
+      <view class="copy-btn" bindtap="copyCode">
+        <image class="copy-btn__icon" src="/assets/icons/copy-ink.png" mode="aspectFit"></image>
+        复制
+      </view>
+    </view>
+
+    <button class="btn btn--primary btn--block invite-share" open-type="share">
+      <image class="invite-share__icon" src="/assets/icons/share-white.png" mode="aspectFit"></image>
+      分享邀请链接
+    </button>
+    <view class="btn btn--ghost btn--block invite-copy" bindtap="copyLink">
+      <image class="invite-copy__icon" src="/assets/icons/copy-ink.png" mode="aspectFit"></image>
+      复制邀请链接
+    </view>
+
+    <view class="invite-hint">邀请链接 7 天内有效，仅限 1 人加入。对方打开后，会看见你为这张餐桌起的名字。</view>
+    <view class="invite-preview" bindtap="previewJoin">预览对方收到的邀请页</view>
+  </view>
+</block>

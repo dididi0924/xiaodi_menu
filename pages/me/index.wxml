@@ -1,0 +1,132 @@
+<app-topbar unread="{{unread}}" bind:search="onTopSearch" bind:bell="openNotifications" />
+
+<view class="page page--tabbar">
+  <view class="me-head">
+    <view class="me-kicker">JUST THE TWO OF US</view>
+    <view class="me-title">我们</view>
+    <view class="me-sub">一张只属于你们两个人的餐桌。</view>
+  </view>
+
+  <view class="profile-card">
+    <view class="profile-top">
+      <view class="profile-avatars">
+        <image class="profile-avatar" src="/assets/avatars/lin.png" mode="aspectFill"></image>
+        <image class="profile-avatar" src="/assets/avatars/man.png" mode="aspectFill"></image>
+      </view>
+      <view class="profile-since-wrap">
+        <view class="profile-label">OUR TABLE</view>
+        <view class="profile-since">在一起 279 天</view>
+      </view>
+    </view>
+    <view class="profile-names">
+      <text class="profile-name">林深</text>
+      <text class="profile-amp">{{amp}}</text>
+      <text class="profile-name">小满</text>
+    </view>
+    <view class="profile-meta">
+      <text>{{group.name}}</text>
+      <view class="dot"></view>
+      <text>2026 年 2 月 14 日加入</text>
+    </view>
+    <view class="profile-footer">
+      <view class="profile-code">
+        <text class="code-label">INVITE CODE</text>
+        <text class="code-value">{{code}}</text>
+      </view>
+      <view class="code-copy" bindtap="copyCode">
+        <image class="code-copy__icon" src="/assets/icons/copy-ink.png" mode="aspectFit"></image>
+        复制邀请码
+      </view>
+    </view>
+  </view>
+
+  <view class="invite-banner" bindtap="openInvite">
+    <view class="invite-banner__icon">
+      <image class="invite-banner__img" src="/assets/icons/users-ink.png" mode="aspectFit"></image>
+    </view>
+    <view class="invite-banner__copy">
+      <view class="invite-banner__title">邀请另一半加入餐桌</view>
+      <view class="invite-banner__sub">分享一个链接，或让 TA 扫码加入</view>
+    </view>
+    <view class="invite-banner__arrow">
+      <image class="invite-banner__arrow-img" src="/assets/icons/arrowRight-white.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <view class="me-section">
+    <view class="me-section-head"><text>我们的餐桌</text><text>私密 · 仅 2 人</text></view>
+    <view class="settings-card">
+      <view class="settings-row" bindtap="openCustom">
+        <view class="row-icon row-icon--tomato"><image class="row-icon__img" src="/assets/icons/plus-ink.png" mode="aspectFit"></image></view>
+        <view class="row-copy"><view class="row-title">我们家的菜单</view><view class="row-sub">加点只属于你们的拿手菜</view></view>
+        <view class="row-tail">{{customCount}} 道<image class="row-chev" src="/assets/icons/chevron-right-muted.png" mode="aspectFit"></image></view>
+      </view>
+      <view class="settings-row" bindtap="openFavorites">
+        <view class="row-icon row-icon--sage"><image class="row-icon__img" src="/assets/icons/heart-ink.png" mode="aspectFit"></image></view>
+        <view class="row-copy"><view class="row-title">收藏的口味</view><view class="row-sub">会用来调整「猜你喜欢」</view></view>
+        <view class="row-tail">{{favCount}} 道<image class="row-chev" src="/assets/icons/chevron-right-muted.png" mode="aspectFit"></image></view>
+      </view>
+      <view class="settings-row" bindtap="openInvite">
+        <view class="row-icon"><image class="row-icon__img" src="/assets/icons/qr-ink.png" mode="aspectFit"></image></view>
+        <view class="row-copy"><view class="row-title">邀请码与分享</view><view class="row-sub">{{code}} · 7 天内有效</view></view>
+        <view class="row-tail">分享<image class="row-chev" src="/assets/icons/chevron-right-muted.png" mode="aspectFit"></image></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="me-section">
+    <view class="me-section-head"><text>我们的口味</text><text>让推荐更懂你们</text></view>
+    <view class="pref-chips">
+      <view class="pref-chip pref-chip--accent">
+        <image class="pref-icon" src="/assets/icons/leaf-sage.png" mode="aspectFit"></image>
+        清淡
+      </view>
+      <view class="pref-chip">微辣</view>
+      <view class="pref-chip">不吃香菜</view>
+      <view class="pref-chip">
+        <image class="pref-icon" src="/assets/icons/flame-tomato.png" mode="aspectFit"></image>
+        爱喝汤
+      </view>
+    </view>
+  </view>
+
+  <view class="me-section">
+    <view class="me-section-head"><text>体验双视角</text><text>原型演示用</text></view>
+    <view class="role-switch">
+      <view class="role-option {{!isCook ? 'is-active' : ''}}" data-role="eater" bindtap="setRole">
+        <image class="role-avatar" src="/assets/avatars/man.png" mode="aspectFill"></image>
+        <view class="role-copy"><view class="role-name">我是小满</view><view class="role-sub">点菜的人</view></view>
+      </view>
+      <view class="role-option {{isCook ? 'is-active' : ''}}" data-role="cook" bindtap="setRole">
+        <image class="role-avatar" src="/assets/avatars/lin.png" mode="aspectFill"></image>
+        <view class="role-copy"><view class="role-name">我是林深</view><view class="role-sub">做饭的人</view></view>
+      </view>
+    </view>
+    <view class="role-note">正式版会按微信登录身份固定角色。原型里可以随时切换，查看对方收到的订单。</view>
+  </view>
+
+  <view class="me-section">
+    <view class="me-section-head"><text>通知</text><text>微信服务通知</text></view>
+    <view class="settings-card">
+      <view class="settings-row">
+        <view class="row-icon row-icon--sage"><image class="row-icon__img" src="/assets/icons/bell-ink.png" mode="aspectFit"></image></view>
+        <view class="row-copy"><view class="row-title">下单与状态通知</view><view class="row-sub">接单、开火、上菜都会通知对方</view></view>
+        <view class="switch {{preferNotify ? 'is-on' : ''}}" bindtap="togglePrefNotify" aria-role="switch" aria-checked="{{preferNotify}}">
+          <view class="switch-knob"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="app-about">
+    <view class="about-mark">two<text>.</text></view>
+    <view>TWO. · Dinner for two</view>
+    <view>Prototype v0.1.0 · 数据只保存在这台设备</view>
+    <view class="about-reset" bindtap="resetDemo">
+      <image class="about-reset__icon" src="/assets/icons/refresh-ink.png" mode="aspectFit"></image>
+      重置演示数据
+    </view>
+  </view>
+</view>
+
+<app-tabbar active="me" role="{{role}}" orderDot="{{orderDot}}" />

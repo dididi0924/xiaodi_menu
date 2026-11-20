@@ -1,0 +1,15 @@
+<!-- top bar sits below the WeChat capsule, preserving the brand row -->
+<view class="topbar" style="padding-top: {{topInset}}px;">
+  <view class="topbar-inner" style="padding-right: {{rightInset}}px;">
+    <view class="brand">two<text class="brand-dot">.</text></view>
+    <view class="top-actions">
+      <view wx:if="{{showSearch}}" class="icon-btn" bindtap="onSearch" hover-class="icon-btn--pressed" aria-role="button" aria-label="搜索菜单">
+        <image class="icon" src="/assets/icons/search-ink.png" mode="aspectFit"></image>
+      </view>
+      <view wx:if="{{showBell}}" class="icon-btn" bindtap="onBell" hover-class="icon-btn--pressed" aria-role="button" aria-label="通知">
+        <image class="icon" src="/assets/icons/bell-ink.png" mode="aspectFit"></image>
+        <view wx:if="{{unread > 0}}" class="badge-dot"></view>
+      </view>
+    </view>
+  </view>
+</view>

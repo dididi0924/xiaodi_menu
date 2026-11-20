@@ -1,0 +1,194 @@
+<app-topbar unread="{{unread}}" bind:search="onTopSearch" bind:bell="onBell" />
+
+<view class="page page--tabbar {{cartVisible ? 'has-cart' : ''}}">
+  <view class="greeting">
+    <view class="group-line" bindtap="goMe">
+      <view class="group-dot"></view>
+      <text>{{group.name}}</text>
+      <image class="group-chev" src="/assets/icons/chevron-right-muted.png" mode="aspectFit"></image>
+    </view>
+    <view class="hello">{{greeting}}，{{currentUser.name}}</view>
+    <view class="headline">{{headline}}</view>
+    <view class="subline">{{subline}}</view>
+  </view>
+
+  <view wx:if="{{searchOpen}}" class="search-bar">
+    <image class="search-icon" src="/assets/icons/search-ink.png" mode="aspectFit"></image>
+    <input
+      class="search-input"
+      value="{{searchQuery}}"
+      focus="{{searchFocus}}"
+      placeholder="搜菜名、口味或食材"
+      placeholder-class="search-placeholder"
+      confirm-type="search"
+      bindinput="onSearchInput"
+    />
+    <view class="search-clear" bindtap="closeSearch" aria-role="button" aria-label="关闭搜索">
+      <image class="search-clear-icon" src="/assets/icons/x-ink.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <block wx:if="{{!searchOpen}}">
+    <view class="hero-card {{heroClass}}" bindtap="onHeroTap" hover-class="hero-card--pressed">
+      <image class="hero-bg" src="/assets/hero-table.jpg" mode="aspectFill"></image>
+      <view class="hero-shade"></view>
+      <view class="hero-content">
+        <view class="hero-main">
+          <view class="avatar-stack hero-avatars">
+            <view wx:for="{{heroAvatars}}" wx:key="id" class="avatar">
+              <image src="{{item.avatar}}" mode="aspectFill"></image>
+            </view>
+          </view>
+          <view class="hero-kicker">{{heroKicker}}</view>
+          <view class="hero-title">{{heroTitle}}</view>
+          <view class="hero-sub">{{heroSub}}</view>
+        </view>
+        <view class="arrow-circle">
+          <image class="arrow-icon" src="{{activeOrder ? '/assets/icons/arrowRight-white.png' : '/assets/icons/chevron-down-white.png'}}" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{showFrequent}}" class="section">
+    <view class="section-head">
+      <view>
+        <view class="section-kicker">USUALS</view>
+        <view class="section-title">常点<text class="count">{{frequent.length}}</text></view>
+      </view>
+      <view class="text-action" bindtap="showAllDishes">
+        全部菜单
+        <image class="icon" src="/assets/icons/arrowRight-ink.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    <scroll-view class="rail" scroll-x="{{true}}" enable-flex="{{true}}" show-scrollbar="{{false}}">
+      <view class="rail-inner">
+        <view
+          wx:for="{{frequent}}"
+          wx:key="id"
+          class="usual-card"
+          data-id="{{item.id}}"
+          bindtap="openDish"
+        >
+          <image wx:if="{{item.image}}" class="usual-img" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}"></image>
+          <view wx:if="{{!item.image}}" class="custom-cover" style="background: {{item.coverGradient}};">
+            <text class="custom-cover__char">{{item.initial}}</text>
+            <text class="custom-cover__label">House special</text>
+          </view>
+          <view class="usual-badge">点过 {{item.count}} 次</view>
+          <view class="usual-body">
+            <view class="usual-name line-2">{{item.name}}</view>
+            <view class="usual-meta">{{item.time}} 分钟 · {{item.category}}</view>
+          </view>
+          <view class="add-mini" catchtap="quickAdd" data-id="{{item.id}}">
+            <image class="icon" src="/assets/icons/plus-ink.png" mode="aspectFit"></image>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <scroll-view wx:if="{{!searchOpen}}" class="chips" scroll-x="{{true}}" enable-flex="{{true}}" show-scrollbar="{{false}}">
+    <view class="chips-inner">
+      <view
+        wx:for="{{categories}}"
+        wx:key="*this"
+        class="chip {{category === item ? 'is-active' : ''}}"
+        data-category="{{item}}"
+        bindtap="setCategory"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="section menu-section" id="menuSection">
+    <view class="section-head">
+      <view>
+        <view class="section-kicker">{{sectionKicker}}</view>
+        <view class="section-title">{{sectionTitle}}<text wx:if="{{sectionCount}}" class="count">{{sectionCount}}</text></view>
+      </view>
+      <view wx:if="{{!searchOpen && category === '全部' && !showAll}}" class="text-action text-action--icon" bindtap="shuffleRecommendations">
+        <image class="icon" src="/assets/icons/refresh-ink.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    <view class="section-reason">
+      <image class="icon" src="{{searchOpen ? '/assets/icons/search-ink.png' : '/assets/icons/sparkles-tomato.png'}}" mode="aspectFit"></image>
+      <text>{{sectionReason}}</text>
+    </view>
+
+    <view wx:if="{{!empty}}" class="dish-grid">
+      <view
+        wx:for="{{dishes}}"
+        wx:key="id"
+        class="dish-card"
+        data-id="{{item.id}}"
+        bindtap="openDish"
+      >
+        <view class="dish-media">
+          <image wx:if="{{item.image}}" class="dish-img" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}"></image>
+          <view wx:else class="custom-cover" style="background: {{item.coverGradient}};">
+            <text class="custom-cover__char">{{item.initial}}</text>
+            <text class="custom-cover__label">House special</text>
+          </view>
+          <view class="heart-btn {{item.heartClass}}" catchtap="toggleFavorite" data-id="{{item.id}}" aria-role="button" aria-label="收藏">
+            <image class="icon" src="{{item.heartIcon}}" mode="aspectFit"></image>
+          </view>
+        </view>
+        <view class="dish-body">
+          <view class="dish-name">{{item.name}}</view>
+          <view class="dish-meta">
+            <image class="icon" src="/assets/icons/clock-muted.png" mode="aspectFit"></image>
+            <text>{{item.time}} 分钟</text>
+            <view class="dot"></view>
+            <text>{{item.subTag}}</text>
+          </view>
+          <view class="dish-foot">
+            <text class="dish-cat">{{item.categoryText}}</text>
+            <view class="dish-add" catchtap="quickAdd" data-id="{{item.id}}" aria-role="button" aria-label="加入菜单">
+              <image class="icon" src="/assets/icons/plus-ink.png" mode="aspectFit"></image>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{showCustomTile}}" class="custom-card" bindtap="openCustom">
+        <view class="custom-plus">
+          <image class="icon" src="/assets/icons/plus-ink.png" mode="aspectFit"></image>
+        </view>
+        <view class="custom-card-title">加一道你们的菜</view>
+        <view class="custom-card-text">拿手菜、家里的味道，</view>
+        <view class="custom-card-text">都可以放进这张菜单。</view>
+      </view>
+    </view>
+
+    <view wx:if="{{empty}}" class="empty-state">
+      <view class="empty-state__icon"><image class="icon" src="/assets/icons/search-ink.png" mode="aspectFit"></image></view>
+      <text class="empty-state__title">没有找到这道菜</text>
+      <view class="empty-state__text">换个关键词，或者自己加一道。</view>
+    </view>
+
+    <view wx:if="{{showAllButton}}" class="show-all-wrap">
+      <view class="show-all-btn" bindtap="showAllDishes">
+        查看全部 {{allCount}} 道菜
+        <image class="icon" src="/assets/icons/arrowRight-ink.png" mode="aspectFit"></image>
+      </view>
+    </view>
+
+    <view wx:if="{{showCustomLink}}" class="custom-add-link" bindtap="openCustom">
+      <image class="icon" src="/assets/icons/plus-ink.png" mode="aspectFit"></image>
+      加一道你们的拿手菜
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{cartVisible}}" class="cart-float" bindtap="openCart">
+  <view class="cart-count">{{cartCount}}</view>
+  <view class="cart-float__copy">
+    <view class="cart-float__title">今晚的菜单</view>
+    <view class="cart-float__meta">{{cartCount}} 道菜 · 约 {{cartEta}} 分钟</view>
+  </view>
+  <view class="cart-float__arrow">
+    <image class="icon" src="/assets/icons/arrowRight-white.png" mode="aspectFit"></image>
+  </view>
+</view>
+
+<app-tabbar active="home" role="{{role}}" orderDot="{{orderDot}}" />

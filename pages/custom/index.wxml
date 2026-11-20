@@ -1,0 +1,62 @@
+<view class="custom-page">
+  <view class="custom-nav" style="padding-top: {{navTop}}px;">
+    <view class="nav-side" bindtap="goBack">
+      <image class="nav-icon" src="/assets/icons/chevron-left-ink.png" mode="aspectFit"></image>
+    </view>
+    <view class="nav-title"></view>
+    <view class="nav-side"></view>
+  </view>
+
+  <view class="custom-head">
+    <view class="custom-title">加一道你们的菜</view>
+    <view class="custom-sub">它会留在你们的餐桌菜单里</view>
+  </view>
+
+  <view class="custom-preview">
+    <view class="preview-mark">{{previewChar}}</view>
+    <view class="preview-copy">
+      <view class="preview-title">照片会由 TA 来补</view>
+      <view class="preview-text">原型阶段先用文字封面，正式版支持上传菜品照片。</view>
+    </view>
+  </view>
+
+  <view class="custom-form">
+    <view class="form-field">
+      <view class="form-label">菜名 <text>必填</text></view>
+      <input class="form-input" value="{{name}}" maxlength="24" placeholder="比如：妈妈的番茄炒蛋" placeholder-class="form-placeholder" bindinput="onName" />
+    </view>
+
+    <view class="form-field">
+      <view class="form-label">一句话介绍 <text>可选</text></view>
+      <textarea class="form-textarea" value="{{description}}" maxlength="100" placeholder="这道菜的故事，或者你想怎么吃。" placeholder-class="form-placeholder" bindinput="onDescription" cursor-spacing="140"></textarea>
+    </view>
+
+    <view class="form-row">
+      <view class="form-field form-field--half">
+        <view class="form-label">分类</view>
+        <picker range="{{categories}}" value="{{categoryIndex}}" bindchange="onCategory">
+          <view class="form-select">
+            <text>{{categories[categoryIndex]}}</text>
+            <image class="select-icon" src="/assets/icons/chevron-down-muted.png" mode="aspectFit"></image>
+          </view>
+        </picker>
+      </view>
+      <view class="form-field form-field--half">
+        <view class="form-label">大概耗时</view>
+        <view class="time-wrap">
+          <input class="form-input" type="number" value="{{time}}" maxlength="3" bindinput="onTime" />
+          <text class="time-unit">分钟</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-hint">添加后，它会出现在「全部菜单」和你们的推荐里。只属于这张餐桌，不会公开。</view>
+  </view>
+
+  <view class="custom-footer">
+    <view class="custom-submit" bindtap="submit">
+      <image class="custom-submit__icon" src="/assets/icons/plus-white.png" mode="aspectFit"></image>
+      加入我们的菜单
+    </view>
+  </view>
+</view>

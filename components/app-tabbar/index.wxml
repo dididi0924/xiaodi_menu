@@ -1,0 +1,18 @@
+<view class="tabbar">
+  <view
+    wx:for="{{items}}"
+    wx:key="id"
+    class="tab {{active === item.id ? 'is-active' : ''}}"
+    data-id="{{item.id}}"
+    bindtap="go"
+    hover-class="tab--pressed"
+    aria-role="button"
+    aria-label="{{item.label}}"
+  >
+    <view class="tab-icon-wrap">
+      <image class="tab-icon" src="{{active === item.id ? item.activeIcon : item.icon}}" mode="aspectFit"></image>
+      <view wx:if="{{item.id === 'orders' && orderDot}}" class="tab-dot"></view>
+    </view>
+    <text class="tab-label">{{item.label}}</text>
+  </view>
+</view>

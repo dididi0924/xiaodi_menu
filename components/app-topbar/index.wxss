@@ -1,0 +1,44 @@
+/* topbar uses the custom navigation area */
+.topbar {
+  background: #F4F0E7;
+}
+.topbar-inner {
+  height: 96rpx;
+  padding: 0 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 60rpx;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -4rpx;
+  color: #1D1C18;
+}
+.brand-dot { color: #E4553D; }
+.top-actions { display: flex; align-items: center; gap: 14rpx; }
+.icon-btn {
+  position: relative;
+  width: 72rpx;
+  height: 72rpx;
+  border: 1px solid rgba(29,28,24,0.11);
+  border-radius: 50%;
+  background: rgba(255,253,248,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-btn--pressed { background: #FFFDF8; transform: scale(0.96); }
+.icon { width: 36rpx; height: 36rpx; }
+.badge-dot {
+  position: absolute;
+  top: 15rpx;
+  right: 16rpx;
+  width: 12rpx;
+  height: 12rpx;
+  border: 2rpx solid #F4F0E7;
+  border-radius: 50%;
+  background: #E4553D;
+}
