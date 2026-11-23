@@ -2,8 +2,8 @@
 // Replace the methods here with BFF calls when the real backend is ready.
 const D = require('./data');
 
-const KEY = 'two.mini.v1';
-const DAY = 86400000;
+const KEY = 'two.mini.v2';
+const OLD_KEY = 'two.mini.v1';
 
 let state = null;
 
@@ -11,72 +11,33 @@ function uid(prefix) {
   return prefix + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
-function buildSeedOrders() {
-  const now = Date.now();
-  return D.SEED_ORDERS.map((seed) => {
-    const created = now + seed.createdAtOffsetDays * DAY;
-    const items = seed.items.map((item) => {
-      const dish = D.DISHES.find((d) => d.id === item.dishId);
-      return {
-        dishId: item.dishId,
-        name: dish ? dish.name : '已下架菜品',
-        image: dish ? dish.image : null,
-        tone: dish ? dish.tone : '#B89070',
-        time: dish ? dish.time : 0,
-        qty: item.qty,
-        note: item.note || ''
-      };
-    });
-    return {
-      id: seed.id,
-      createdAt: created,
-      status: seed.status,
-      eaterId: seed.eaterId,
-      cookId: seed.cookId,
-      message: seed.message,
-      notify: true,
-      items,
-      totalItems: items.reduce((s, i) => s + i.qty, 0),
-      acceptedAt: created + 22 * 60000,
-      cookingAt: created + 34 * 60000,
-      servedAt: created + 58 * 60000,
-      cancelledAt: null
-    };
-  });
-}
-
-function buildSeedNotifications() {
-  const now = Date.now();
-  return D.SEED_NOTIFICATIONS.map((n) => ({
-    id: n.id,
-    userId: n.userId,
-    type: n.type,
-    title: n.title,
-    body: n.body,
-    createdAt: now - n.minutesAgo * 60000,
-    read: n.read,
-    icon: n.icon,
-    orderId: n.orderId || null
-  }));
-}
-
 function initialState() {
   return {
-    version: 1,
+    version: 2,
+    // Auth + onboarding. A fresh install must go through the login page.
+    loggedIn: false,
+    onboarded: false,
+    partnerJoined: false,
+    guideStep: 1,
+    // The local prototype keeps the demo persona so all copy stays coherent.
     role: 'eater',
-    joined: true,
-    group: Object.assign({}, D.GROUP),
-    favorites: D.SEED_FAVORITES.slice(),
+    group: Object.assign({}, D.GROUP, {
+      name: '小满 的餐桌',
+      code: 'TWO-8F2K',
+      days: 0
+    }),
+    // Clean new-user data: no orders, favorites, notifications or test counts.
+    favorites: [],
     customDishes: [],
     cart: [],
     draftMessage: '',
     notify: true,
-    orders: buildSeedOrders(),
-    notifications: buildSeedNotifications(),
-    orderSeq: 1039,
+    orders: [],
+    notifications: [],
+    orderSeq: 1000,
     recommendSeed: 7,
     preferNotify: true,
-    prefs: ['清淡', '微辣', '爱喝汤']
+    prefs: []
   };
 }
 
@@ -85,16 +46,18 @@ function init() {
   let saved = null;
   try {
     saved = wx.getStorageSync(KEY);
+    // Drop the old seeded prototype state so existing testers see onboarding.
+    if (wx.removeStorageSync) wx.removeStorageSync(OLD_KEY);
   } catch (e) {
     saved = null;
   }
-  if (!saved || saved.version !== 1) {
+  if (!saved || saved.version !== 2) {
     state = initialState();
     save();
     return state;
   }
   state = Object.assign({}, initialState(), saved, {
-    group: Object.assign({}, D.GROUP, saved.group || {}),
+    group: Object.assign({}, initialState().group, saved.group || {}),
     favorites: Array.isArray(saved.favorites) ? saved.favorites : [],
     customDishes: Array.isArray(saved.customDishes) ? saved.customDishes : [],
     cart: Array.isArray(saved.cart) ? saved.cart : [],
@@ -118,8 +81,43 @@ function get() {
 
 function reset() {
   state = initialState();
+  try {
+    if (wx.removeStorageSync) wx.removeStorageSync(OLD_KEY);
+  } catch (e) {}
   save();
   return state;
+}
+
+function login() {
+  get().loggedIn = true;
+  get().onboarded = false;
+  get().partnerJoined = false;
+  get().guideStep = 1;
+  get().group.name = '小满 的餐桌';
+  get().group.days = 0;
+  save();
+  return get();
+}
+
+function guard() {
+  const s = get();
+  if (!s.loggedIn) return '/pages/auth/index';
+  if (!s.onboarded) return '/pages/onboarding/index';
+  return '';
+}
+
+function setGuideStep(step) {
+  get().guideStep = Math.max(1, Math.min(3, Number(step) || 1));
+  save();
+}
+
+function completeOnboarding() {
+  get().partnerJoined = true;
+  get().onboarded = true;
+  get().guideStep = 3;
+  get().group.name = D.GROUP.name;
+  save();
+  return get();
 }
 
 function getMember(id) {
@@ -189,14 +187,20 @@ function toggleFavorite(id) {
 }
 
 function effectiveOrderCount(dish) {
-  const extra = get().orders.filter((o) =>
+  // Only real orders count. Never use seeded "点过 N 次" numbers.
+  return get().orders.filter((o) =>
     o.status !== 'cancelled' && o.items.some((i) => i.dishId === dish.id)
   ).length;
-  return (dish.orderCount || 0) + extra;
 }
 
 function getFrequent(limit) {
-  return allDishes().slice().sort((a, b) => effectiveOrderCount(b) - effectiveOrderCount(a)).slice(0, limit || 4);
+  return allDishes()
+    .filter((d) => effectiveOrderCount(d) > 0)
+    .sort((a, b) => {
+      const diff = effectiveOrderCount(b) - effectiveOrderCount(a);
+      return diff !== 0 ? diff : a.name.localeCompare(b.name);
+    })
+    .slice(0, limit || 4);
 }
 
 function seeded(seed) {
@@ -244,7 +248,8 @@ function getRecommendations(limit) {
 function recommendReason() {
   const fav = allDishes().filter((d) => isFavorite(d.id));
   if (fav.length) return '根据你收藏的「' + fav[0].name + '」和最近的口味';
-  return '根据你们最近点过的菜';
+  if (get().orders.length) return '根据你们最近点过的菜';
+  return '新餐桌的第一顿，先从这几道开始';
 }
 
 function filterDishes(category, query) {
@@ -479,8 +484,13 @@ function setPrefNotify(value) {
 }
 
 function setJoined(value) {
-  get().joined = value !== false;
-  save();
+  if (value === false) {
+    get().partnerJoined = false;
+    get().group.name = '小满 的餐桌';
+    save();
+    return;
+  }
+  completeOnboarding();
 }
 
 module.exports = {
@@ -488,6 +498,10 @@ module.exports = {
   get,
   save,
   reset,
+  login,
+  guard,
+  setGuideStep,
+  completeOnboarding,
   getMember,
   currentUser,
   currentUserId,

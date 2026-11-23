@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/auth/index",
+    "pages/onboarding/index",
     "pages/home/index",
     "pages/dish/index",
     "pages/cart/index",

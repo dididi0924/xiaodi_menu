@@ -1,0 +1,127 @@
+<view class="onboarding-page">
+  <view class="onboard-nav" style="padding-top: {{navTop}}px;">
+    <view class="onboard-brand">two<text>.</text></view>
+    <view class="onboard-step">{{step}} / 3</view>
+  </view>
+
+  <view class="progress">
+    <view class="progress-seg {{step >= 1 ? 'is-done' : ''}} {{step === 1 ? 'is-current' : ''}}"></view>
+    <view class="progress-seg {{step >= 2 ? 'is-done' : ''}} {{step === 2 ? 'is-current' : ''}}"></view>
+    <view class="progress-seg {{step >= 3 ? 'is-done' : ''}} {{step === 3 ? 'is-current' : ''}}"></view>
+  </view>
+
+  <block wx:if="{{step === 1}}">
+    <view class="onboard-head">
+      <view class="onboard-kicker">STEP 1 · YOUR MENU</view>
+      <view class="onboard-title">先加一道<text>你的拿手菜。</text></view>
+      <view class="onboard-sub">15 道预设菜已经在餐桌上了。再加一道只属于你们的味道，之后随时可以继续加。</view>
+    </view>
+
+    <view class="onboard-form">
+      <view class="form-field">
+        <view class="form-label">菜名 <text>必填</text></view>
+        <input class="form-input" value="{{name}}" maxlength="24" placeholder="比如：妈妈的番茄炒蛋" placeholder-class="form-placeholder" bindinput="onName" />
+      </view>
+      <view class="form-row">
+        <view class="form-field form-field--half">
+          <view class="form-label">分类</view>
+          <picker range="{{categories}}" value="{{categoryIndex}}" bindchange="onCategory">
+            <view class="form-select">
+              <text>{{categories[categoryIndex]}}</text>
+              <image class="select-icon" src="/assets/icons/chevron-down-muted.png" mode="aspectFit"></image>
+            </view>
+          </picker>
+        </view>
+        <view class="form-field form-field--half">
+          <view class="form-label">大概耗时</view>
+          <view class="time-wrap">
+            <input class="form-input" type="number" value="{{time}}" maxlength="3" bindinput="onTime" />
+            <text class="time-unit">分钟</text>
+          </view>
+        </view>
+      </view>
+      <view class="onboard-note">添加后，它会进入「全部菜单」和你们的推荐。</view>
+    </view>
+
+    <view class="onboard-actions">
+      <view class="onboard-primary" bindtap="addDish">{{saving ? '保存中…' : '加入菜单，继续'}}</view>
+      <view class="onboard-skip" bindtap="skipAdd">暂时跳过，之后再加</view>
+    </view>
+  </block>
+
+  <block wx:elif="{{step === 2}}">
+    <view class="onboard-head">
+      <view class="onboard-kicker">STEP 2 · INVITE</view>
+      <view class="onboard-title">把 TA 拉进<text>这张餐桌。</text></view>
+      <view class="onboard-sub">对方加入后，你们才能互相点菜、留言和收到订单通知。</view>
+    </view>
+
+    <view class="invite-art">
+      <view class="invite-art__top">
+        <image class="invite-avatar" src="/assets/avatars/man.png" mode="aspectFill"></image>
+        <view class="invite-copy">
+          <view class="invite-label">YOUR TABLE</view>
+          <view class="invite-name">{{group.name}}</view>
+        </view>
+      </view>
+      <view class="invite-body">
+        <view class="invite-title">今晚，<text>一起吃点好的。</text></view>
+        <view class="qr-frame">
+          <image class="qr-img" src="/assets/qr-invite.png" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+
+    <view class="invite-code-row">
+      <view class="invite-code">
+        <view class="invite-code__label">INVITE CODE</view>
+        <view class="invite-code__value">{{code}}</view>
+      </view>
+      <view class="copy-btn" bindtap="copyCode">
+        <image class="copy-btn__icon" src="/assets/icons/copy-ink.png" mode="aspectFit"></image>
+        复制
+      </view>
+    </view>
+
+    <button class="btn btn--primary btn--block onboard-share" open-type="share">
+      <image class="onboard-share__icon" src="/assets/icons/share-white.png" mode="aspectFit"></image>
+      分享邀请链接
+    </button>
+    <view class="onboard-copy-link" bindtap="copyLink">复制邀请链接</view>
+
+    <view class="onboard-simulate" bindtap="simulateJoin">
+      <image class="onboard-simulate__icon" src="/assets/icons/users-ink.png" mode="aspectFit"></image>
+      模拟 TA 已加入（原型）
+    </view>
+    <view class="onboard-hint">原型阶段没有云端和真实邀请，点击上方按钮模拟对方加入；正式版会走微信邀请链接。</view>
+  </block>
+
+  <block wx:else>
+    <view class="ready-head">
+      <view class="ready-check">
+        <image class="ready-check__icon" src="/assets/icons/check-white.png" mode="aspectFit"></image>
+      </view>
+      <view class="onboard-kicker">TABLE READY</view>
+      <view class="onboard-title">餐桌<text>准备好了。</text></view>
+      <view class="onboard-sub">今晚开始，把想吃的告诉对方，然后等饭上桌。</view>
+    </view>
+
+    <view class="ready-card">
+      <view class="ready-row">
+        <image class="ready-avatar" src="/assets/avatars/lin.png" mode="aspectFill"></image>
+        <view class="ready-copy"><view class="ready-title">你的另一半</view><view class="ready-sub">{{partner.name}} · 已加入</view></view>
+        <view class="ready-status">已加入</view>
+      </view>
+      <view class="ready-row">
+        <view class="ready-icon"><image class="ready-icon__img" src="/assets/icons/utensils-ink.png" mode="aspectFit"></image></view>
+        <view class="ready-copy"><view class="ready-title">你们的菜单</view><view class="ready-sub">{{addedDishName ? '15 道预设 + ' + addedDishName : '15 道预设菜'}}</view></view>
+        <view class="ready-status">{{dishCount}} 道</view>
+      </view>
+    </view>
+
+    <view class="onboard-actions ready-actions">
+      <view class="onboard-primary" bindtap="finish">开始点菜</view>
+      <view class="onboard-hint">之后可以在「我们」里继续邀请、加菜和切换视角。</view>
+    </view>
+  </block>
+</view>

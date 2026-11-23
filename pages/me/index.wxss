@@ -122,3 +122,5 @@
 .about-mark text { color: var(--tomato); }
 .about-reset { display: inline-flex; align-items: center; gap: 6rpx; margin-top: 6rpx; color: var(--muted-light); font-size: 15rpx; text-decoration: underline; text-underline-offset: 5rpx; }
 .about-reset__icon { width: 18rpx; height: 18rpx; }
+
+.pref-empty { padding: 18rpx 4rpx 0; color: var(--muted-light); font-size: 16rpx; line-height: 1.6; }

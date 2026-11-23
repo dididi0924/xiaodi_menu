@@ -10,7 +10,9 @@ miniprogram/
 │  ├─ app-topbar/      # 品牌栏 + 搜索 / 通知
 │  └─ app-tabbar/      # 点菜 / 订单 / 我们，支持做饭人角色
 ├─ pages/
-│  ├─ home/            # 首页、常点、猜你喜欢、搜索、分类
+│  ├─ auth/            # 微信登录 / 新用户注册入口
+│  ├─ onboarding/      # 3 步新手引导：加菜 → 邀请 → 开桌
+│  ├─ home/            # 首页、真实常点、猜你喜欢、搜索、分类
 │  ├─ dish/            # 菜品详情、份数、口味备注
 │  ├─ cart/            # 今晚菜单、留言、通知开关、下单
 │  ├─ success/         # 订单小票、送达状态、切换做饭人
@@ -20,7 +22,7 @@ miniprogram/
 │  ├─ notifications/   # 应用内通知列表
 │  └─ custom/          # 加一道自定义菜
 └─ utils/
-   ├─ data.js          # 15 道预设菜、成员、种子订单 / 通知
+   ├─ data.js          # 15 道预设菜、成员
    ├─ store.js         # 本地数据层，可替换为 BFF
    ├─ view.js          # 展示层格式化
    └─ layout.js        # 自定义导航栏 / 胶囊避让
@@ -35,14 +37,23 @@ miniprogram/
 3. AppID 可以先用 `touristappid` 预览；要测试分享、真机和订阅消息，替换 `project.config.json` 里的 `appid`。
 4. 不需要 npm 构建，原生页面直接编译。
 
-> 当前数据存在 `wx.setStorageSync`，是本地原型数据；刷新/重开小程序后保留，点「我们 → 重置演示数据」可以清空。
+首次打开会进入登录页，登录后依次完成 3 步引导：
+
+1. 加一道自己的拿手菜（可跳过）。
+2. 邀请另一半（原型阶段用「模拟 TA 已加入」）。
+3. 进入首页开始点菜。
+
+> 当前数据存在 `wx.setStorageSync`。新用户初始状态只有 15 道预设菜，没有订单、收藏、通知或常点数据；点「我们 → 重置演示数据」会回到登录页。
+
 
 ---
 
 ## 已实现
 
 - 自定义导航栏：品牌栏、搜索、通知都避开了微信右上角胶囊。
-- 首页：常点横向卡片、分类筛选、猜你喜欢、搜索、查看全部。
+- 新用户登录 / 注册页：微信一键登录入口，登录后才可进入餐桌。
+- 3 步新手引导：加菜、邀请、开桌；中途退出会从当前步骤继续。
+- 首页：真实点过的菜才出现「常点」，新用户不展示任何常点测试数据；分类筛选、猜你喜欢、搜索、查看全部。
 - 15 道预设菜 + 自定义菜。
 - 菜品详情：收藏、份数、口味备注、主厨备注。
 - 购物袋：多菜、数量、移除、指定做饭人、120 字留言、快捷留言、通知开关。
@@ -51,7 +62,7 @@ miniprogram/
 - 通知：下单、接单、开火、上菜、催一下；未读点、全部已读、跳转订单。
 - 邀请码、二维码、复制链接、微信原生分享、邀请落地页。
 - 双视角（小满 / 林深），正式版按微信登录身份固定。
-- 本地演示数据重置。
+- 重置后回到登录页，不保留旧订单、收藏、通知、自定义菜。
 
 ---
 
@@ -68,7 +79,7 @@ miniprogram/
 | 通知 | `store.notificationsForCurrent` | `GET /notifications` |
 | 邀请 | 静态 code / QR | `POST /tables/:id/invites` |
 | 自定义菜 | `store.addCustomDish` | `POST /tables/:id/dishes` + COS 上传 |
-| 登录 | 固定本地角色 | `wx.login` → BFF `code2Session` → JWT |
+| 登录 | 本地 `wx.login` + 本地会话 | `wx.login` → BFF `code2Session` → JWT |
 
 API 细节见 [../docs/api.md](../docs/api.md)，数据库见 [../db/README.md](../db/README.md)。
 
@@ -86,8 +97,8 @@ API 细节见 [../docs/api.md](../docs/api.md)，数据库见 [../db/README.md](
 ## 本地验证
 
 ```bash
-node scripts/test-mini.js        # 原生页面逻辑：首页 → 下单 → 接单 → 上菜 → 通知 → 邀请
+node scripts/test-mini.js        # 登录 → 引导加菜 → 邀请 → 下单 → 接单 → 上菜
 node scripts/preview-mini.js     # 用真实 WXML/WXSS 渲染 430px 预览图到 shots/mini/
 ```
 
-预览图在 [../shots/mini/](../shots/mini/)，其中 `home.png`、`cart.png`、`orders.png`、`invite.png`、`success.png` 最值得先看。
+预览图在 [../shots/mini/](../shots/mini/)，其中 `auth.png`、`onboarding-1.png`、`onboarding-2.png`、`onboarding-3.png`、`home.png` 最值得先看。

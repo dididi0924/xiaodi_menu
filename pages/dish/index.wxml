@@ -24,7 +24,7 @@
 
     <view class="tag-row">
       <view wx:for="{{dish.tags}}" wx:key="*this" class="tag">{{item}}</view>
-      <view class="tag tag--warm">
+      <view wx:if="{{count > 0}}" class="tag tag--warm">
         <image class="tag-icon" src="/assets/icons/flame-tomato.png" mode="aspectFit"></image>
         点过 {{countText}}
       </view>

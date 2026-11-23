@@ -19,6 +19,11 @@ Page({
   },
 
   onLoad() {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     this.setData({
       navTop: layout.navInset(),
       message: store.get().draftMessage || '',

@@ -17,7 +17,7 @@ Page({
     categories: D.CATEGORIES,
     category: '全部',
     showAll: false,
-    showFrequent: true,
+    showFrequent: false,
     frequent: [],
     dishes: [],
     sectionKicker: 'PICKED FOR YOU',
@@ -43,6 +43,11 @@ Page({
   },
 
   onLoad(options) {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     if (options && options.search === '1') {
       this.setData({ searchOpen: true, searchFocus: true });
     }
@@ -53,6 +58,11 @@ Page({
   },
 
   onShow() {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     this.refresh();
   },
 
@@ -86,7 +96,7 @@ Page({
       heroSub = '去菜单看看，或者等她发来今晚的订单。';
     } else {
       heroTitle = '林深 18:30 后在家';
-      heroSub = '已经连续下厨 3 天 · 点好菜，他会收到通知。';
+      heroSub = '点好菜，他会收到通知。';
     }
 
     const category = this.data.category;
@@ -137,6 +147,8 @@ Page({
       d.count = store.effectiveOrderCount(dish);
       return d;
     });
+    // No "常点" section on a brand-new table.
+    showFrequent = showFrequent && frequent.length > 0;
 
     this.setData({
       role,

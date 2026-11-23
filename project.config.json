@@ -1,7 +1,20 @@
 {
   "description": "TWO. native mini program page shell",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      {
+        "type": "folder",
+        "value": ".git"
+      },
+      {
+        "type": "file",
+        "value": "project.private.config.json"
+      },
+      {
+        "type": "file",
+        "value": "README.md"
+      }
+    ],
     "include": []
   },
   "setting": {

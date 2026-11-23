@@ -14,6 +14,11 @@ Page({
   },
 
   onLoad(options) {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     const navTop = layout.navInset();
     const order = store.orderById(options && options.orderId);
     if (!order) {

@@ -14,11 +14,21 @@ Page({
   },
 
   onLoad(options) {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     if (options && options.tab === 'history') this.setData({ tab: 'history' });
     this.refresh();
   },
 
   onShow() {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     this.refresh();
   },
 

@@ -15,6 +15,11 @@ Page({
   },
 
   onLoad(options) {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     this.setData({ navTop: layout.navInset() });
     this.loadDish(options && options.id);
   },
@@ -31,6 +36,7 @@ Page({
       dish: decorated,
       liked: decorated.liked,
       isCustom: !raw.image,
+      count: store.effectiveOrderCount(raw),
       countText: store.effectiveOrderCount(raw) + ' 次',
       chef: require('../../utils/data').MEMBERS.lin
     });

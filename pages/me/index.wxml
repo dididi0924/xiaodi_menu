@@ -15,7 +15,7 @@
       </view>
       <view class="profile-since-wrap">
         <view class="profile-label">OUR TABLE</view>
-        <view class="profile-since">在一起 279 天</view>
+        <view class="profile-since">{{group.days > 0 ? '在一起 ' + group.days + ' 天' : '从今天开始'}}</view>
       </view>
     </view>
     <view class="profile-names">
@@ -26,7 +26,7 @@
     <view class="profile-meta">
       <text>{{group.name}}</text>
       <view class="dot"></view>
-      <text>2026 年 2 月 14 日加入</text>
+      <text>刚刚创建这张餐桌</text>
     </view>
     <view class="profile-footer">
       <view class="profile-code">
@@ -76,18 +76,10 @@
 
   <view class="me-section">
     <view class="me-section-head"><text>我们的口味</text><text>让推荐更懂你们</text></view>
-    <view class="pref-chips">
-      <view class="pref-chip pref-chip--accent">
-        <image class="pref-icon" src="/assets/icons/leaf-sage.png" mode="aspectFit"></image>
-        清淡
-      </view>
-      <view class="pref-chip">微辣</view>
-      <view class="pref-chip">不吃香菜</view>
-      <view class="pref-chip">
-        <image class="pref-icon" src="/assets/icons/flame-tomato.png" mode="aspectFit"></image>
-        爱喝汤
-      </view>
+    <view wx:if="{{prefs.length}}" class="pref-chips">
+      <view wx:for="{{prefs}}" wx:key="*this" class="pref-chip">{{item}}</view>
     </view>
+    <view wx:else class="pref-empty">还没有设置口味，之后可以在这里补充。</view>
   </view>
 
   <view class="me-section">

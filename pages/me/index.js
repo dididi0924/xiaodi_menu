@@ -19,10 +19,20 @@ Page({
   },
 
   onLoad() {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     this.refresh();
   },
 
   onShow() {
+    const guard = store.guard();
+    if (guard) {
+      wx.reLaunch({ url: guard });
+      return;
+    }
     this.refresh();
   },
 
@@ -95,14 +105,14 @@ Page({
       success: (res) => {
         if (!res.confirm) return;
         store.reset();
-        wx.reLaunch({ url: '/pages/home/index' });
+        wx.reLaunch({ url: '/pages/auth/index' });
       }
     });
   },
 
   onShareAppMessage() {
     return {
-      title: '林深 & 小满的餐桌',
+      title: (store.get().group.name || '我们的餐桌') + ' · 今晚吃什么',
       path: '/pages/invite/index?mode=join'
     };
   }

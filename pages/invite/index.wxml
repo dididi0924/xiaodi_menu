@@ -12,17 +12,17 @@
     <view class="join-panel">
       <view class="join-card">
         <view class="join-kicker">YOU ARE INVITED</view>
-        <view class="join-title">林深 邀请你<text class="join-title__em">加入今晚的餐桌</text></view>
-        <view class="join-sub">加入之后，你可以点菜、留一句话，他回家就能看见。今晚吃什么，不用再猜。</view>
+        <view class="join-title">{{inviter.name}} 邀请你<text class="join-title__em">加入今晚的餐桌</text></view>
+        <view class="join-sub">加入之后，你可以点菜、留一句话，TA 回家就能看见。今晚吃什么，不用再猜。</view>
         <view class="join-member">
-          <image class="join-avatar" src="{{lin.avatar}}" mode="aspectFill"></image>
+          <image class="join-avatar" src="{{inviter.avatar}}" mode="aspectFill"></image>
           <view class="join-member__copy">
-            <view class="join-member__name">林深</view>
-            <view class="join-member__sub">做饭的人 · 已在这张餐桌</view>
+            <view class="join-member__name">{{inviter.name}}</view>
+            <view class="join-member__sub">这张餐桌的创建者 · 已加入</view>
           </view>
           <view class="join-member__status">已加入</view>
         </view>
-        <view class="join-action" bindtap="joinTable">加入这张餐桌
+        <view class="join-action" bindtap="joinTable">{{joined ? '回到这张餐桌' : '加入这张餐桌'}}
           <image class="join-action__icon" src="/assets/icons/arrowRight-white.png" mode="aspectFit"></image>
         </view>
         <view class="join-legal">加入即表示你愿意和对方共享这张菜单与订单。</view>
@@ -48,8 +48,8 @@
 
     <view class="invite-art">
       <view class="invite-art__top">
-        <image class="invite-art__avatar" src="{{lin.avatar}}" mode="aspectFill"></image>
-        <image class="invite-art__avatar invite-art__avatar--second" src="{{man.avatar}}" mode="aspectFill"></image>
+        <image class="invite-art__avatar" src="{{inviter.avatar}}" mode="aspectFill"></image>
+        <image class="invite-art__avatar invite-art__avatar--second" src="{{partner.avatar}}" mode="aspectFill"></image>
         <view class="invite-art__copy">
           <view class="invite-art__label">YOUR TABLE</view>
           <view class="invite-art__name">{{group.name}}</view>

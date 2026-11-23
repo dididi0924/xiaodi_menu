@@ -1,0 +1,37 @@
+<view class="auth-page">
+  <view class="auth-hero">
+    <image class="auth-hero__img" src="/assets/hero-table.jpg" mode="aspectFill"></image>
+    <view class="auth-hero__shade"></view>
+    <view class="auth-brand" style="top: {{navTop}}px;">two<text>.</text></view>
+    <view class="auth-hero__note">A TABLE FOR TWO</view>
+  </view>
+
+  <view class="auth-panel">
+    <view class="auth-card">
+      <view class="auth-kicker">WELCOME TO TWO.</view>
+      <view class="auth-title">今晚，<text>从一张菜单开始。</text></view>
+      <view class="auth-sub">登录后，先给这张只属于两个人的餐桌加一道菜，再把邀请发给 TA。</view>
+
+      <view class="auth-features">
+        <view class="auth-feature">
+          <view class="feature-dot"></view>
+          <view class="feature-copy"><text>只属于两个人</text><text>没有商家，没有价格，只有今晚。</text></view>
+        </view>
+        <view class="auth-feature">
+          <view class="feature-dot"></view>
+          <view class="feature-copy"><text>15 道家常菜</text><text>再加一道你们自己的拿手菜。</text></view>
+        </view>
+        <view class="auth-feature">
+          <view class="feature-dot"></view>
+          <view class="feature-copy"><text>一纸留言</text><text>订单和想说的话，一起送到。</text></view>
+        </view>
+      </view>
+
+      <view class="auth-login {{loading ? 'is-loading' : ''}}" bindtap="login" aria-role="button" aria-label="微信一键登录">
+        <view class="auth-login__dot"></view>
+        {{loading ? '正在登录…' : '微信一键登录'}}
+      </view>
+      <view class="auth-legal">登录即创建一张私密餐桌 · 原型数据只保存在当前设备</view>
+    </view>
+  </view>
+</view>

@@ -6,20 +6,25 @@ Page({
   data: {
     navTop: 60,
     mode: 'invite',
-    code: D.GROUP.code,
+    code: 'TWO-8F2K',
     group: D.GROUP,
-    lin: D.MEMBERS.lin,
-    man: D.MEMBERS.man,
+    inviter: D.MEMBERS.man,
+    partner: D.MEMBERS.lin,
     qr: '/assets/qr-invite.png',
-    joined: true
+    joined: false
   },
 
   onLoad(options) {
+    const state = store.get();
     const mode = options && options.mode === 'join' ? 'join' : 'invite';
     this.setData({
       navTop: layout.navInset(),
       mode,
-      joined: store.get().joined !== false
+      code: state.group.code || 'TWO-8F2K',
+      group: state.group,
+      inviter: store.currentUser(),
+      partner: store.partner(),
+      joined: !!state.onboarded
     });
   },
 
@@ -38,11 +43,16 @@ Page({
   },
 
   previewJoin() {
-    wx.navigateTo({ url: '/pages/invite/index?mode=join' });
+    wx.navigateTo({ url: '/pages/invite/index?mode=join&code=' + this.data.code });
   },
 
   joinTable() {
-    store.setJoined(true);
+    const state = store.get();
+    if (!state.loggedIn) {
+      wx.reLaunch({ url: '/pages/auth/index' });
+      return;
+    }
+    store.completeOnboarding();
     wx.reLaunch({ url: '/pages/home/index' });
   },
 
@@ -54,8 +64,8 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '林深邀请你加入今晚的餐桌',
-      path: '/pages/invite/index?mode=join',
+      title: this.data.inviter.name + '邀请你加入今晚的餐桌',
+      path: '/pages/invite/index?mode=join&code=' + this.data.code,
       imageUrl: '/assets/hero-table.jpg'
     };
   }
