@@ -11,6 +11,7 @@ Page({
     inviter: D.MEMBERS.man,
     partner: D.MEMBERS.lin,
     qr: '/assets/qr-invite.png',
+    isCloud: false,
     joined: false
   },
 
@@ -27,6 +28,7 @@ Page({
       group: state.group,
       inviter: store.currentUser(),
       partner: store.partner(),
+      isCloud: store.isCloud(),
       joined: !!state.onboarded
     });
     this.loadCloud();

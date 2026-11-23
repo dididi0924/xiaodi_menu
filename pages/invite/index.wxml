@@ -57,7 +57,7 @@
       </view>
       <view class="invite-art__body">
         <view class="invite-art__title">今晚，<text>一起吃点好的。</text></view>
-        <view class="qr-frame">
+        <view wx:if="{{!isCloud}}" class="qr-frame">
           <image class="qr-img" src="{{qr}}" mode="aspectFit"></image>
         </view>
       </view>
