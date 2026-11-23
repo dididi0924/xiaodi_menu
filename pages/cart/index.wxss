@@ -25,6 +25,7 @@
   border-bottom: 1px solid var(--line);
 }
 .cart-thumb {
+  position: relative;
   width: 118rpx;
   height: 118rpx;
   flex: 0 0 auto;
