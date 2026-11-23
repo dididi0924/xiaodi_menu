@@ -15,6 +15,19 @@
 .onboard-sub { margin-top: 16rpx; color: var(--muted); font-size: 20rpx; line-height: 1.7; }
 
 .onboard-form { margin-top: 34rpx; padding: 26rpx 22rpx 22rpx; border: 1px solid var(--line); border-radius: 32rpx; background: rgba(255,253,248,0.45); }
+.dish-photo-row { display: flex; align-items: center; gap: 20rpx; margin-bottom: 26rpx; }
+.dish-photo { position: relative; width: 160rpx; height: 160rpx; flex: 0 0 auto; overflow: hidden; border: 2rpx dashed var(--line-strong); border-radius: 26rpx; background: rgba(255,253,248,0.55); }
+.dish-photo.has-image { border-color: transparent; background: var(--ink); }
+.dish-photo__img { width: 100%; height: 100%; }
+.dish-photo__empty { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8rpx; color: var(--muted); font-size: 15rpx; }
+.dish-photo__plus { width: 32rpx; height: 32rpx; }
+.dish-photo__remove { position: absolute; z-index: 3; top: 8rpx; right: 8rpx; width: 42rpx; height: 42rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(27,24,20,0.55); }
+.dish-photo__remove-icon { width: 18rpx; height: 18rpx; }
+.dish-photo__loading { position: absolute; z-index: 2; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; background: rgba(27,24,20,0.5); color: var(--white); font-size: 15rpx; }
+.dish-photo__copy { flex: 1; min-width: 0; }
+.dish-photo__title { font-size: 19rpx; font-weight: 600; }
+.dish-photo__title text { margin-left: 8rpx; color: var(--muted-light); font-size: 14rpx; font-weight: 400; }
+.dish-photo__sub { margin-top: 6rpx; color: var(--muted); font-size: 15rpx; line-height: 1.55; }
 .form-field { display: flex; flex-direction: column; gap: 12rpx; margin-bottom: 24rpx; }
 .form-row { display: flex; gap: 18rpx; }
 .form-field--half { flex: 1; min-width: 0; }

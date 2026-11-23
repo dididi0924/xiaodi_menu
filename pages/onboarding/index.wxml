@@ -18,6 +18,23 @@
     </view>
 
     <view class="onboard-form">
+      <view class="dish-photo-row">
+        <view class="dish-photo {{image ? 'has-image' : ''}}" bindtap="chooseImage">
+          <image wx:if="{{image}}" class="dish-photo__img" src="{{image}}" mode="aspectFill"></image>
+          <view wx:else class="dish-photo__empty">
+            <image class="dish-photo__plus" src="/assets/icons/plus-ink.png" mode="aspectFit"></image>
+            <text>照片</text>
+          </view>
+          <view wx:if="{{image}}" class="dish-photo__remove" catchtap="removeImage">
+            <image class="dish-photo__remove-icon" src="/assets/icons/x-white.png" mode="aspectFit"></image>
+          </view>
+          <view wx:if="{{uploading}}" class="dish-photo__loading">处理中</view>
+        </view>
+        <view class="dish-photo__copy">
+          <view class="dish-photo__title">加一张照片 <text>可选</text></view>
+          <view class="dish-photo__sub">从相册选择，或者直接拍一张。没有照片也可以先加菜。</view>
+        </view>
+      </view>
       <view class="form-field">
         <view class="form-label">菜名 <text>必填</text></view>
         <input class="form-input" value="{{name}}" maxlength="24" placeholder="比如：妈妈的番茄炒蛋" placeholder-class="form-placeholder" bindinput="onName" />

@@ -7,23 +7,18 @@
 .custom-title { font-size: 50rpx; font-weight: 700; letter-spacing: -0.05em; }
 .custom-sub { margin-top: 6rpx; color: var(--muted); font-size: 19rpx; }
 
-.custom-preview { display: flex; align-items: center; gap: 20rpx; margin: 30rpx 40rpx 0; padding: 22rpx; border: 2rpx dashed var(--line-strong); border-radius: 28rpx; background: rgba(255,253,248,0.35); }
-.preview-mark {
-  width: 84rpx;
-  height: 84rpx;
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 24rpx;
-  background: linear-gradient(135deg, #CF9F7A, #8F6B52);
-  color: var(--white);
-  font-family: Georgia, "Songti SC", serif;
-  font-size: 42rpx;
-}
-.preview-copy { flex: 1; min-width: 0; }
-.preview-title { font-size: 19rpx; font-weight: 600; }
-.preview-text { margin-top: 4rpx; color: var(--muted); font-size: 16rpx; line-height: 1.5; }
+.custom-cover { position: relative; height: 300rpx; margin: 30rpx 40rpx 0; overflow: hidden; border: 2rpx dashed var(--line-strong); border-radius: 32rpx; background: rgba(255,253,248,0.35); }
+.custom-cover.has-image { border-color: transparent; background: var(--ink); }
+.custom-cover__img { width: 100%; height: 100%; }
+.cover-empty { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--ink); }
+.cover-plus { width: 72rpx; height: 72rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--tomato-soft); }
+.cover-plus__icon { width: 30rpx; height: 30rpx; }
+.cover-title { margin-top: 14rpx; color: var(--ink); font-size: 20rpx; font-weight: 600; }
+.cover-sub { margin-top: 4rpx; color: var(--muted-light); font-size: 15rpx; }
+.cover-remove { position: absolute; z-index: 3; top: 14rpx; right: 14rpx; width: 54rpx; height: 54rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(27,24,20,0.55); }
+.cover-remove__icon { width: 22rpx; height: 22rpx; }
+.cover-change { position: absolute; z-index: 3; right: 14rpx; bottom: 14rpx; height: 48rpx; padding: 0 16rpx; display: flex; align-items: center; border-radius: 999rpx; background: rgba(27,24,20,0.55); color: var(--white); font-size: 15rpx; }
+.cover-loading { position: absolute; z-index: 2; top: 0; right: 0; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; background: rgba(27,24,20,0.5); color: var(--white); font-size: 17rpx; }
 
 .custom-form { padding: 30rpx 40rpx 0; }
 .form-field { display: flex; flex-direction: column; gap: 12rpx; margin-bottom: 26rpx; }

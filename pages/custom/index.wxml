@@ -12,12 +12,20 @@
     <view class="custom-sub">它会留在你们的餐桌菜单里</view>
   </view>
 
-  <view class="custom-preview">
-    <view class="preview-mark">{{previewChar}}</view>
-    <view class="preview-copy">
-      <view class="preview-title">照片会由 TA 来补</view>
-      <view class="preview-text">原型阶段先用文字封面，正式版支持上传菜品照片。</view>
+  <view class="custom-cover {{image ? 'has-image' : ''}}" bindtap="chooseImage">
+    <image wx:if="{{image}}" class="custom-cover__img" src="{{image}}" mode="aspectFill"></image>
+    <view wx:else class="cover-empty">
+      <view class="cover-plus">
+        <image class="cover-plus__icon" src="/assets/icons/plus-ink.png" mode="aspectFit"></image>
+      </view>
+      <view class="cover-title">给这道菜拍张照</view>
+      <view class="cover-sub">从相册选择，或直接拍一张 · 可选</view>
     </view>
+    <view class="cover-remove" wx:if="{{image}}" catchtap="removeImage">
+      <image class="cover-remove__icon" src="/assets/icons/x-white.png" mode="aspectFit"></image>
+    </view>
+    <view class="cover-change" wx:if="{{image}}">更换照片</view>
+    <view class="cover-loading" wx:if="{{uploading}}">正在处理照片…</view>
   </view>
 
   <view class="custom-form">

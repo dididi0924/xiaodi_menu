@@ -1,6 +1,7 @@
 // Local-first data layer for the native page shell.
 // Replace the methods here with BFF calls when the real backend is ready.
 const D = require('./data');
+const imageStore = require('./image');
 
 const KEY = 'two.mini.v2';
 const OLD_KEY = 'two.mini.v1';
@@ -84,6 +85,7 @@ function reset() {
   try {
     if (wx.removeStorageSync) wx.removeStorageSync(OLD_KEY);
   } catch (e) {}
+  imageStore.clearSaved();
   save();
   return state;
 }
@@ -451,7 +453,7 @@ function markRead(id) {
   if (n) { n.read = true; save(); }
 }
 
-function addCustomDish(name, description, category, time) {
+function addCustomDish(name, description, category, time, image) {
   const tones = ['#B89070', '#8C9A78', '#C58B76', '#8D7A66', '#B5A06F', '#8E7C91'];
   const dish = {
     id: 'c-' + Date.now().toString(36),
@@ -463,7 +465,7 @@ function addCustomDish(name, description, category, time) {
     time: time,
     description: description || '你们自己的拿手菜，只有这张餐桌知道。',
     chefNote: '这道菜只属于你们的餐桌。',
-    image: null,
+    image: image || null,
     orderCount: 0,
     tone: tones[get().customDishes.length % tones.length],
     isCustom: true
