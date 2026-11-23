@@ -15,7 +15,9 @@ Page({
     amp: '&',
     unread: 0,
     orderDot: false,
-    currentUser: D.MEMBERS.man
+    currentUser: D.MEMBERS.man,
+    man: D.MEMBERS.man,
+    lin: D.MEMBERS.lin
   },
 
   onLoad() {
@@ -50,7 +52,9 @@ Page({
       preferNotify: state.preferNotify,
       unread: store.unreadCount(),
       orderDot: !!store.currentOrder(),
-      currentUser: store.currentUser()
+      currentUser: store.currentUser(),
+      man: store.getMember('man'),
+      lin: store.getMember('lin')
     });
   },
 

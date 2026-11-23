@@ -10,7 +10,9 @@ Page({
     history: [],
     unread: 0,
     orderDot: false,
-    activeCount: 0
+    activeCount: 0,
+    man: {},
+    lin: {}
   },
 
   onLoad(options) {
@@ -49,7 +51,9 @@ Page({
       history,
       activeCount: active ? 1 : 0,
       unread: store.unreadCount(),
-      orderDot: !!active
+      orderDot: !!active,
+      man: store.getMember('man'),
+      lin: store.getMember('lin')
     });
   },
 
@@ -85,18 +89,18 @@ Page({
     this.refresh();
     if (order.status === 'served') {
       this.setData({ tab: 'history' });
-      wx.showToast({ title: '上菜啦，小满会收到通知', icon: 'none' });
+      wx.showToast({ title: '上菜啦，' + store.getMember('man').name + '会收到通知', icon: 'none' });
     } else if (order.status === 'accepted') {
-      wx.showToast({ title: '已接单，小满会收到通知', icon: 'none' });
+      wx.showToast({ title: '已接单，' + store.getMember('man').name + '会收到通知', icon: 'none' });
     } else {
-      wx.showToast({ title: '开火了，小满会收到通知', icon: 'none' });
+      wx.showToast({ title: '开火了，' + store.getMember('man').name + '会收到通知', icon: 'none' });
     }
   },
 
   nudgeOrder(id) {
     store.nudgeOrder(id);
     this.refresh();
-    wx.showToast({ title: this.data.isCook ? '小满会看到你的留言' : '已经轻轻提醒林深', icon: 'none' });
+    wx.showToast({ title: this.data.isCook ? store.getMember('man').name + '会看到你的留言' : '已经轻轻提醒' + store.getMember('lin').name, icon: 'none' });
   },
 
   cancelOrder(e) {
@@ -107,7 +111,7 @@ Page({
 
   reorder(e) {
     if (this.data.isCook) {
-      wx.showToast({ title: '切换回小满视角再点单', icon: 'none' });
+      wx.showToast({ title: '切换回' + store.getMember('man').name + '视角再点单', icon: 'none' });
       return;
     }
     const added = store.reorder(e.currentTarget.dataset.id);

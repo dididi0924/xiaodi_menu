@@ -12,20 +12,19 @@
       <view class="auth-title">今晚，<text>从一张菜单开始。</text></view>
       <view class="auth-sub">登录后，先给这张只属于两个人的餐桌加一道菜，再把邀请发给 TA。</view>
 
-      <view class="auth-features">
-        <view class="auth-feature">
-          <view class="feature-dot"></view>
-          <view class="feature-copy"><text>只属于两个人</text><text>没有商家，没有价格，只有今晚。</text></view>
-        </view>
-        <view class="auth-feature">
-          <view class="feature-dot"></view>
-          <view class="feature-copy"><text>{{dishCount}} 道家常菜</text><text>再加一道你们自己的拿手菜。</text></view>
-        </view>
-        <view class="auth-feature">
-          <view class="feature-dot"></view>
-          <view class="feature-copy"><text>一纸留言</text><text>订单和想说的话，一起送到。</text></view>
+      <view class="auth-profile">
+        <button class="auth-avatar" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar" aria-label="选择微信头像">
+          <image class="auth-avatar__img" src="{{avatar}}" mode="aspectFill"></image>
+          <view class="auth-avatar__badge">{{avatarLoading ? '…' : '+'}}</view>
+        </button>
+        <view class="auth-name">
+          <view class="auth-name__label">微信昵称</view>
+          <input class="auth-name__input" type="nickname" value="{{nickname}}" maxlength="12" placeholder="点击填入微信昵称" placeholder-class="auth-name__placeholder" bindinput="onNickname" />
+          <view class="auth-name__hint">微信不会自动提供昵称，需要你在这里确认一次。</view>
         </view>
       </view>
+
+      <view class="auth-points">只属于两个人 · {{dishCount}} 道家常菜 · 一纸留言</view>
 
       <view class="auth-login {{loading ? 'is-loading' : ''}}" bindtap="login" aria-role="button" aria-label="微信一键登录">
         <view class="auth-login__dot"></view>

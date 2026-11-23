@@ -98,7 +98,7 @@ Page({
 
   placeOrder() {
     if (this.data.isCook) {
-      wx.showToast({ title: '切换到小满视角才能下单', icon: 'none' });
+      wx.showToast({ title: '切换到' + store.getMember('man').name + '视角才能下单', icon: 'none' });
       return;
     }
     if (!this.data.items.length) return;

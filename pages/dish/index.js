@@ -84,7 +84,7 @@ Page({
   addToCart() {
     if (!this.data.dish) return;
     if (store.get().role === 'cook') {
-      wx.showToast({ title: '切换到小满视角才能点菜', icon: 'none' });
+      wx.showToast({ title: '切换到' + store.getMember('man').name + '视角才能点菜', icon: 'none' });
       return;
     }
     store.addToCart(this.data.dish.id, this.data.qty, (this.data.note || '').trim());

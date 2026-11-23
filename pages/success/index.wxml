@@ -18,7 +18,7 @@
       <image class="success-check__icon" src="/assets/icons/check-white.png" mode="aspectFit"></image>
     </view>
     <view class="success-title">已经<text class="success-em">告诉他了。</text></view>
-    <view class="success-sub">{{notify ? '林深会收到一条通知，等他有空就会接单。' : '订单已经放进他的厨房，等他有空就会看见。'}}</view>
+    <view class="success-sub">{{notify ? cook.name + '会收到一条通知，等 TA 有空就会接单。' : '订单已经放进 TA 的厨房，等 TA 有空就会看见。'}}</view>
 
     <view class="ticket">
       <view class="ticket-top">
@@ -44,14 +44,14 @@
         </view>
         <view class="ticket-note__copy">
           <view class="ticket-note__title">{{notify ? '微信服务通知已发送' : '应用内通知已发送'}}</view>
-          <view class="ticket-note__sub">{{count}} 道菜 · 已送达林深</view>
+          <view class="ticket-note__sub">{{count}} 道菜 · 已送达{{cook.name}}</view>
         </view>
       </view>
     </view>
 
     <view class="success-actions">
       <view class="btn btn--primary btn--block" bindtap="viewCook">
-        看看他的视角
+        看看{{cook.name}}的视角
         <image class="btn-icon" src="/assets/icons/arrowRight-white.png" mode="aspectFit"></image>
       </view>
       <view class="btn btn--ghost btn--block" bindtap="goHome">回到首页</view>

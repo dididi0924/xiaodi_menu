@@ -10,8 +10,8 @@
   <view class="profile-card">
     <view class="profile-top">
       <view class="profile-avatars">
-        <image class="profile-avatar" src="/assets/avatars/lin.png" mode="aspectFill"></image>
-        <image class="profile-avatar" src="/assets/avatars/man.png" mode="aspectFill"></image>
+        <image class="profile-avatar" src="{{lin.avatar}}" mode="aspectFill"></image>
+        <image class="profile-avatar" src="{{man.avatar}}" mode="aspectFill"></image>
       </view>
       <view class="profile-since-wrap">
         <view class="profile-label">OUR TABLE</view>
@@ -19,9 +19,9 @@
       </view>
     </view>
     <view class="profile-names">
-      <text class="profile-name">林深</text>
+      <text class="profile-name">{{lin.name}}</text>
       <text class="profile-amp">{{amp}}</text>
-      <text class="profile-name">小满</text>
+      <text class="profile-name">{{man.name}}</text>
     </view>
     <view class="profile-meta">
       <text>{{group.name}}</text>
@@ -87,11 +87,11 @@
     <view class="role-switch">
       <view class="role-option {{!isCook ? 'is-active' : ''}}" data-role="eater" bindtap="setRole">
         <image class="role-avatar" src="/assets/avatars/man.png" mode="aspectFill"></image>
-        <view class="role-copy"><view class="role-name">我是小满</view><view class="role-sub">点菜的人</view></view>
+        <view class="role-copy"><view class="role-name">我是{{man.name}}</view><view class="role-sub">点菜的人</view></view>
       </view>
       <view class="role-option {{isCook ? 'is-active' : ''}}" data-role="cook" bindtap="setRole">
         <image class="role-avatar" src="/assets/avatars/lin.png" mode="aspectFill"></image>
-        <view class="role-copy"><view class="role-name">我是林深</view><view class="role-sub">做饭的人</view></view>
+        <view class="role-copy"><view class="role-name">我是{{lin.name}}</view><view class="role-sub">做饭的人</view></view>
       </view>
     </view>
     <view class="role-note">正式版会按微信登录身份固定角色。原型里可以随时切换，查看对方收到的订单。</view>

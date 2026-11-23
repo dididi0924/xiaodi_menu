@@ -72,7 +72,7 @@
         <image class="notify-icon" src="/assets/icons/bell-ink.png" mode="aspectFit"></image>
       </view>
       <view class="notify-copy">
-        <view class="notify-title">通知林深</view>
+        <view class="notify-title">通知{{partner.name}}</view>
         <view class="notify-sub">下单后立刻发送微信服务通知</view>
       </view>
       <view class="switch {{notify ? 'is-on' : ''}}" bindtap="toggleNotify" aria-role="switch" aria-checked="{{notify}}">
@@ -88,13 +88,13 @@
           <image class="clock-icon" src="/assets/icons/clock-muted.png" mode="aspectFit"></image>
           约 {{eta}} 分钟
         </view>
-        <view class="checkout-total">{{count}} 道菜 · 下单给林深</view>
+        <view class="checkout-total">{{count}} 道菜 · 下单给{{partner.name}}</view>
       </view>
       <view class="checkout-btn" bindtap="placeOrder">
         <image class="checkout-icon" src="/assets/icons/send-white.png" mode="aspectFit"></image>
-        把订单发给林深
+        把订单发给{{partner.name}}
       </view>
-      <view class="checkout-hint">{{notify ? '发送后，林深会收到一条微信服务通知。' : '通知已关闭，林深只会在应用内看到订单。'}}</view>
+      <view class="checkout-hint">{{notify ? '发送后，' + partner.name + '会收到一条微信服务通知。' : '通知已关闭，' + partner.name + '只会在应用内看到订单。'}}</view>
     </view>
   </block>
 

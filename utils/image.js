@@ -120,4 +120,8 @@ function clearSaved() {
   });
 }
 
-module.exports = { chooseAndSave, remove, clearSaved };
+function persist(tempFilePath) {
+  return saveTempFile(tempFilePath);
+}
+
+module.exports = { chooseAndSave, persist, remove, clearSaved };

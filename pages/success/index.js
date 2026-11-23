@@ -10,6 +10,7 @@ Page({
     timeText: '',
     dateText: '',
     notify: true,
+    cook: {},
     confetti: []
   },
 
@@ -44,6 +45,7 @@ Page({
       timeText: view.formatTime(order.createdAt),
       dateText: view.formatDate(order.createdAt),
       notify: order.notify !== false,
+      cook: store.getMember(order.cookId),
       confetti
     });
   },

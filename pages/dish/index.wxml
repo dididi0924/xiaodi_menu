@@ -37,7 +37,7 @@
     <view class="chef-note">
       <image class="chef-avatar" src="{{chef.avatar}}" mode="aspectFill"></image>
       <view class="chef-copy">
-        <view class="chef-label">CHEF’S NOTE · 林深</view>
+        <view class="chef-label">CHEF’S NOTE · {{chef.name}}</view>
         <view class="chef-text">{{dish.chefNote}}</view>
       </view>
     </view>

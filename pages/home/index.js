@@ -88,15 +88,15 @@ Page({
         heroTitle = D.MEMBERS[active.eaterId].name + ' 发来晚餐订单';
         heroSub = active.totalItems + ' 道菜 · ' + activeView.meta.label + (active.message ? ' · “' + active.message.slice(0, 16) + (active.message.length > 16 ? '…' : '') + '”' : '');
       } else {
-        heroTitle = active.status === 'pending' ? '订单已送达' : active.status === 'accepted' ? '林深接单了' : '厨房里正在忙';
+        heroTitle = active.status === 'pending' ? '订单已送达' : active.status === 'accepted' ? D.MEMBERS[active.cookId].name + ' 接单了' : '厨房里正在忙';
         heroSub = active.totalItems + ' 道菜 · ' + activeView.meta.label + (active.message ? ' · “' + active.message.slice(0, 16) + (active.message.length > 16 ? '…' : '') + '”' : '');
       }
     } else if (isCook) {
-      heroTitle = '小满 还没有点菜';
-      heroSub = '去菜单看看，或者等她发来今晚的订单。';
+      heroTitle = D.MEMBERS.man.name + ' 还没有点菜';
+      heroSub = '去菜单看看，或者等 TA 发来今晚的订单。';
     } else {
-      heroTitle = '林深 18:30 后在家';
-      heroSub = '点好菜，他会收到通知。';
+      heroTitle = D.MEMBERS.lin.name + ' 18:30 后在家';
+      heroSub = '点好菜，TA 会收到通知。';
     }
 
     const category = this.data.category;
@@ -157,7 +157,7 @@ Page({
       currentUser,
       group: state.group,
       headline: isCook ? '今晚，想做点什么？' : '今晚，想吃点什么？',
-      subline: isCook ? '小满点好菜，你回家做。订单会直接送到这里。' : '林深 18:30 后在家，点好菜，他会收到通知。',
+      subline: isCook ? D.MEMBERS.man.name + '点好菜，你回家做。订单会直接送到这里。' : D.MEMBERS.lin.name + ' 18:30 后在家，点好菜，TA 会收到通知。',
       category,
       showAll,
       showFrequent,
@@ -229,7 +229,7 @@ Page({
 
   quickAdd(e) {
     if (this.data.isCook) {
-      wx.showToast({ title: '切回小满视角再加菜', icon: 'none' });
+      wx.showToast({ title: '切回' + D.MEMBERS.man.name + '视角再加菜', icon: 'none' });
       return;
     }
     const id = e.currentTarget.dataset.id;
@@ -259,7 +259,7 @@ Page({
 
   openCart() {
     if (this.data.isCook) {
-      wx.showToast({ title: '切换到小满视角才能点菜', icon: 'none' });
+      wx.showToast({ title: '切换到' + D.MEMBERS.man.name + '视角才能点菜', icon: 'none' });
       return;
     }
     wx.navigateTo({ url: '/pages/cart/index' });

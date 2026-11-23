@@ -1,8 +1,8 @@
 const D = require('./data');
 
 const STATUS = {
-  pending: { label: '等待接单', short: '等待接单', pill: 'pending', step: 0, title: '订单已送达', desc: '等林深接单就好' },
-  accepted: { label: '已接单', short: '已接单', pill: 'accepted', step: 1, title: '林深接单了', desc: '今晚交给他' },
+  pending: { label: '等待接单', short: '等待接单', pill: 'pending', step: 0, title: '订单已送达', desc: '等对方接单就好' },
+  accepted: { label: '已接单', short: '已接单', pill: 'accepted', step: 1, title: '接单了', desc: '今晚交给 TA' },
   cooking: { label: '正在做饭', short: '正在做饭', pill: 'cooking', step: 2, title: '厨房里正在忙', desc: '再等一会儿就开饭' },
   served: { label: '已上桌', short: '已上桌', pill: 'served', step: 3, title: '可以吃饭啦', desc: '今晚的饭已经上桌' },
   cancelled: { label: '已取消', short: '已取消', pill: 'cancelled', step: -1, title: '订单已取消', desc: '这单没有继续' }
@@ -80,7 +80,7 @@ function orderActions(order, role) {
   if (cook) {
     if (order.status === 'pending') return { primary: '接单，今晚我做', icon: '/assets/icons/chef-white.png', action: 'advance' };
     if (order.status === 'accepted') return { primary: '开始做饭', icon: '/assets/icons/flame-white.png', action: 'advance' };
-    if (order.status === 'cooking') return { primary: '上菜，通知小满', icon: '/assets/icons/utensils-white.png', action: 'advance' };
+    if (order.status === 'cooking') return { primary: '上菜，通知' + D.MEMBERS[order.eaterId].name, icon: '/assets/icons/utensils-white.png', action: 'advance' };
     return null;
   }
   if (order.status === 'pending') return { primary: '轻轻催一下', icon: '/assets/icons/bell-ink.png', action: 'nudge' };
@@ -118,8 +118,8 @@ function decorateOrder(order, role) {
     personName: cook ? D.MEMBERS[order.eaterId].name : D.MEMBERS[order.cookId].name,
     personAvatar: cook ? D.MEMBERS[order.eaterId].avatar : D.MEMBERS[order.cookId].avatar,
     personLine: cook
-      ? (order.status === 'pending' ? '接单后，小满会收到通知' : order.status === 'accepted' ? '今晚轮到你开火' : order.status === 'cooking' ? '厨房里正在忙，再等一会儿' : '可以吃饭啦')
-      : (order.status === 'pending' ? '已经通知他，等他接单' : order.status === 'accepted' ? '今晚交给他' : order.status === 'cooking' ? '厨房里正在忙，再等一会儿' : '可以吃饭啦'),
+      ? (order.status === 'pending' ? '接单后，' + D.MEMBERS[order.eaterId].name + '会收到通知' : order.status === 'accepted' ? '今晚轮到你开火' : order.status === 'cooking' ? '厨房里正在忙，再等一会儿' : '可以吃饭啦')
+      : (order.status === 'pending' ? '已经通知 TA，等 TA 接单' : order.status === 'accepted' ? '今晚交给 TA' : order.status === 'cooking' ? '厨房里正在忙，再等一会儿' : '可以吃饭啦'),
     canCancel: !cook && order.status === 'pending'
   };
 }

@@ -5,11 +5,19 @@ const imageStore = require('./image');
 
 const KEY = 'two.mini.v2';
 const OLD_KEY = 'two.mini.v1';
+const DEFAULT_PROFILE = { nickname: '小满', avatar: '/assets/avatars/man.png' };
 
 let state = null;
 
 function uid(prefix) {
   return prefix + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+function applyProfile(profile) {
+  const next = Object.assign({}, DEFAULT_PROFILE, profile || {});
+  D.MEMBERS.man.name = next.nickname;
+  D.MEMBERS.man.avatar = next.avatar;
+  return next;
 }
 
 function initialState() {
@@ -20,10 +28,10 @@ function initialState() {
     onboarded: false,
     partnerJoined: false,
     guideStep: 1,
-    // The local prototype keeps the demo persona so all copy stays coherent.
+    profile: Object.assign({}, DEFAULT_PROFILE),
     role: 'eater',
     group: Object.assign({}, D.GROUP, {
-      name: '小满 的餐桌',
+      name: DEFAULT_PROFILE.nickname + ' 的餐桌',
       code: 'TWO-8F2K',
       days: 0
     }),
@@ -55,10 +63,12 @@ function init() {
   }
   if (!saved || saved.version !== 2) {
     state = initialState();
+    applyProfile(state.profile);
     save();
     return state;
   }
   state = Object.assign({}, initialState(), saved, {
+    profile: Object.assign({}, DEFAULT_PROFILE, saved.profile || {}),
     group: Object.assign({}, initialState().group, saved.group || {}),
     favorites: Array.isArray(saved.favorites) ? saved.favorites : [],
     customDishes: Array.isArray(saved.customDishes) ? saved.customDishes : [],
@@ -67,6 +77,7 @@ function init() {
     orders: Array.isArray(saved.orders) ? saved.orders : [],
     notifications: Array.isArray(saved.notifications) ? saved.notifications : []
   });
+  applyProfile(state.profile);
   return state;
 }
 
@@ -88,16 +99,19 @@ function reset() {
     if (wx.removeStorageSync) wx.removeStorageSync(OLD_KEY);
   } catch (e) {}
   imageStore.clearSaved();
+  applyProfile(DEFAULT_PROFILE);
   save();
   return state;
 }
 
-function login() {
+function login(profile) {
+  const next = applyProfile(Object.assign({}, get().profile || DEFAULT_PROFILE, profile || {}));
+  get().profile = next;
   get().loggedIn = true;
   get().onboarded = false;
   get().partnerJoined = false;
   get().guideStep = 1;
-  get().group.name = '小满 的餐桌';
+  get().group.name = next.nickname + ' 的餐桌';
   get().group.days = 0;
   save();
   return get();
@@ -119,7 +133,7 @@ function completeOnboarding() {
   get().partnerJoined = true;
   get().onboarded = true;
   get().guideStep = 3;
-  get().group.name = D.GROUP.name;
+  get().group.name = D.MEMBERS.lin.name + ' & ' + get().profile.nickname;
   save();
   return get();
 }
@@ -363,7 +377,7 @@ function placeOrder(message, notify) {
   addNotification({
     userId: 'lin',
     type: 'order_created',
-    title: '小满 发来晚餐订单',
+    title: D.MEMBERS.man.name + ' 发来晚餐订单',
     body: order.totalItems + ' 道菜 · ' + (order.message ? '“' + order.message.slice(0, 28) + (order.message.length > 28 ? '…' : '') + '”' : '没有留言，但应该很期待。'),
     icon: 'bag',
     orderId: order.id
@@ -372,7 +386,7 @@ function placeOrder(message, notify) {
     userId: 'man',
     type: 'order_created',
     title: '订单已送达',
-    body: '已通知林深，等接单就好。',
+    body: '已通知' + D.MEMBERS.lin.name + '，等接单就好。',
     icon: 'send',
     orderId: order.id
   });
@@ -392,9 +406,9 @@ function advanceOrder(id) {
   else if (order.status === 'cooking') { next = 'served'; order.servedAt = now; }
   if (!next) return null;
   order.status = next;
-  if (next === 'accepted') addNotification({ userId: 'man', type: 'order_accepted', title: '林深 接单了', body: '今晚的饭交给他，等他开火。', icon: 'chef', orderId: id });
-  if (next === 'cooking') addNotification({ userId: 'man', type: 'order_cooking', title: '厨房里开始忙了', body: '林深 开始做饭了，再等一会儿。', icon: 'flame', orderId: id });
-  if (next === 'served') addNotification({ userId: 'man', type: 'order_served', title: '可以吃饭啦', body: '林深 把菜端上桌了。', icon: 'utensils', orderId: id });
+  if (next === 'accepted') addNotification({ userId: 'man', type: 'order_accepted', title: D.MEMBERS.lin.name + ' 接单了', body: '今晚的饭交给 TA，等 TA 开火。', icon: 'chef', orderId: id });
+  if (next === 'cooking') addNotification({ userId: 'man', type: 'order_cooking', title: '厨房里开始忙了', body: D.MEMBERS.lin.name + ' 开始做饭了，再等一会儿。', icon: 'flame', orderId: id });
+  if (next === 'served') addNotification({ userId: 'man', type: 'order_served', title: '可以吃饭啦', body: D.MEMBERS.lin.name + ' 把菜端上桌了。', icon: 'utensils', orderId: id });
   save();
   return order;
 }
@@ -405,8 +419,8 @@ function nudgeOrder(id) {
   addNotification({
     userId: 'lin',
     type: 'nudge',
-    title: order.status === 'cooking' ? '小满 说声辛苦啦' : '小满 轻轻催了一下',
-    body: order.status === 'cooking' ? '“慢慢来，不着急。”' : '她说有点饿了。',
+    title: order.status === 'cooking' ? D.MEMBERS.man.name + ' 说声辛苦啦' : D.MEMBERS.man.name + ' 轻轻催了一下',
+    body: order.status === 'cooking' ? '“慢慢来，不着急。”' : 'TA 说有点饿了。',
     icon: 'bell',
     orderId: id
   });
@@ -419,7 +433,7 @@ function cancelOrder(id) {
   if (!order) return false;
   order.status = 'cancelled';
   order.cancelledAt = Date.now();
-  addNotification({ userId: 'lin', type: 'order_cancelled', title: '小满 取消了订单', body: '这单不会继续了。', icon: 'x', orderId: id });
+  addNotification({ userId: 'lin', type: 'order_cancelled', title: D.MEMBERS.man.name + ' 取消了订单', body: '这单不会继续了。', icon: 'x', orderId: id });
   save();
   return true;
 }
@@ -505,7 +519,7 @@ function setPrefNotify(value) {
 function setJoined(value) {
   if (value === false) {
     get().partnerJoined = false;
-    get().group.name = '小满 的餐桌';
+    get().group.name = get().profile.nickname + ' 的餐桌';
     save();
     return;
   }

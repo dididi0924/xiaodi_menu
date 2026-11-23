@@ -4,7 +4,7 @@
   <view class="page-head">
     <view class="page-kicker">{{isCook ? 'THE KITCHEN' : 'YOUR ORDERS'}}</view>
     <view class="page-title">{{isCook ? '今晚的厨房' : '今晚的订单'}}</view>
-    <view class="page-sub">{{isCook ? '接单、开火、上菜。小满会收到每一步。' : '从下单到上桌，都在这里。'}}</view>
+    <view class="page-sub">{{isCook ? '接单、开火、上菜。' + man.name + '会收到每一步。' : '从下单到上桌，都在这里。'}}</view>
   </view>
 
   <view class="segmented">
@@ -38,7 +38,7 @@
 
       <view wx:if="{{activeOrder.message}}" class="order-message">
         <view class="order-message__text">“{{activeOrder.message}}”</view>
-        <view class="order-message__by">小满 留</view>
+        <view class="order-message__by">{{man.name}} 留</view>
       </view>
 
       <view class="order-dishes">
@@ -70,7 +70,7 @@
         <image class="icon" src="{{isCook ? '/assets/icons/chef-ink.png' : '/assets/icons/receipt-ink.png'}}" mode="aspectFit"></image>
       </view>
       <text class="empty-state__title">{{isCook ? '厨房还很安静' : '今晚还没有订单'}}</text>
-      <view class="empty-state__text">{{isCook ? '小满点好菜后，订单会直接出现在这里。' : '挑几道想吃的，写句话给他。'}}</view>
+      <view class="empty-state__text">{{isCook ? man.name + '点好菜后，订单会直接出现在这里。' : '挑几道想吃的，写句话给 TA。'}}</view>
       <view class="btn btn--primary btn--small" bindtap="goHome">{{isCook ? '去看看菜单' : '去点菜'}}</view>
     </view>
   </block>

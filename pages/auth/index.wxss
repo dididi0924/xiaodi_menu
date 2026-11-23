@@ -34,3 +34,15 @@
 .auth-login.is-loading { opacity: 0.7; }
 .auth-login__dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #7ED321; box-shadow: 0 0 0 5rpx rgba(126,211,33,0.14); }
 .auth-legal { margin-top: 16rpx; color: var(--muted-light); font-size: 14rpx; line-height: 1.5; text-align: center; }
+
+.auth-profile { display: flex; align-items: center; gap: 20rpx; margin-top: 28rpx; padding: 18rpx; border: 1px solid var(--line); border-radius: 28rpx; background: rgba(255,253,248,0.5); }
+.auth-avatar { position: relative; width: 104rpx; height: 104rpx; flex: 0 0 auto; padding: 0; overflow: visible; border-radius: 50%; background: var(--paper-deep); }
+.auth-avatar::after { border: 0; }
+.auth-avatar__img { width: 104rpx; height: 104rpx; border-radius: 50%; }
+.auth-avatar__badge { position: absolute; right: -4rpx; bottom: -4rpx; width: 38rpx; height: 38rpx; display: flex; align-items: center; justify-content: center; border: 3rpx solid var(--paper); border-radius: 50%; background: var(--ink); color: var(--white); font-size: 24rpx; line-height: 1; }
+.auth-name { flex: 1; min-width: 0; }
+.auth-name__label { color: var(--muted); font-size: 15rpx; font-weight: 600; letter-spacing: 0.08em; }
+.auth-name__input { width: 100%; height: 52rpx; margin-top: 2rpx; padding: 0; border: 0; background: transparent; font-size: 24rpx; font-weight: 600; }
+.auth-name__placeholder { color: var(--muted-light); font-weight: 400; }
+.auth-name__hint { color: var(--muted-light); font-size: 14rpx; line-height: 1.5; }
+.auth-points { margin-top: 20rpx; color: var(--muted); font-size: 15rpx; letter-spacing: 0.02em; text-align: center; }
