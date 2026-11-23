@@ -16,6 +16,8 @@ Page({
     unread: 0,
     orderDot: false,
     currentUser: D.MEMBERS.man,
+    isCloud: false,
+    partnerJoined: false,
     man: D.MEMBERS.man,
     lin: D.MEMBERS.lin
   },
@@ -27,6 +29,7 @@ Page({
       return;
     }
     this.refresh();
+    this.syncCloud();
   },
 
   onShow() {
@@ -36,6 +39,17 @@ Page({
       return;
     }
     this.refresh();
+    this.syncCloud();
+  },
+
+  async syncCloud() {
+    if (!store.isCloud()) return;
+    try {
+      await store.cloudSync();
+      this.refresh();
+    } catch (err) {
+      if (err && err.code === 'AUTH_REQUIRED') wx.reLaunch({ url: '/pages/auth/index' });
+    }
   },
 
   refresh() {
@@ -53,6 +67,8 @@ Page({
       unread: store.unreadCount(),
       orderDot: !!store.currentOrder(),
       currentUser: store.currentUser(),
+      isCloud: store.isCloud(),
+      partnerJoined: !!state.partnerJoined,
       man: store.getMember('man'),
       lin: store.getMember('lin')
     });

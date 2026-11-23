@@ -117,4 +117,4 @@ node scripts/preview-mini.js     # 用真实 WXML/WXSS 渲染 430px 预览图到
 
 部署步骤见 [cloudfunctions/README.md](cloudfunctions/README.md)。
 
-> 当前页面仍以本地 `store.js` 跑通演示；云函数已就绪，前端数据层正在切换到 CloudBase。正式审核前不要保留演示入口。
+> 开发者工具/真机检测到 `wx.cloud` 后走 CloudBase；Node 单测没有云环境时回退本地 `store.js`。当前仍需部署 `api` 云函数。

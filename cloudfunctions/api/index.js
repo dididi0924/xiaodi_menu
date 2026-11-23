@@ -57,7 +57,8 @@ function publicUser(user) {
   return {
     id: user._id,
     nickname: user.nickname || '微信用户',
-    avatar: user.avatarFileId || '/assets/avatars/man.png'
+    avatar: user.avatarFileId || '/assets/avatars/man.png',
+    onboarded: !!user.onboarded
   };
 }
 
@@ -121,8 +122,8 @@ function snapshotOrder(order, members, overrides, customDishes) {
     orderNo: order.orderNo,
     status: order.status,
     createdAt: stamp(order.createdAt),
-    eaterId: order.eaterOpenid,
-    cookId: order.cookOpenid,
+    eaterId: 'man',
+    cookId: 'lin',
     eaterName: (byOpenid[order.eaterOpenid] || {}).nickname || 'TA',
     cookName: (byOpenid[order.cookOpenid] || {}).nickname || 'TA',
     eaterAvatar: (byOpenid[order.eaterOpenid] || {}).avatarFileId || '/assets/avatars/man.png',
@@ -167,7 +168,6 @@ async function stateFor(user, meOpenid) {
       id: table._id,
       name: table.name,
       code: table.inviteCode || '',
-      ownerOpenid: table.ownerOpenid,
       members: members.map((m) => memberView(m, meOpenid)),
       partnerJoined: members.length > 1
     },
@@ -204,6 +204,7 @@ async function bootstrap(openid, payload) {
         openid,
         nickname,
         avatarFileId,
+        onboarded: false,
         createdAt: now(),
         lastSeenAt: now(),
         status: 'active'
@@ -234,7 +235,7 @@ async function createTable(openid, payload) {
       openid,
       nickname: user.nickname || '微信用户',
       avatarFileId: user.avatarFileId || '',
-      role: 'either',
+      role: 'eater',
       status: 'active',
       joinedAt: now()
     }
@@ -289,14 +290,15 @@ async function acceptInvite(openid, payload) {
       openid,
       nickname: user.nickname || '微信用户',
       avatarFileId: user.avatarFileId || '',
-      role: 'either',
+      role: 'cook',
       status: 'active',
       joinedAt: now()
     }
   });
   await db.collection('tables').doc(table._id).update({ data: { inviteCode: '' } });
+  await db.collection('users').doc(user._id).update({ data: { onboarded: true } });
   await addNotification(table._id, table.ownerOpenid, 'invite_accepted', 'TA 加入了餐桌', (user.nickname || '对方') + ' 已经加入，可以开始点菜了。', null, 'users');
-  return stateFor(user, openid);
+  return stateFor(Object.assign({}, user, { onboarded: true }), openid);
 }
 
 async function createCustomDish(openid, payload) {
@@ -330,7 +332,11 @@ async function setDishImage(openid, payload) {
   const dishId = trim(payload.dishId, 80);
   const imageFileId = trim(payload.imageFileId, 500);
   if (!dishId || !imageFileId) throw new AppError('INVALID_IMAGE', '图片信息不完整');
-  const custom = await first('custom_dishes', { tableId: member.tableId, _id: dishId }).catch(() => null);
+  let custom = null;
+  try {
+    const doc = await db.collection('custom_dishes').doc(dishId).get();
+    custom = doc.data && doc.data.tableId === member.tableId ? doc.data : null;
+  } catch (e) { custom = null; }
   if (custom) {
     await db.collection('custom_dishes').doc(dishId).update({ data: { imageFileId } });
   } else {
@@ -345,6 +351,7 @@ async function setDishImage(openid, payload) {
 async function placeOrder(openid, payload) {
   const member = await memberByOpenid(openid);
   if (!member) throw new AppError('NO_TABLE', '还没有餐桌');
+  if (member.role !== 'eater') throw new AppError('ONLY_EATER_CAN_ORDER', '这张餐桌由点菜的人下单');
   const members = await membersOf(member.tableId);
   const partner = members.find((m) => m.openid !== openid);
   if (!partner) throw new AppError('PARTNER_NOT_JOINED', '等另一半加入后才能下单');
@@ -462,6 +469,13 @@ async function updateProfile(openid, payload) {
   return stateFor(await userByOpenid(openid), openid);
 }
 
+async function completeOnboarding(openid) {
+  const user = await userByOpenid(openid);
+  if (!user) throw new AppError('AUTH_REQUIRED', '请先登录');
+  await db.collection('users').doc(user._id).update({ data: { onboarded: true } });
+  return stateFor(Object.assign({}, user, { onboarded: true }), openid);
+}
+
 async function registerGrant(openid, payload) {
   const templateId = trim(payload.templateId, 100);
   if (!templateId) throw new AppError('INVALID_TEMPLATE', '模板 ID 不能为空');
@@ -492,6 +506,7 @@ exports.main = async (event) => {
     else if (action === 'order.place') data = await placeOrder(OPENID, payload);
     else if (action === 'order.transition') data = await transitionOrder(OPENID, payload);
     else if (action === 'notifications.read') data = await markRead(OPENID, payload);
+    else if (action === 'onboarding.complete') data = await completeOnboarding(OPENID);
     else if (action === 'subscription.register') data = await registerGrant(OPENID, payload);
     else throw new AppError('UNKNOWN_ACTION', '未知操作');
     return { ok: true, data };

@@ -19,7 +19,9 @@ Page({
     saving: false,
     addedDishName: '',
     baseCount: D.DISHES.length,
-    dishCount: D.DISHES.length
+    dishCount: D.DISHES.length,
+    isCloud: false,
+    partnerJoined: false
   },
 
   onLoad() {
@@ -37,9 +39,11 @@ Page({
       step: state.guideStep || 1,
       code: state.group.code,
       group: state.group,
-      partner: D.MEMBERS.lin
+      partner: D.MEMBERS.lin,
+      isCloud: store.isCloud()
     });
     this.refresh();
+    this.ensureTable().catch(() => {});
   },
 
   onShow() {
@@ -55,13 +59,38 @@ Page({
     this.refresh();
   },
 
+  async ensureTable() {
+    if (!store.isCloud() || store.get().group.id) return store.get();
+    try {
+      await store.cloudCreateTable();
+      this.refresh();
+      return store.get();
+    } catch (err) {
+      wx.showToast({ title: (err && err.message) || '创建餐桌失败', icon: 'none' });
+      throw err;
+    }
+  },
+
+  async ensureInvite() {
+    if (!store.isCloud() || store.get().group.code) return;
+    try {
+      await this.ensureTable();
+      const invite = await store.cloudCreateInvite();
+      this.setData({ code: invite.code });
+      this.refresh();
+    } catch (err) {
+      wx.showToast({ title: (err && err.message) || '生成邀请失败', icon: 'none' });
+    }
+  },
+
   refresh() {
     const state = store.get();
     const custom = state.customDishes || [];
     this.setData({
       code: state.group.code,
       group: state.group,
-      partner: D.MEMBERS.lin,
+      partner: store.getMember('lin'),
+      partnerJoined: !!state.partnerJoined,
       dishCount: D.DISHES.length + custom.length,
       addedDishName: custom.length ? custom[custom.length - 1].name : ''
     });
@@ -70,6 +99,7 @@ Page({
   setStep(step) {
     store.setGuideStep(step);
     this.setData({ step });
+    if (step === 2) this.ensureInvite();
     wx.pageScrollTo({ scrollTop: 0, duration: 180 });
   },
 
@@ -110,7 +140,7 @@ Page({
     if (!this._used && this.data.image) imagePicker.remove(this.data.image);
   },
 
-  addDish() {
+  async addDish() {
     if (this.data.saving) return;
     if (this.data.uploading) {
       wx.showToast({ title: '图片正在处理，稍等一下', icon: 'none' });
@@ -124,14 +154,22 @@ Page({
     const time = Math.max(5, Math.min(180, Number(this.data.time) || 20));
     const category = this.data.categories[this.data.categoryIndex] || '下饭';
     this.setData({ saving: true });
-    store.addCustomDish(name, '第一道属于你们的菜。', category, time, this.data.image);
-    this._used = true;
-    this.refresh();
-    wx.showToast({ title: '已加入你们的菜单', icon: 'none' });
-    setTimeout(() => {
+    try {
+      if (store.isCloud()) {
+        await this.ensureTable();
+        await store.cloudAddCustomDish(name, '第一道属于你们的菜。', category, time, this.data.image);
+      } else {
+        store.addCustomDish(name, '第一道属于你们的菜。', category, time, this.data.image);
+      }
+      this._used = true;
+      this.refresh();
+      wx.showToast({ title: '已加入你们的菜单', icon: 'none' });
       this.setData({ saving: false });
       this.setStep(2);
-    }, 280);
+    } catch (err) {
+      this.setData({ saving: false });
+      wx.showToast({ title: (err && err.message) || '加菜失败，请重试', icon: 'none' });
+    }
   },
 
   skipAdd() {
@@ -154,14 +192,32 @@ Page({
     });
   },
 
-  simulateJoin() {
+  async simulateJoin() {
+    if (store.isCloud()) {
+      try {
+        await store.cloudCompleteOnboarding();
+        this.refresh();
+        this.setData({ step: 3 });
+      } catch (err) {
+        wx.showToast({ title: (err && err.message) || '进入失败', icon: 'none' });
+      }
+      return;
+    }
     store.completeOnboarding();
     this.refresh();
     this.setData({ step: 3 });
     wx.showToast({ title: '对方已加入（演示）', icon: 'none' });
   },
 
-  finish() {
+  async finish() {
+    if (store.isCloud()) {
+      try {
+        await store.cloudCompleteOnboarding();
+      } catch (err) {
+        wx.showToast({ title: (err && err.message) || '进入失败', icon: 'none' });
+        return;
+      }
+    }
     wx.reLaunch({ url: '/pages/home/index' });
   },
 

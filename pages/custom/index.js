@@ -65,7 +65,7 @@ Page({
     if (!this._used && this.data.image) imagePicker.remove(this.data.image);
   },
 
-  submit() {
+  async submit() {
     if (this.data.saving) return;
     if (this.data.uploading) {
       wx.showToast({ title: '图片正在处理，稍等一下', icon: 'none' });
@@ -79,7 +79,17 @@ Page({
     const time = Math.max(5, Math.min(180, Number(this.data.time) || 25));
     const category = this.data.categories[this.data.categoryIndex] || '下饭';
     this.setData({ saving: true });
-    store.addCustomDish(name, (this.data.description || '').trim(), category, time, this.data.image);
+    try {
+      if (store.isCloud()) {
+        await store.cloudAddCustomDish(name, (this.data.description || '').trim(), category, time, this.data.image);
+      } else {
+        store.addCustomDish(name, (this.data.description || '').trim(), category, time, this.data.image);
+      }
+    } catch (err) {
+      this.setData({ saving: false });
+      wx.showToast({ title: (err && err.message) || '保存失败，请重试', icon: 'none' });
+      return;
+    }
     this._used = true;
     wx.showToast({ title: '已加入你们的菜单', icon: 'none' });
     setTimeout(() => wx.reLaunch({ url: '/pages/home/index?showAll=1' }), 500);

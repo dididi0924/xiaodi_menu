@@ -108,9 +108,9 @@
 
     <view class="onboard-simulate" bindtap="simulateJoin">
       <image class="onboard-simulate__icon" src="/assets/icons/users-ink.png" mode="aspectFit"></image>
-      模拟 TA 已加入（原型）
+      {{isCloud ? '先进入餐桌，等 TA 加入' : '模拟 TA 已加入（原型）'}}
     </view>
-    <view class="onboard-hint">原型阶段没有云端和真实邀请，点击上方按钮模拟对方加入；正式版会走微信邀请链接。</view>
+    <view class="onboard-hint">{{isCloud ? '邀请已经生成。对方用自己的微信打开链接并加入后，两边会自动同步。' : '原型阶段没有云端和真实邀请，点击上方按钮模拟对方加入；正式版会走微信邀请链接。'}}</view>
   </block>
 
   <block wx:else>
@@ -125,9 +125,9 @@
 
     <view class="ready-card">
       <view class="ready-row">
-        <image class="ready-avatar" src="/assets/avatars/lin.png" mode="aspectFill"></image>
-        <view class="ready-copy"><view class="ready-title">你的另一半</view><view class="ready-sub">{{partner.name}} · 已加入</view></view>
-        <view class="ready-status">已加入</view>
+        <image class="ready-avatar" src="{{partner.avatar}}" mode="aspectFill"></image>
+        <view class="ready-copy"><view class="ready-title">你的另一半</view><view class="ready-sub">{{partnerJoined ? partner.name + ' · 已加入' : '等待 TA 加入'}}</view></view>
+        <view class="ready-status">{{partnerJoined ? '已加入' : '等待中'}}</view>
       </view>
       <view class="ready-row">
         <view class="ready-icon"><image class="ready-icon__img" src="/assets/icons/utensils-ink.png" mode="aspectFit"></image></view>

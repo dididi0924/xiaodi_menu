@@ -18,6 +18,7 @@ Page({
     category: '全部',
     showAll: false,
     showFrequent: false,
+    waitingPartner: false,
     frequent: [],
     dishes: [],
     sectionKicker: 'PICKED FOR YOU',
@@ -55,6 +56,7 @@ Page({
       this.setData({ showAll: true });
     }
     this.refresh();
+    this.syncCloud();
   },
 
   onShow() {
@@ -64,6 +66,17 @@ Page({
       return;
     }
     this.refresh();
+    this.syncCloud();
+  },
+
+  async syncCloud() {
+    if (!store.isCloud()) return;
+    try {
+      await store.cloudSync();
+      this.refresh();
+    } catch (err) {
+      if (err && err.code === 'AUTH_REQUIRED') wx.reLaunch({ url: '/pages/auth/index' });
+    }
   },
 
   refresh() {
@@ -76,8 +89,9 @@ Page({
     const cartCount = store.cartCount();
     const cartEta = store.cartEta();
     const unread = store.unreadCount();
+    const waitingPartner = store.isCloud() && state.loggedIn && !state.partnerJoined;
 
-    let heroAvatars = [D.MEMBERS.lin, D.MEMBERS.man];
+    let heroAvatars = waitingPartner ? [store.currentUser()] : [D.MEMBERS.lin, D.MEMBERS.man];
     let heroKicker = 'TONIGHT’S TABLE';
     let heroTitle;
     let heroSub;
@@ -85,6 +99,10 @@ Page({
     let subline = isCook
       ? D.MEMBERS.man.name + '点好菜，你回家做。订单会直接送到这里。'
       : D.MEMBERS.lin.name + ' 18:30 后在家，点好菜，TA 会收到通知。';
+    if (waitingPartner) {
+      headline = '还差一个人，就能开饭';
+      subline = '把邀请码发给 TA，加入后就可以互相点菜。';
+    }
     if (active) {
       heroAvatars = [D.MEMBERS[active.eaterId], D.MEMBERS[active.cookId]];
       heroKicker = isCook ? 'NEW ORDER' : 'TONIGHT’S TABLE';
@@ -110,6 +128,9 @@ Page({
             ? D.MEMBERS[active.cookId].name + ' 接单了，今晚交给 TA。'
             : '厨房里正在忙，再等一会儿就开饭。';
       }
+    } else if (waitingPartner) {
+      heroTitle = '等 TA 加入这张餐桌';
+      heroSub = '邀请码在「我们」里，分享给另一半。';
     } else if (isCook) {
       heroTitle = D.MEMBERS.man.name + ' 还没有点菜';
       heroSub = '去菜单看看，或者等 TA 发来今晚的订单。';
@@ -177,6 +198,7 @@ Page({
       group: state.group,
       headline,
       subline,
+      waitingPartner,
       category,
       showAll,
       showFrequent,

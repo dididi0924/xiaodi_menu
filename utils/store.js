@@ -2,9 +2,10 @@
 // Replace the methods here with BFF calls when the real backend is ready.
 const D = require('./data');
 const imageStore = require('./image');
+const cloud = require('./cloud');
 
-const KEY = 'two.mini.v2';
-const OLD_KEY = 'two.mini.v1';
+const KEY = 'two.mini.v3';
+const OLD_KEYS = ['two.mini.v1', 'two.mini.v2'];
 const DEFAULT_PROFILE = { nickname: '小满', avatar: '/assets/avatars/man.png' };
 
 let state = null;
@@ -22,7 +23,7 @@ function applyProfile(profile) {
 
 function initialState() {
   return {
-    version: 2,
+    version: 3,
     // Auth + onboarding. A fresh install must go through the login page.
     loggedIn: false,
     onboarded: false,
@@ -57,11 +58,11 @@ function init() {
   try {
     saved = wx.getStorageSync(KEY);
     // Drop the old seeded prototype state so existing testers see onboarding.
-    if (wx.removeStorageSync) wx.removeStorageSync(OLD_KEY);
+    if (wx.removeStorageSync) OLD_KEYS.forEach((key) => wx.removeStorageSync(key));
   } catch (e) {
     saved = null;
   }
-  if (!saved || saved.version !== 2) {
+  if (!saved || saved.version !== 3) {
     state = initialState();
     applyProfile(state.profile);
     save();
@@ -96,7 +97,7 @@ function get() {
 function reset() {
   state = initialState();
   try {
-    if (wx.removeStorageSync) wx.removeStorageSync(OLD_KEY);
+    if (wx.removeStorageSync) OLD_KEYS.forEach((key) => wx.removeStorageSync(key));
   } catch (e) {}
   imageStore.clearSaved();
   applyProfile(DEFAULT_PROFILE);
@@ -527,11 +528,187 @@ function setJoined(value) {
   completeOnboarding();
 }
 
+function isCloud() {
+  return cloud.available();
+}
+
+function applyCloudState(data) {
+  if (!data || !data.user) return get();
+  const next = get();
+  const user = data.user;
+  const table = data.table || null;
+  const members = (table && table.members) || [];
+  const me = members.find((m) => m.isMe) || members[0] || null;
+  const eater = members.find((m) => m.role === 'eater') || (me && me.role !== 'cook' ? me : null);
+  const cook = members.find((m) => m.role === 'cook') || null;
+
+  next.loggedIn = true;
+  next.profile = { nickname: (me && me.name) || user.nickname || '微信用户', avatar: (me && me.avatar) || user.avatar || '/assets/avatars/man.png' };
+  next.role = me && me.role === 'cook' ? 'cook' : 'eater';
+  next.onboarded = !!(user.onboarded && table);
+  next.partnerJoined = !!(table && table.partnerJoined);
+  next.table = table;
+  next.tableId = table ? table.id : '';
+  next.user = user;
+  if (eater) {
+    D.MEMBERS.man.name = eater.name;
+    D.MEMBERS.man.avatar = eater.avatar;
+  }
+  if (cook) {
+    D.MEMBERS.lin.name = cook.name;
+    D.MEMBERS.lin.avatar = cook.avatar;
+  } else {
+    D.MEMBERS.lin.name = '等待另一半';
+    D.MEMBERS.lin.avatar = '/assets/avatars/lin.png';
+  }
+  if (table) {
+    next.group = {
+      id: table.id,
+      name: table.name,
+      code: table.code || '',
+      days: 0,
+      members
+    };
+    next.customDishes = (data.customDishes || []).map((dish) => Object.assign({}, dish, { isCustom: true }));
+    next.dishImages = data.dishImages || {};
+    next.orders = data.orders || [];
+    next.notifications = data.notifications || [];
+  } else {
+    next.group = {
+      id: '',
+      name: (user.nickname || '我') + ' 的餐桌',
+      code: '',
+      days: 0,
+      members: []
+    };
+    next.customDishes = [];
+    next.dishImages = {};
+    next.orders = [];
+    next.notifications = [];
+  }
+  save();
+  return next;
+}
+
+async function cloudLogin(profile) {
+  const input = profile || {};
+  let avatarFileId = input.avatar || '';
+  if (avatarFileId && avatarFileId.indexOf('/assets/') !== 0 && avatarFileId.indexOf('cloud://') !== 0) {
+    avatarFileId = await cloud.upload(avatarFileId, 'avatars');
+  }
+  const data = await cloud.call('auth.bootstrap', {
+    nickname: input.nickname || '微信用户',
+    avatarFileId
+  });
+  return applyCloudState(data);
+}
+
+async function cloudSync() {
+  if (!get().loggedIn) return get();
+  const data = await cloud.call('home.get');
+  return applyCloudState(data);
+}
+
+async function cloudCreateTable(name) {
+  const data = await cloud.call('table.create', { name: name || '' });
+  return applyCloudState(data);
+}
+
+async function cloudCreateInvite() {
+  const data = await cloud.call('invite.create');
+  const next = get();
+  next.group.code = data.code;
+  next.table = Object.assign({}, next.table, { code: data.code });
+  save();
+  return data;
+}
+
+async function cloudPreviewInvite(code) {
+  return cloud.call('invite.preview', { code });
+}
+
+async function cloudAcceptInvite(code) {
+  const data = await cloud.call('invite.accept', { code });
+  return applyCloudState(data);
+}
+
+async function cloudCompleteOnboarding() {
+  const data = await cloud.call('onboarding.complete');
+  return applyCloudState(data);
+}
+
+async function cloudAddCustomDish(name, description, category, time, image) {
+  let imageFileId = '';
+  if (image) imageFileId = await cloud.upload(image, 'dishes');
+  const data = await cloud.call('custom_dish.create', {
+    name,
+    description,
+    category,
+    prepMinutes: time,
+    imageFileId
+  });
+  applyCloudState(data);
+  return get().customDishes[get().customDishes.length - 1];
+}
+
+async function cloudSetDishImage(dishId, image) {
+  if (!image) return null;
+  const fileId = await cloud.upload(image, 'dish-covers');
+  const data = await cloud.call('dish.image.set', { dishId, imageFileId: fileId });
+  applyCloudState(data);
+  return get().dishImages[dishId] || fileId;
+}
+
+async function cloudPlaceOrder(message, notify) {
+  const next = get();
+  if (!next.cart.length) return null;
+  let clientKey = next.pendingOrderKey || '';
+  if (!clientKey) {
+    clientKey = 'ck-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    next.pendingOrderKey = clientKey;
+    save();
+  }
+  const data = await cloud.call('order.place', {
+    items: next.cart.map((i) => ({ dishId: i.dishId, qty: i.qty, note: i.note || '' })),
+    message: message || '',
+    notify: notify !== false,
+    clientKey
+  });
+  next.pendingOrderKey = '';
+  applyCloudState(data);
+  return get().orders[0] || null;
+}
+
+async function cloudTransitionOrder(orderId, action) {
+  const data = await cloud.call('order.transition', { orderId, action });
+  applyCloudState(data);
+  return get().orders.find((o) => o.id === orderId) || null;
+}
+
+async function cloudReadNotifications(ids) {
+  const data = await cloud.call('notifications.read', { ids: ids || null });
+  return applyCloudState(data);
+}
+
 module.exports = {
   init,
   get,
   save,
   reset,
+  isCloud,
+  applyCloudState,
+  cloudLogin,
+  cloudSync,
+  cloudCreateTable,
+  cloudCreateInvite,
+  cloudPreviewInvite,
+  cloudAcceptInvite,
+  cloudCompleteOnboarding,
+  cloudAddCustomDish,
+  cloudSetDishImage,
+  cloudPlaceOrder,
+  cloudTransitionOrder,
+  cloudReadNotifications,
   login,
   guard,
   setGuideStep,

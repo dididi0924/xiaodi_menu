@@ -17,10 +17,22 @@ Page({
     }
     this.setData({ navTop: layout.navInset() });
     this.refresh();
+    this.syncCloud();
   },
 
   onShow() {
     this.refresh();
+    this.syncCloud();
+  },
+
+  async syncCloud() {
+    if (!store.isCloud()) return;
+    try {
+      await store.cloudSync();
+      this.refresh();
+    } catch (err) {
+      if (err && err.code === 'AUTH_REQUIRED') wx.reLaunch({ url: '/pages/auth/index' });
+    }
   },
 
   refresh() {
@@ -28,16 +40,16 @@ Page({
     this.setData({ items, unread: store.unreadCount() });
   },
 
-  markAllRead() {
-    store.markAllRead();
+  async markAllRead() {
+    await store.markAllRead();
     this.refresh();
     wx.showToast({ title: '全部已读', icon: 'none' });
   },
 
-  openItem(e) {
+  async openItem(e) {
     const id = e.currentTarget.dataset.id;
     const orderId = e.currentTarget.dataset.order;
-    store.markRead(id);
+    await store.markRead(id);
     if (!orderId) {
       this.refresh();
       return;

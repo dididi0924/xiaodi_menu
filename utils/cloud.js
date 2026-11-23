@@ -3,6 +3,10 @@
 const ENV = 'cloud1-d1g5c1dfgd99f3986';
 let initialized = false;
 
+function available() {
+  return typeof wx !== 'undefined' && !!wx.cloud && !!wx.cloud.callFunction;
+}
+
 function init() {
   if (initialized || !wx.cloud) return;
   wx.cloud.init({ env: ENV, traceUser: true });
@@ -50,4 +54,4 @@ function upload(filePath, prefix) {
   });
 }
 
-module.exports = { ENV, init, call, upload };
+module.exports = { ENV, available, init, call, upload };

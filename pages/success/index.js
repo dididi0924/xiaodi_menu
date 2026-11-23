@@ -10,6 +10,7 @@ Page({
     timeText: '',
     dateText: '',
     notify: true,
+    isCloud: false,
     cook: {},
     confetti: []
   },
@@ -45,6 +46,7 @@ Page({
       timeText: view.formatTime(order.createdAt),
       dateText: view.formatDate(order.createdAt),
       notify: order.notify !== false,
+      isCloud: store.isCloud(),
       cook: store.getMember(order.cookId),
       confetti
     });

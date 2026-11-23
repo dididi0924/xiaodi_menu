@@ -15,6 +15,7 @@ Page({
     partner: D.MEMBERS.lin,
     isCook: false,
     empty: true,
+    placing: false,
     quickNotes: D.QUICK_NOTES
   },
 
@@ -96,18 +97,33 @@ Page({
     this.goBack();
   },
 
-  placeOrder() {
+  async placeOrder() {
+    if (this.data.placing) return;
     if (this.data.isCook) {
       wx.showToast({ title: '切换到' + store.getMember('man').name + '视角才能下单', icon: 'none' });
       return;
     }
     if (!this.data.items.length) return;
-    const order = store.placeOrder(this.data.message, this.data.notify);
-    if (!order) {
-      wx.showToast({ title: '先选几道菜吧', icon: 'none' });
+    const state = store.get();
+    if (store.isCloud() && !state.partnerJoined) {
+      wx.showToast({ title: '等另一半加入餐桌后再下单', icon: 'none' });
       return;
     }
-    wx.redirectTo({ url: '/pages/success/index?orderId=' + order.id });
+    this.setData({ placing: true });
+    try {
+      const order = store.isCloud()
+        ? await store.cloudPlaceOrder(this.data.message, this.data.notify)
+        : store.placeOrder(this.data.message, this.data.notify);
+      if (!order) {
+        wx.showToast({ title: '先选几道菜吧', icon: 'none' });
+        this.setData({ placing: false });
+        return;
+      }
+      wx.redirectTo({ url: '/pages/success/index?orderId=' + order.id });
+    } catch (err) {
+      this.setData({ placing: false });
+      wx.showToast({ title: (err && err.message) || '下单失败，请重试', icon: 'none' });
+    }
   },
 
   goBack() {

@@ -23,6 +23,7 @@ Page({
     }
     if (options && options.tab === 'history') this.setData({ tab: 'history' });
     this.refresh();
+    this.syncCloud();
   },
 
   onShow() {
@@ -32,6 +33,17 @@ Page({
       return;
     }
     this.refresh();
+    this.syncCloud();
+  },
+
+  async syncCloud() {
+    if (!store.isCloud()) return;
+    try {
+      await store.cloudSync();
+      this.refresh();
+    } catch (err) {
+      if (err && err.code === 'AUTH_REQUIRED') wx.reLaunch({ url: '/pages/auth/index' });
+    }
   },
 
   refresh() {
@@ -82,29 +94,51 @@ Page({
     else if (action === 'add') this.goHome();
   },
 
-  advanceOrder(id) {
+  async advanceOrder(id) {
     if (!this.data.isCook) return;
-    const order = store.advanceOrder(id);
+    const current = store.orderById(id);
+    if (!current) return;
+    const action = current.status === 'pending' ? 'accept' : current.status === 'accepted' ? 'cook' : 'serve';
+    let order;
+    try {
+      order = store.isCloud() ? await store.cloudTransitionOrder(id, action) : store.advanceOrder(id);
+    } catch (err) {
+      wx.showToast({ title: (err && err.message) || '操作失败', icon: 'none' });
+      return;
+    }
     if (!order) return;
+    const eaterName = order.eaterName || store.getMember(order.eaterId || 'man').name;
     this.refresh();
     if (order.status === 'served') {
       this.setData({ tab: 'history' });
-      wx.showToast({ title: '上菜啦，' + store.getMember('man').name + '会收到通知', icon: 'none' });
+      wx.showToast({ title: '上菜啦，' + eaterName + '会收到通知', icon: 'none' });
     } else if (order.status === 'accepted') {
-      wx.showToast({ title: '已接单，' + store.getMember('man').name + '会收到通知', icon: 'none' });
+      wx.showToast({ title: '已接单，' + eaterName + '会收到通知', icon: 'none' });
     } else {
-      wx.showToast({ title: '开火了，' + store.getMember('man').name + '会收到通知', icon: 'none' });
+      wx.showToast({ title: '开火了，' + eaterName + '会收到通知', icon: 'none' });
     }
   },
 
-  nudgeOrder(id) {
-    store.nudgeOrder(id);
+  async nudgeOrder(id) {
+    try {
+      if (store.isCloud()) await store.cloudTransitionOrder(id, 'nudge');
+      else store.nudgeOrder(id);
+    } catch (err) {
+      wx.showToast({ title: (err && err.message) || '操作失败', icon: 'none' });
+      return;
+    }
     this.refresh();
     wx.showToast({ title: this.data.isCook ? store.getMember('man').name + '会看到你的留言' : '已经轻轻提醒' + store.getMember('lin').name, icon: 'none' });
   },
 
-  cancelOrder(e) {
-    store.cancelOrder(e.currentTarget.dataset.id);
+  async cancelOrder(e) {
+    try {
+      if (store.isCloud()) await store.cloudTransitionOrder(e.currentTarget.dataset.id, 'cancel');
+      else store.cancelOrder(e.currentTarget.dataset.id);
+    } catch (err) {
+      wx.showToast({ title: (err && err.message) || '取消失败', icon: 'none' });
+      return;
+    }
     this.refresh();
     wx.showToast({ title: '订单已取消', icon: 'none' });
   },

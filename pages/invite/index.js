@@ -17,15 +17,41 @@ Page({
   onLoad(options) {
     const state = store.get();
     const mode = options && options.mode === 'join' ? 'join' : 'invite';
+    const incomingCode = (options && options.code) || state.group.code || '';
+    this._mode = mode;
+    this._incomingCode = incomingCode;
     this.setData({
       navTop: layout.navInset(),
       mode,
-      code: state.group.code || 'TWO-8F2K',
+      code: store.isCloud() ? incomingCode : (incomingCode || 'TWO-8F2K'),
       group: state.group,
       inviter: store.currentUser(),
       partner: store.partner(),
       joined: !!state.onboarded
     });
+    this.loadCloud();
+  },
+
+  async loadCloud() {
+    if (!store.isCloud() || !store.get().loggedIn) return;
+    try {
+      if (this._mode === 'join' && this._incomingCode) {
+        const preview = await store.cloudPreviewInvite(this._incomingCode);
+        const members = preview.members || [];
+        this.setData({
+          code: this._incomingCode,
+          group: Object.assign({}, this.data.group, { name: preview.tableName }),
+          inviter: members[0] || this.data.inviter,
+          partner: members[1] || this.data.partner,
+          joined: store.get().onboarded
+        });
+      } else if (this._mode === 'invite' && !this.data.code) {
+        const invite = await store.cloudCreateInvite();
+        this.setData({ code: invite.code });
+      }
+    } catch (err) {
+      wx.showToast({ title: (err && err.message) || '邀请加载失败', icon: 'none' });
+    }
   },
 
   copyCode() {
@@ -46,14 +72,23 @@ Page({
     wx.navigateTo({ url: '/pages/invite/index?mode=join&code=' + this.data.code });
   },
 
-  joinTable() {
+  async joinTable() {
     const state = store.get();
     if (!state.loggedIn) {
+      try { wx.setStorageSync('pendingInvite', this.data.code); } catch (e) {}
       wx.reLaunch({ url: '/pages/auth/index' });
       return;
     }
-    store.completeOnboarding();
-    wx.reLaunch({ url: '/pages/home/index' });
+    try {
+      if (store.isCloud()) {
+        await store.cloudAcceptInvite(this.data.code);
+      } else {
+        store.completeOnboarding();
+      }
+      wx.reLaunch({ url: '/pages/home/index' });
+    } catch (err) {
+      wx.showToast({ title: (err && err.message) || '加入失败', icon: 'none' });
+    }
   },
 
   goBack() {
