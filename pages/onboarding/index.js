@@ -43,7 +43,7 @@ Page({
       isCloud: store.isCloud()
     });
     this.refresh();
-    this.ensureTable().catch(() => {});
+    this.prepareCloud().catch(() => {});
   },
 
   onShow() {
@@ -59,9 +59,17 @@ Page({
     this.refresh();
   },
 
+  async prepareCloud() {
+    if (!store.isCloud()) return;
+    await store.cloudEnsureSession();
+    this.refresh();
+    await this.ensureTable();
+  },
+
   async ensureTable() {
     if (!store.isCloud() || store.get().group.id) return store.get();
     try {
+      await store.cloudEnsureSession();
       await store.cloudCreateTable();
       this.refresh();
       return store.get();

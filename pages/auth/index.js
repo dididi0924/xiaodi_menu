@@ -20,17 +20,19 @@ Page({
 
   onShow() {
     const state = store.get();
-    if (state.loggedIn) {
-      wx.reLaunch({ url: state.onboarded ? '/pages/home/index' : '/pages/onboarding/index' });
-      return;
-    }
-    if (store.isCloud() && !this._restoring) {
+    if (this._restoring) return;
+    if (store.isCloud()) {
       this._restoring = true;
-      store.cloudRestore().then((next) => {
+      const task = state.loggedIn ? store.cloudEnsureSession() : store.cloudRestore();
+      task.then((next) => {
         wx.reLaunch({ url: next.onboarded ? '/pages/home/index' : '/pages/onboarding/index' });
       }).catch(() => {
         this._restoring = false;
       });
+      return;
+    }
+    if (state.loggedIn) {
+      wx.reLaunch({ url: state.onboarded ? '/pages/home/index' : '/pages/onboarding/index' });
     }
   },
 

@@ -608,6 +608,22 @@ async function cloudRestore() {
   return applyCloudState(data);
 }
 
+async function cloudEnsureSession() {
+  if (!isCloud()) return get();
+  try {
+    return await cloudRestore();
+  } catch (err) {
+    if (err && err.code === 'AUTH_REQUIRED') {
+      const profile = get().profile || {};
+      return cloudLogin({
+        nickname: profile.nickname || '微信用户',
+        avatar: profile.avatar || ''
+      });
+    }
+    throw err;
+  }
+}
+
 async function cloudSync() {
   if (!get().loggedIn) return get();
   const data = await cloud.call('home.get');
@@ -704,6 +720,7 @@ module.exports = {
   applyCloudState,
   cloudLogin,
   cloudRestore,
+  cloudEnsureSession,
   cloudSync,
   cloudCreateTable,
   cloudCreateInvite,
