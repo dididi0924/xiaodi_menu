@@ -1,4 +1,5 @@
 const store = require('./utils/store');
+const cloud = require('./utils/cloud');
 
 App({
   globalData: {
@@ -6,5 +7,6 @@ App({
   },
   onLaunch() {
     store.init();
+    cloud.init();
   }
 });

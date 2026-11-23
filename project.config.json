@@ -13,6 +13,10 @@
       {
         "type": "file",
         "value": "README.md"
+      },
+      {
+        "type": "folder",
+        "value": "cloudfunctions"
       }
     ],
     "include": []
@@ -62,5 +66,6 @@
     }
   },
   "simulatorPluginLibVersion": {},
-  "editorSetting": {}
+  "editorSetting": {},
+  "cloudfunctionRoot": "cloudfunctions/"
 }

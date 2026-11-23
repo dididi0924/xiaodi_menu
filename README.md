@@ -105,3 +105,16 @@ node scripts/preview-mini.js     # 用真实 WXML/WXSS 渲染 430px 预览图到
 ```
 
 预览图在 [../shots/mini/](../shots/mini/)，其中 `auth.png`、`onboarding-1.png`、`onboarding-2.png`、`onboarding-3.png`、`home.png` 最值得先看。
+
+---
+
+## CloudBase（上线分支）
+
+- 云环境：`cloud1-d1g5c1dfgd99f3986`
+- 云函数：`cloudfunctions/api`（`wx-server-sdk`）
+- 客户端：`utils/cloud.js`
+- 集合：users / tables / members / invites / custom_dishes / dish_overrides / orders / notifications / subscription_grants
+
+部署步骤见 [cloudfunctions/README.md](cloudfunctions/README.md)。
+
+> 当前页面仍以本地 `store.js` 跑通演示；云函数已就绪，前端数据层正在切换到 CloudBase。正式审核前不要保留演示入口。
