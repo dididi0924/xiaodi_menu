@@ -469,6 +469,12 @@ async function updateProfile(openid, payload) {
   return stateFor(await userByOpenid(openid), openid);
 }
 
+async function restoreSession(openid) {
+  const user = await userByOpenid(openid);
+  if (!user) throw new AppError('AUTH_REQUIRED', '请先登录');
+  return stateFor(user, openid);
+}
+
 async function completeOnboarding(openid) {
   const user = await userByOpenid(openid);
   if (!user) throw new AppError('AUTH_REQUIRED', '请先登录');
@@ -495,6 +501,7 @@ exports.main = async (event) => {
     let data;
     if (action === 'auth.bootstrap') data = await bootstrap(OPENID, payload);
     else if (action === 'profile.update') data = await updateProfile(OPENID, payload);
+    else if (action === 'auth.restore') data = await restoreSession(OPENID);
     else if (!(await userByOpenid(OPENID))) throw new AppError('AUTH_REQUIRED', '请先登录');
     else if (action === 'table.create') data = await createTable(OPENID, payload);
     else if (action === 'invite.create') data = await createInvite(OPENID);

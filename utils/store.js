@@ -603,6 +603,11 @@ async function cloudLogin(profile) {
   return applyCloudState(data);
 }
 
+async function cloudRestore() {
+  const data = await cloud.call('auth.restore');
+  return applyCloudState(data);
+}
+
 async function cloudSync() {
   if (!get().loggedIn) return get();
   const data = await cloud.call('home.get');
@@ -698,6 +703,7 @@ module.exports = {
   isCloud,
   applyCloudState,
   cloudLogin,
+  cloudRestore,
   cloudSync,
   cloudCreateTable,
   cloudCreateInvite,

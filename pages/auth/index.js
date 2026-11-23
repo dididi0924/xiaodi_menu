@@ -22,6 +22,15 @@ Page({
     const state = store.get();
     if (state.loggedIn) {
       wx.reLaunch({ url: state.onboarded ? '/pages/home/index' : '/pages/onboarding/index' });
+      return;
+    }
+    if (store.isCloud() && !this._restoring) {
+      this._restoring = true;
+      store.cloudRestore().then((next) => {
+        wx.reLaunch({ url: next.onboarded ? '/pages/home/index' : '/pages/onboarding/index' });
+      }).catch(() => {
+        this._restoring = false;
+      });
     }
   },
 
