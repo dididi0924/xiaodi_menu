@@ -146,3 +146,7 @@
 .add-icon { width: 28rpx; height: 28rpx; }
 
 .stepper-symbol { font-size: 34rpx; line-height: 1; color: #1D1C18; font-weight: 300; }
+
+.photo-edit { position: absolute; z-index: 4; right: 26rpx; bottom: 26rpx; height: 64rpx; padding: 0 20rpx; display: flex; align-items: center; gap: 8rpx; border-radius: 999rpx; background: rgba(255,253,248,0.94); color: var(--ink); font-size: 16rpx; font-weight: 600; box-shadow: 0 8rpx 24rpx rgba(20,17,12,0.16); }
+.photo-edit.is-loading { opacity: 0.72; }
+.photo-edit__icon { width: 24rpx; height: 24rpx; }

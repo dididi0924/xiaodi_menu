@@ -14,6 +14,10 @@
         <image class="round-icon" src="{{liked ? '/assets/icons/heart-tomato.png' : '/assets/icons/heart-ink.png'}}" mode="aspectFit"></image>
       </view>
     </view>
+    <view wx:if="{{dish}}" class="photo-edit {{uploading ? 'is-loading' : ''}}" catchtap="changeImage">
+      <image class="photo-edit__icon" src="/assets/icons/refresh-ink.png" mode="aspectFit"></image>
+      {{uploading ? '处理中…' : '更换照片'}}
+    </view>
   </view>
 
   <view wx:if="{{dish}}" class="dish-content">

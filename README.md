@@ -24,7 +24,7 @@ miniprogram/
 └─ utils/
    ├─ data.js          # 13 道预设菜、成员
    ├─ store.js         # 本地数据层，可替换为 BFF
-   ├─ image.js         # 自定义菜照片选择 / 压缩 / 本地持久化
+   ├─ image.js         # 菜品照片选择 / 压缩 / 本地持久化
    ├─ view.js          # 展示层格式化
    └─ layout.js        # 自定义导航栏 / 胶囊避让
 ```
@@ -55,7 +55,7 @@ miniprogram/
 - 新用户登录 / 注册页：微信一键登录入口，登录后才可进入餐桌。
 - 3 步新手引导：加菜、邀请、开桌；中途退出会从当前步骤继续。
 - 首页：真实点过的菜才出现「常点」，新用户不展示任何常点测试数据；分类筛选、猜你喜欢、搜索、查看全部。
-- 13 道预设菜 + 自定义菜；自定义菜支持从相册选择或拍照上传封面图。
+- 13 道预设菜 + 自定义菜；每道菜的详情页都可以「更换照片」，自定义菜也支持从相册选择或拍照上传。
 - 菜品详情：收藏、份数、口味备注、主厨备注。
 - 购物袋：多菜、数量、移除、指定做饭人、120 字留言、快捷留言、通知开关。
 - 下单成功页：订单小票、留言、通知状态、切换做饭人视角。
@@ -80,6 +80,7 @@ miniprogram/
 | 通知 | `store.notificationsForCurrent` | `GET /notifications` |
 | 邀请 | 静态 code / QR | `POST /tables/:id/invites` |
 | 自定义菜 | 本地图片 + `store.addCustomDish` | `POST /tables/:id/dishes` + COS 上传 |
+| 预设菜换图 | `store.setDishImage` | `PUT /dishes/:id/image` + COS 上传 |
 | 登录 | 本地 `wx.login` + 本地会话 | `wx.login` → BFF `code2Session` → JWT |
 
 API 细节见 [../docs/api.md](../docs/api.md)，数据库见 [../db/README.md](../db/README.md)。
@@ -92,7 +93,7 @@ API 细节见 [../docs/api.md](../docs/api.md)，数据库见 [../db/README.md](
 - 分享、订阅消息、真机通知需要真实 AppID 和合法域名。
 - 页面中的「切换视角」是原型演示；正式版角色来自登录身份，不应该允许客户端任意切换。
 - 没有接真实登录、数据库、微信支付或服务通知；这些在 `docs/` 里有完整设计。
-- 自定义菜图片当前保存在 `wx.env.USER_DATA_PATH`，只存在当前手机；正式版接 COS 上传、内容审核和 CDN。
+- 所有菜品照片（预设覆盖图 + 自定义菜图）当前保存在 `wx.env.USER_DATA_PATH`，只存在当前手机；正式版接 COS 上传、内容审核和 CDN。
 - 真机上传照片前，需要在微信公众平台配置「用户隐私保护指引」，声明相册、摄像头和选中的照片；否则 `wx.chooseMedia` 可能被微信拦截。
 - 组件、WXML、WXSS 已通过 `miniprogram-compiler` 编译；页面逻辑用 Node 模拟 `wx` / `Page` 跑通核心闭环。
 

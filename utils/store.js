@@ -30,6 +30,7 @@ function initialState() {
     // Clean new-user data: no orders, favorites, notifications or test counts.
     favorites: [],
     customDishes: [],
+    dishImages: {},
     cart: [],
     draftMessage: '',
     notify: true,
@@ -61,6 +62,7 @@ function init() {
     group: Object.assign({}, initialState().group, saved.group || {}),
     favorites: Array.isArray(saved.favorites) ? saved.favorites : [],
     customDishes: Array.isArray(saved.customDishes) ? saved.customDishes : [],
+    dishImages: saved.dishImages && typeof saved.dishImages === 'object' ? saved.dishImages : {},
     cart: Array.isArray(saved.cart) ? saved.cart : [],
     orders: Array.isArray(saved.orders) ? saved.orders : [],
     notifications: Array.isArray(saved.notifications) ? saved.notifications : []
@@ -139,7 +141,10 @@ function partner() {
 }
 
 function allDishes() {
-  return D.DISHES.concat(get().customDishes || []);
+  const overrides = get().dishImages || {};
+  const presets = D.DISHES.map((dish) => overrides[dish.id] ? Object.assign({}, dish, { image: overrides[dish.id] }) : dish);
+  const custom = (get().customDishes || []).map((dish) => overrides[dish.id] ? Object.assign({}, dish, { image: overrides[dish.id] }) : dish);
+  return presets.concat(custom);
 }
 
 function getDish(id) {
@@ -471,8 +476,20 @@ function addCustomDish(name, description, category, time, image) {
     isCustom: true
   };
   get().customDishes.push(dish);
+  if (image) get().dishImages[dish.id] = image;
   save();
   return dish;
+}
+
+function setDishImage(id, image) {
+  const dish = getDish(id);
+  if (!dish) return null;
+  const oldImage = dish.image;
+  if (oldImage && oldImage !== image) imageStore.remove(oldImage);
+  if (image) get().dishImages[id] = image;
+  else delete get().dishImages[id];
+  save();
+  return getDish(id);
 }
 
 function setRole(role) {
@@ -541,6 +558,7 @@ module.exports = {
   markAllRead,
   markRead,
   addCustomDish,
+  setDishImage,
   setRole,
   setPrefNotify,
   setJoined

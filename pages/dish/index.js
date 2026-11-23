@@ -1,6 +1,7 @@
 const store = require('../../utils/store');
 const view = require('../../utils/view');
 const layout = require('../../utils/layout');
+const imagePicker = require('../../utils/image');
 
 Page({
   data: {
@@ -11,7 +12,8 @@ Page({
     navTop: 60,
     isCustom: false,
     countText: '',
-    chef: {}
+    chef: {},
+    uploading: false
   },
 
   onLoad(options) {
@@ -35,11 +37,27 @@ Page({
     this.setData({
       dish: decorated,
       liked: decorated.liked,
-      isCustom: !raw.image,
+      isCustom: !!raw.isCustom,
       count: store.effectiveOrderCount(raw),
       countText: store.effectiveOrderCount(raw) + ' 次',
       chef: require('../../utils/data').MEMBERS.lin
     });
+  },
+
+  async changeImage() {
+    if (this.data.uploading || !this.data.dish) return;
+    this.setData({ uploading: true });
+    try {
+      const image = await imagePicker.chooseAndSave();
+      store.setDishImage(this.data.dish.id, image);
+      this.loadDish(this.data.dish.id);
+      wx.showToast({ title: '照片已更新', icon: 'none' });
+    } catch (e) {
+      const message = (e && e.message) || '图片上传失败，请重试';
+      if (message.indexOf('取消') < 0) wx.showToast({ title: message, icon: 'none' });
+    } finally {
+      this.setData({ uploading: false });
+    }
   },
 
   toggleFavorite() {

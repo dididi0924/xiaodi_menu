@@ -1,4 +1,4 @@
-// Local image persistence for custom dishes.
+// Local image persistence for dish covers.
 // Saved files live in wx.env.USER_DATA_PATH and survive app restarts.
 function extensionOf(filePath) {
   const match = String(filePath || '').match(/\.[a-zA-Z0-9]{2,5}$/);
