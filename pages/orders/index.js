@@ -156,7 +156,10 @@ Page({
     wx.navigateTo({ url: '/pages/cart/index' });
   },
 
-  onPullDownRefresh() {
+  async onPullDownRefresh() {
+    if (store.isCloud()) {
+      try { await store.cloudSync(); } catch (e) {}
+    }
     this.refresh();
     wx.stopPullDownRefresh();
   },

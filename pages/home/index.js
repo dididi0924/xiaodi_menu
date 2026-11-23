@@ -318,7 +318,10 @@ Page({
     this.openNotifications();
   },
 
-  onPullDownRefresh() {
+  async onPullDownRefresh() {
+    if (store.isCloud()) {
+      try { await store.cloudSync(); } catch (e) {}
+    }
     this.refresh();
     wx.stopPullDownRefresh();
   },
