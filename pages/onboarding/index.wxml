@@ -14,7 +14,7 @@
     <view class="onboard-head">
       <view class="onboard-kicker">STEP 1 · YOUR MENU</view>
       <view class="onboard-title">先加一道<text>你的拿手菜。</text></view>
-      <view class="onboard-sub">15 道预设菜已经在餐桌上了。再加一道只属于你们的味道，之后随时可以继续加。</view>
+      <view class="onboard-sub">{{baseCount}} 道预设菜已经在餐桌上了。再加一道只属于你们的味道，之后随时可以继续加。</view>
     </view>
 
     <view class="onboard-form">
@@ -131,7 +131,7 @@
       </view>
       <view class="ready-row">
         <view class="ready-icon"><image class="ready-icon__img" src="/assets/icons/utensils-ink.png" mode="aspectFit"></image></view>
-        <view class="ready-copy"><view class="ready-title">你们的菜单</view><view class="ready-sub">{{addedDishName ? '15 道预设 + ' + addedDishName : '15 道预设菜'}}</view></view>
+        <view class="ready-copy"><view class="ready-title">你们的菜单</view><view class="ready-sub">{{addedDishName ? baseCount + ' 道预设 + ' + addedDishName : baseCount + ' 道预设菜'}}</view></view>
         <view class="ready-status">{{dishCount}} 道</view>
       </view>
     </view>

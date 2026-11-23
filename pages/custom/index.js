@@ -8,7 +8,7 @@ Page({
     name: '',
     description: '',
     time: '25',
-    categories: ['面饭', '下饭', '清淡', '汤羹', '西式', '甜点'],
+    categories: ['快手', '下饭', '清淡', '汤羹', '主食'],
     categoryIndex: 0,
     image: '',
     uploading: false,

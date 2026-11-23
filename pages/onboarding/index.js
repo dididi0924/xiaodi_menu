@@ -10,7 +10,7 @@ Page({
     code: 'TWO-8F2K',
     group: D.GROUP,
     partner: D.MEMBERS.lin,
-    categories: ['面饭', '下饭', '清淡', '汤羹', '西式', '甜点'],
+    categories: ['快手', '下饭', '清淡', '汤羹', '主食'],
     categoryIndex: 0,
     name: '',
     time: '20',
@@ -18,7 +18,8 @@ Page({
     uploading: false,
     saving: false,
     addedDishName: '',
-    dishCount: 15
+    baseCount: D.DISHES.length,
+    dishCount: D.DISHES.length
   },
 
   onLoad() {
@@ -61,7 +62,7 @@ Page({
       code: state.group.code,
       group: state.group,
       partner: D.MEMBERS.lin,
-      dishCount: 15 + custom.length,
+      dishCount: D.DISHES.length + custom.length,
       addedDishName: custom.length ? custom[custom.length - 1].name : ''
     });
   },

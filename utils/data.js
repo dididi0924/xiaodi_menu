@@ -26,7 +26,7 @@ const GROUP = {
   days: 0
 };
 
-const CATEGORIES = ['全部', '快手', '下饭', '清淡', '面饭', '甜点'];
+const CATEGORIES = ['全部', '快手', '下饭', '清淡', '汤羹', '主食'];
 
 const QUICK_NOTES = [
   '今天想早点吃',
@@ -37,109 +37,95 @@ const QUICK_NOTES = [
 
 const DISHES = [
   {
-    id: 'd01', name: '鲜虾溏心蛋拉面', en: 'Shrimp ramen', category: '汤面',
-    collections: ['面饭', '暖胃'], tags: ['20 分钟', '一锅出'], time: 20,
-    description: '昆布汤底、鲜虾和一颗流心蛋。加班回来，也能很快吃上。',
-    chefNote: '他会多煮一颗蛋，因为你喜欢把蛋黄拌进汤里。',
-    image: '/assets/menu/d01.jpg', tone: '#E6C6A8'
+    id: 'd01', name: '煎牛排', en: 'Pan-seared steak', category: '西式',
+    collections: ['下饭', '硬菜'], tags: ['15 分钟', '高蛋白'], time: 15,
+    description: '牛排煎到边缘焦香，切开还是粉嫩。',
+    chefNote: '锅烧到冒烟再下牛排，出锅静置两分钟。',
+    image: '/assets/menu/d01.jpg', tone: '#B9775C'
   },
   {
-    id: 'd02', name: '香煎三文鱼', en: 'Pan-seared salmon', category: '西式',
-    collections: ['西式', '清淡'], tags: ['25 分钟', '高蛋白'], time: 25,
-    description: '外皮煎到微脆，配柠檬黄油汁和烤时蔬。',
-    chefNote: '火别太大，皮朝下多等一会儿。',
-    image: '/assets/menu/d02.jpg', tone: '#E5B7A7'
+    id: 'd02', name: '番茄炒蛋', en: 'Tomato scrambled eggs', category: '家常',
+    collections: ['快手', '下饭'], tags: ['10 分钟', '下饭'], time: 10,
+    description: '番茄炒出汁，鸡蛋还是嫩的。',
+    chefNote: '鸡蛋先盛出来，最后再回锅翻两下。',
+    image: '/assets/menu/d02.jpg', tone: '#E09A72'
   },
   {
-    id: 'd03', name: '蒜香黄油虾', en: 'Garlic butter shrimp', category: '下饭',
-    collections: ['下饭', '快手'], tags: ['15 分钟', '下饭'], time: 15,
-    description: '黄油、蒜末和白葡萄酒，剩下的汤汁要蘸面包。',
-    chefNote: '最后挤一点柠檬，味道会更亮。',
-    image: '/assets/menu/d03.jpg', tone: '#E9B5A0'
+    id: 'd03', name: '娃娃菜豆腐汤', en: 'Napa cabbage tofu soup', category: '汤羹',
+    collections: ['汤羹', '清淡'], tags: ['20 分钟', '暖胃'], time: 20,
+    description: '娃娃菜和嫩豆腐煮一锅，汤清甜。',
+    chefNote: '水开后转小火，豆腐才不容易碎。',
+    image: '/assets/menu/d03.jpg', tone: '#D8C9A8'
   },
   {
-    id: 'd04', name: '香草番茄炖鸡', en: 'Herb tomato chicken', category: '炖煮',
-    collections: ['下饭', '炖煮'], tags: ['35 分钟', '一锅出'], time: 35,
-    description: '鸡腿炖到软烂，番茄的酸甜都留在汤里。',
-    chefNote: '留一点汤汁拌饭，比鸡肉还香。',
-    image: '/assets/menu/d04.jpg', tone: '#D9B08C'
+    id: 'd04', name: '西兰花炒鸡胸肉', en: 'Broccoli chicken', category: '快手',
+    collections: ['快手', '清淡'], tags: ['15 分钟', '高蛋白'], time: 15,
+    description: '鸡胸肉切薄片，和西兰花一起快炒。',
+    chefNote: '鸡胸肉抓一点淀粉，会更嫩。',
+    image: '/assets/menu/d04.jpg', tone: '#9EAE7E'
   },
   {
-    id: 'd05', name: '日式咖喱饭', en: 'Japanese curry', category: '一锅',
-    collections: ['面饭', '一锅'], tags: ['30 分钟', '一锅出'], time: 30,
-    description: '土豆和胡萝卜炖得糯糯的，配一颗温泉蛋。',
-    chefNote: '咖喱块最后放，火关小一点。',
-    image: '/assets/menu/d05.jpg', tone: '#D8A76B'
+    id: 'd05', name: '清蒸黄鱼', en: 'Steamed yellow croaker', category: '海鲜',
+    collections: ['清淡', '海鲜'], tags: ['25 分钟', '清蒸'], time: 25,
+    description: '黄鱼蒸到刚熟，淋一勺热油和蒸鱼豉油。',
+    chefNote: '水开后再上锅，八分钟就够。',
+    image: '/assets/menu/d05.jpg', tone: '#C7B18E'
   },
   {
-    id: 'd06', name: '烟肉番茄笔管面', en: 'Bacon penne', category: '西式',
-    collections: ['西式', '快手'], tags: ['20 分钟', '一锅出'], time: 20,
-    description: '烟肉的咸香和番茄的酸甜，一锅就能拌匀。',
-    chefNote: '煮面的水别倒完，留一勺收汁。',
-    image: '/assets/menu/d06.jpg', tone: '#D88B72'
+    id: 'd06', name: '白灼鱿鱼', en: 'Poached squid', category: '海鲜',
+    collections: ['快手', '海鲜'], tags: ['10 分钟', '鲜甜'], time: 10,
+    description: '鱿鱼焯到卷起，蘸一点酱油和芥末。',
+    chefNote: '水开后下锅，二十秒就捞。',
+    image: '/assets/menu/d06.jpg', tone: '#BFA58C'
   },
   {
-    id: 'd07', name: '牛油果藜麦沙拉', en: 'Avocado quinoa bowl', category: '轻食',
-    collections: ['轻食', '清淡'], tags: ['10 分钟', '无负担'], time: 10,
-    description: '牛油果、藜麦和烤南瓜，淋上柠檬油醋汁。',
-    chefNote: '牛油果要挑熟一点的，口感才绵。',
-    image: '/assets/menu/d07.jpg', tone: '#B8C59D'
+    id: 'd07', name: '烤鸡', en: 'Roast chicken', category: '烤箱',
+    collections: ['下饭', '烤箱'], tags: ['50 分钟', '烤箱'], time: 50,
+    description: '整鸡烤到皮脆肉嫩，两个人分一只。',
+    chefNote: '提前一晚腌，皮朝上烤。',
+    image: '/assets/menu/d07.jpg', tone: '#C08052'
   },
   {
-    id: 'd08', name: '番茄蔬菜浓汤', en: 'Tomato vegetable soup', category: '汤羹',
-    collections: ['汤羹', '清淡'], tags: ['25 分钟', '暖胃'], time: 25,
-    description: '番茄先烤再煮，汤会更甜。配一片吐司刚好。',
-    chefNote: '下雨天喝这个，整个人都暖了。',
-    image: '/assets/menu/d08.jpg', tone: '#D97E5F'
+    id: 'd08', name: '炒番薯叶', en: 'Stir-fried sweet potato leaves', category: '快手',
+    collections: ['快手', '清淡'], tags: ['10 分钟', '清炒'], time: 10,
+    description: '蒜末爆香，番薯叶大火快炒。',
+    chefNote: '叶子塌下去就出锅，别炒太久。',
+    image: '/assets/menu/d08.jpg', tone: '#6F7F4E'
   },
   {
-    id: 'd09', name: '抱蛋煎饺', en: 'Egg-wrapped dumplings', category: '面饭',
-    collections: ['面饭', '快手'], tags: ['18 分钟', '一锅出'], time: 18,
-    description: '底部煎得金黄焦脆，倒入蛋液，撒一把黑芝麻。',
-    chefNote: '冷冻饺子不用解冻，直接下锅。',
-    image: '/assets/menu/d09.jpg', tone: '#D5B47E'
+    id: 'd09', name: '盐水牛肉', en: 'Salted beef', category: '凉菜',
+    collections: ['下饭', '凉菜'], tags: ['40 分钟', '凉菜'], time: 40,
+    description: '牛肉煮到入味，放凉切片。',
+    chefNote: '煮好泡在汤里一夜，切的时候更紧实。',
+    image: '/assets/menu/d09.jpg', tone: '#A56F5C'
   },
   {
-    id: 'd10', name: '蜂蜜烤鸡翅', en: 'Honey roast wings', category: '烤箱',
-    collections: ['下饭', '烤箱'], tags: ['35 分钟', '提前腌'], time: 35,
-    description: '蜂蜜和酱油腌一夜，烤到边缘微焦。',
-    chefNote: '记得垫烘焙纸，不然刷锅很痛苦。',
-    image: '/assets/menu/d10.jpg', tone: '#C78C5E'
+    id: 'd10', name: '白斩鸡', en: 'White cut chicken', category: '凉菜',
+    collections: ['下饭', '凉菜'], tags: ['35 分钟', '凉菜'], time: 35,
+    description: '整鸡浸熟，皮黄肉白，蘸姜葱油。',
+    chefNote: '关火后焖十分钟，肉才嫩。',
+    image: '/assets/menu/d10.jpg', tone: '#D6B27A'
   },
   {
-    id: 'd11', name: '蓝莓法式吐司', en: 'Blueberry french toast', category: '甜点',
-    collections: ['甜点', '早午餐'], tags: ['15 分钟', '甜口'], time: 15,
-    description: '吐司吸饱蛋奶液，煎到金黄，配蓝莓和枫糖。',
-    chefNote: '周末睡到自然醒，就吃这个。',
-    image: '/assets/menu/d11.jpg', tone: '#B99A88'
+    id: 'd11', name: '筋头巴脑', en: 'Beef tendon stew', category: '炖煮',
+    collections: ['下饭', '炖煮'], tags: ['90 分钟', '炖煮'], time: 90,
+    description: '筋头巴脑炖到软糯，汤汁拌饭。',
+    chefNote: '小火慢炖，别急着收汁。',
+    image: '/assets/menu/d11.jpg', tone: '#8F6A4F'
   },
   {
-    id: 'd12', name: '烤时蔬谷物碗', en: 'Roasted veggie bowl', category: '轻食',
-    collections: ['轻食', '清淡'], tags: ['20 分钟', '无负担'], time: 20,
-    description: '南瓜、甜椒和西兰花，拌上芝麻酱。',
-    chefNote: '蔬菜切小块一点，烤得更快。',
-    image: '/assets/menu/d12.jpg', tone: '#B9B78F'
+    id: 'd12', name: '米糕', en: 'Rice cake', category: '主食',
+    collections: ['主食', '甜口'], tags: ['30 分钟', '主食'], time: 30,
+    description: '米香软糯，切片煎到两面金黄。',
+    chefNote: '冷透了再切，不容易粘刀。',
+    image: '/assets/menu/d12.jpg', tone: '#B99B76'
   },
   {
-    id: 'd13', name: '韩式石锅拌饭', en: 'Bibimbap', category: '面饭',
-    collections: ['面饭', '下饭'], tags: ['25 分钟', '一锅出'], time: 25,
-    description: '脆脆的锅巴、溏心蛋和一大勺辣酱。',
-    chefNote: '石锅要烧到很热，锅巴才会脆。',
-    image: '/assets/menu/d13.jpg', tone: '#C9A16E'
-  },
-  {
-    id: 'd14', name: '巧克力熔岩蛋糕', en: 'Chocolate lava cake', category: '甜点',
-    collections: ['甜点'], tags: ['25 分钟', '甜的'], time: 25,
-    description: '切开有热巧克力流出来。适合两个人分。',
-    chefNote: '烤到边缘凝固、中间还晃就可以了。',
-    image: '/assets/menu/d14.jpg', tone: '#8F6C5B'
-  },
-  {
-    id: 'd15', name: '鲜虾炒河粉', en: 'Shrimp pad thai', category: '面饭',
-    collections: ['面饭', '快手'], tags: ['18 分钟', '锅气'], time: 18,
-    description: '大火快炒，河粉带一点焦香，虾仁弹牙。',
-    chefNote: '锅一定要够热，动作要快。',
-    image: '/assets/menu/d15.jpg', tone: '#D6A06D'
+    id: 'd13', name: '海鲜面', en: 'Seafood noodles', category: '面饭',
+    collections: ['主食', '面饭'], tags: ['20 分钟', '一锅出'], time: 20,
+    description: '虾、鱿鱼和面条煮一锅，汤鲜。',
+    chefNote: '海鲜最后放，煮久会老。',
+    image: '/assets/menu/d13.jpg', tone: '#C98C68'
   }
 ];
 

@@ -28,7 +28,7 @@ Page({
     showAllButton: true,
     showCustomLink: true,
     empty: false,
-    allCount: 15,
+    allCount: D.DISHES.length,
     activeOrder: null,
     heroKicker: 'TONIGHT’S TABLE',
     heroTitle: '',
@@ -133,7 +133,7 @@ Page({
       dishes = store.allDishes();
       sectionKicker = 'ALL DISHES';
       sectionTitle = '全部菜单';
-      sectionReason = '15 道家常菜，加上你们自己的拿手菜';
+      sectionReason = D.DISHES.length + ' 道家常菜，加上你们自己的拿手菜';
       showFrequent = false;
       showCustomTile = true;
       showAllButton = false;

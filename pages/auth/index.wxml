@@ -19,7 +19,7 @@
         </view>
         <view class="auth-feature">
           <view class="feature-dot"></view>
-          <view class="feature-copy"><text>15 道家常菜</text><text>再加一道你们自己的拿手菜。</text></view>
+          <view class="feature-copy"><text>{{dishCount}} 道家常菜</text><text>再加一道你们自己的拿手菜。</text></view>
         </view>
         <view class="auth-feature">
           <view class="feature-dot"></view>

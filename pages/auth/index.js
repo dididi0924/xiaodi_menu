@@ -1,10 +1,12 @@
 const store = require('../../utils/store');
 const layout = require('../../utils/layout');
+const D = require('../../utils/data');
 
 Page({
   data: {
     navTop: 60,
-    loading: false
+    loading: false,
+    dishCount: D.DISHES.length
   },
 
   onLoad() {
