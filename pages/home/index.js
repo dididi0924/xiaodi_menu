@@ -81,6 +81,10 @@ Page({
     let heroKicker = 'TONIGHT’S TABLE';
     let heroTitle;
     let heroSub;
+    let headline = isCook ? '今晚，想做点什么？' : '今晚，想吃点什么？';
+    let subline = isCook
+      ? D.MEMBERS.man.name + '点好菜，你回家做。订单会直接送到这里。'
+      : D.MEMBERS.lin.name + ' 18:30 后在家，点好菜，TA 会收到通知。';
     if (active) {
       heroAvatars = [D.MEMBERS[active.eaterId], D.MEMBERS[active.cookId]];
       heroKicker = isCook ? 'NEW ORDER' : 'TONIGHT’S TABLE';
@@ -90,6 +94,21 @@ Page({
       } else {
         heroTitle = active.status === 'pending' ? '订单已送达' : active.status === 'accepted' ? D.MEMBERS[active.cookId].name + ' 接单了' : '厨房里正在忙';
         heroSub = active.totalItems + ' 道菜 · ' + activeView.meta.label + (active.message ? ' · “' + active.message.slice(0, 16) + (active.message.length > 16 ? '…' : '') + '”' : '');
+      }
+      if (isCook) {
+        headline = active.status === 'pending' ? '今晚，有人点菜了' : active.status === 'accepted' ? '该开火了' : '厨房里正在忙';
+        subline = active.status === 'pending'
+          ? D.MEMBERS[active.eaterId].name + ' 点了 ' + active.totalItems + ' 道菜，接单后开始准备。'
+          : active.status === 'accepted'
+            ? '已经接单，开火吧。上菜后 ' + D.MEMBERS[active.eaterId].name + ' 会收到通知。'
+            : '正在做饭，上菜后 ' + D.MEMBERS[active.eaterId].name + ' 会收到通知。';
+      } else {
+        headline = active.status === 'pending' ? '菜单已经送过去了' : active.status === 'accepted' ? 'TA 接单了，等开饭' : '厨房里正在忙';
+        subline = active.status === 'pending'
+          ? '已把 ' + active.totalItems + ' 道菜发给' + D.MEMBERS[active.cookId].name + '，等 TA 接单。'
+          : active.status === 'accepted'
+            ? D.MEMBERS[active.cookId].name + ' 接单了，今晚交给 TA。'
+            : '厨房里正在忙，再等一会儿就开饭。';
       }
     } else if (isCook) {
       heroTitle = D.MEMBERS.man.name + ' 还没有点菜';
@@ -156,8 +175,8 @@ Page({
       greeting: view.greeting(),
       currentUser,
       group: state.group,
-      headline: isCook ? '今晚，想做点什么？' : '今晚，想吃点什么？',
-      subline: isCook ? D.MEMBERS.man.name + '点好菜，你回家做。订单会直接送到这里。' : D.MEMBERS.lin.name + ' 18:30 后在家，点好菜，TA 会收到通知。',
+      headline,
+      subline,
       category,
       showAll,
       showFrequent,

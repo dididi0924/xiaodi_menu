@@ -216,7 +216,8 @@ function effectiveOrderCount(dish) {
 
 function getFrequent(limit) {
   return allDishes()
-    .filter((d) => effectiveOrderCount(d) > 0)
+    // "常点" means a dish was actually ordered more than once.
+    .filter((d) => effectiveOrderCount(d) > 1)
     .sort((a, b) => {
       const diff = effectiveOrderCount(b) - effectiveOrderCount(a);
       return diff !== 0 ? diff : a.name.localeCompare(b.name);
