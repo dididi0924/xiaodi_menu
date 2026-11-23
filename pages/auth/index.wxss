@@ -46,3 +46,5 @@
 .auth-name__placeholder { color: var(--muted-light); font-weight: 400; }
 .auth-name__hint { color: var(--muted-light); font-size: 14rpx; line-height: 1.5; }
 .auth-points { margin-top: 20rpx; color: var(--muted); font-size: 15rpx; letter-spacing: 0.02em; text-align: center; }
+
+.auth-name__hint--below { margin: 18rpx 6rpx 0; text-align: center; line-height: 1.55; }

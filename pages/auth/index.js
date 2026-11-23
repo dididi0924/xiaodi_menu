@@ -10,6 +10,7 @@ Page({
     nickname: '',
     avatar: '/assets/avatars/man.png',
     avatarLoading: false,
+    nicknameFocus: false,
     dishCount: D.DISHES.length
   },
 
@@ -28,13 +29,19 @@ Page({
     this.setData({ nickname: e.detail.value });
   },
 
+  onNicknameConfirm() {
+    this.login();
+  },
+
   async onChooseAvatar(e) {
     const temp = e.detail && e.detail.avatarUrl;
     if (!temp || this.data.avatarLoading) return;
     this.setData({ avatarLoading: true });
     try {
       const avatar = await imagePicker.persist(temp);
-      this.setData({ avatar });
+      const nickname = (this.data.nickname || '').trim();
+      this.setData({ avatar, nicknameFocus: !nickname, avatarLoading: false });
+      if (nickname) this.login();
     } catch (err) {
       wx.showToast({ title: '头像保存失败，请重试', icon: 'none' });
     } finally {

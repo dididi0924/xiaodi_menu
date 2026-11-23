@@ -19,7 +19,7 @@
         </button>
         <view class="auth-name">
           <view class="auth-name__label">微信昵称</view>
-          <input class="auth-name__input" type="nickname" value="{{nickname}}" maxlength="12" placeholder="点击填入微信昵称" placeholder-class="auth-name__placeholder" bindinput="onNickname" />
+          <input class="auth-name__input" type="nickname" value="{{nickname}}" maxlength="12" focus="{{nicknameFocus}}" confirm-type="done" placeholder="点击填入微信昵称" placeholder-class="auth-name__placeholder" bindinput="onNickname" bindconfirm="onNicknameConfirm" />
           <view class="auth-name__hint">微信不会自动提供昵称，需要你在这里确认一次。</view>
         </view>
       </view>
@@ -28,8 +28,9 @@
 
       <view class="auth-login {{loading ? 'is-loading' : ''}}" bindtap="login" aria-role="button" aria-label="微信一键登录">
         <view class="auth-login__dot"></view>
-        {{loading ? '正在登录…' : '微信一键登录'}}
+        {{loading ? '正在进入…' : '进入餐桌'}}
       </view>
+      <view class="auth-name__hint auth-name__hint--below">选头像后会自动跳到昵称；按键盘「完成」直接进入。</view>
       <view class="auth-legal">登录即创建一张私密餐桌 · 原型数据只保存在当前设备</view>
     </view>
   </view>
