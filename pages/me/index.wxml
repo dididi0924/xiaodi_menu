@@ -98,11 +98,11 @@
   </view>
 
   <view class="me-section">
-    <view class="me-section-head"><text>通知</text><text>微信服务通知</text></view>
+    <view class="me-section-head"><text>通知</text><text>{{isCloud ? '应用内通知' : '微信服务通知'}}</text></view>
     <view class="settings-card">
       <view class="settings-row">
         <view class="row-icon row-icon--sage"><image class="row-icon__img" src="/assets/icons/bell-ink.png" mode="aspectFit"></image></view>
-        <view class="row-copy"><view class="row-title">下单与状态通知</view><view class="row-sub">接单、开火、上菜都会通知对方</view></view>
+        <view class="row-copy"><view class="row-title">下单与状态通知</view><view class="row-sub">{{isCloud ? '接单、开火、上菜会在应用内更新' : '接单、开火、上菜都会通知对方'}}</view></view>
         <view class="switch {{preferNotify ? 'is-on' : ''}}" bindtap="togglePrefNotify" aria-role="switch" aria-checked="{{preferNotify}}">
           <view class="switch-knob"></view>
         </view>

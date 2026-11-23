@@ -43,7 +43,7 @@
           <image class="ticket-note__img" src="/assets/icons/bell-ink.png" mode="aspectFit"></image>
         </view>
         <view class="ticket-note__copy">
-          <view class="ticket-note__title">{{notify ? '微信服务通知已发送' : '应用内通知已发送'}}</view>
+          <view class="ticket-note__title">{{isCloud ? '订单已发送' : (notify ? '微信服务通知已发送' : '应用内通知已发送')}}</view>
           <view class="ticket-note__sub">{{count}} 道菜 · 已送达{{cook.name}}</view>
         </view>
       </view>

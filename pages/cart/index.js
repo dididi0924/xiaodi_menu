@@ -16,6 +16,7 @@ Page({
     isCook: false,
     empty: true,
     placing: false,
+    isCloud: false,
     quickNotes: D.QUICK_NOTES
   },
 
@@ -29,6 +30,7 @@ Page({
       navTop: layout.navInset(),
       message: store.get().draftMessage || '',
       notify: store.get().notify,
+      isCloud: store.isCloud(),
       charCount: (store.get().draftMessage || '').length
     });
     this.refresh();
