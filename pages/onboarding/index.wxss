@@ -1,6 +1,6 @@
 .onboarding-page { min-height: 100vh; background: var(--paper); padding: 0 40rpx calc(42rpx + env(safe-area-inset-bottom)); }
 .onboard-nav { display: flex; align-items: center; justify-content: space-between; min-height: 96rpx; }
-.onboard-brand { font-family: Georgia, serif; font-size: 48rpx; font-weight: 600; letter-spacing: -2rpx; }
+.onboard-brand { font-family: Georgia, serif; font-size: 44rpx; font-weight: 600; letter-spacing: -2rpx; }
 .onboard-brand text { color: var(--tomato); }
 .onboard-step { color: var(--muted); font-size: 17rpx; font-weight: 600; letter-spacing: 0.08em; }
 .progress { display: flex; gap: 8rpx; margin-top: 18rpx; }

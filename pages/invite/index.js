@@ -6,7 +6,7 @@ Page({
   data: {
     navTop: 60,
     mode: 'invite',
-    code: 'TWO-8F2K',
+    code: 'DIDI-8F2K',
     group: D.GROUP,
     inviter: D.MEMBERS.man,
     partner: D.MEMBERS.lin,
@@ -24,7 +24,7 @@ Page({
     this.setData({
       navTop: layout.navInset(),
       mode,
-      code: store.isCloud() ? incomingCode : (incomingCode || 'TWO-8F2K'),
+      code: store.isCloud() ? incomingCode : (incomingCode || 'DIDI-8F2K'),
       group: state.group,
       inviter: store.currentUser(),
       partner: store.partner(),
@@ -65,7 +65,7 @@ Page({
 
   copyLink() {
     wx.setClipboardData({
-      data: 'https://two.example/i/' + this.data.code,
+      data: 'https://didi33.example/i/' + this.data.code,
       success: () => wx.showToast({ title: '邀请链接已复制', icon: 'none' })
     });
   },

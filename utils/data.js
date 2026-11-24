@@ -1,4 +1,4 @@
-// TWO. native mini program data. All content is fictional prototype data.
+// didi 和 33 native mini program data. All content is fictional prototype data.
 const MEMBERS = {
   man: {
     id: 'man',
@@ -21,7 +21,7 @@ const MEMBERS = {
 const GROUP = {
   id: 'table_two',
   name: '林深 & 小满',
-  code: 'TWO-8F2K',
+  code: 'DIDI-8F2K',
   since: '',
   days: 0
 };

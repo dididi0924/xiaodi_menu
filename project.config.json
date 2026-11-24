@@ -1,5 +1,5 @@
 {
-  "description": "TWO. native mini program page shell",
+  "description": "didi & 33 native mini program page shell",
   "packOptions": {
     "ignore": [
       {
@@ -48,7 +48,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.7.12",
   "appid": "wx81b6e71525ddaf2f",
-  "projectname": "two-dinner-mini",
+  "projectname": "didi-33-mini",
   "condition": {
     "miniprogram": {
       "list": [

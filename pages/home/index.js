@@ -322,7 +322,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '今晚吃什么？来 TWO. 点菜',
+      title: '今晚吃什么？来 didi 和 33 点菜',
       path: '/pages/home/index'
     };
   }

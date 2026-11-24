@@ -1,6 +1,6 @@
 .role-page { min-height: 100vh; padding: 0 40rpx calc(40rpx + env(safe-area-inset-bottom)); background: var(--paper); }
 .role-top { padding-left: 2rpx; }
-.role-brand { color: var(--ink); font-family: Georgia, serif; font-size: 54rpx; font-weight: 600; letter-spacing: -3rpx; }
+.role-brand { color: var(--ink); font-family: Georgia, serif; font-size: 46rpx; font-weight: 600; letter-spacing: -3rpx; }
 .role-brand text { color: var(--tomato); }
 .role-kicker { margin-top: 86rpx; color: var(--tomato); font-size: 15rpx; font-weight: 600; letter-spacing: 0.16em; }
 .role-title { margin-top: 16rpx; max-width: 600rpx; font-size: 54rpx; font-weight: 700; line-height: 1.16; letter-spacing: -0.055em; }
@@ -18,6 +18,6 @@
 .role-card__check { position: absolute; top: 24rpx; right: 24rpx; width: 40rpx; height: 40rpx; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 50%; color: var(--tomato); font-size: 22rpx; }
 .role-card.is-active .role-card__check { border-color: var(--tomato); background: var(--tomato); color: var(--white); }
 .role-note { margin: 28rpx 4rpx 0; color: var(--muted-light); font-size: 15rpx; line-height: 1.6; }
-.role-next { width: 100%; min-height: 96rpx; margin-top: 30rpx; border-radius: 28rpx; background: var(--ink); color: var(--white); font-size: 23rpx; font-weight: 600; }
+.role-next { width: 100%; min-height: 96rpx; margin-top: 30rpx; padding: 0 32rpx; display: flex; align-items: center; justify-content: center; border-radius: 28rpx; background: var(--ink); color: var(--white); font-size: 23rpx; font-weight: 600; line-height: 1; text-align: center; }
 .role-next.is-disabled { opacity: 0.42; }
 .role-next::after { border: 0; }

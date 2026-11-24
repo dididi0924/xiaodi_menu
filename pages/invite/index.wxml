@@ -3,11 +3,11 @@
     <view class="join-hero">
       <image class="join-hero__img" src="/assets/hero-table.jpg" mode="aspectFill"></image>
       <view class="join-hero__shade"></view>
-      <view class="join-brand" style="top: {{navTop}}px;">two<text>.</text></view>
+      <view class="join-brand" style="top: {{navTop}}px;">didi<text> 和 33</text></view>
       <view class="join-close" style="top: {{navTop}}px;" bindtap="goBack">
         <image class="join-close__icon" src="/assets/icons/x-white.png" mode="aspectFit"></image>
       </view>
-      <view class="join-hero__note">A TABLE FOR TWO · 邀请你加入</view>
+      <view class="join-hero__note">DIDI + 33 · 邀请你加入</view>
     </view>
     <view class="join-panel">
       <view class="join-card">

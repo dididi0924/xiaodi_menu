@@ -2,7 +2,7 @@
 
 <view class="page page--tabbar">
   <view class="me-head">
-    <view class="me-kicker">JUST THE TWO OF US</view>
+    <view class="me-kicker">JUST DIDI + 33</view>
     <view class="me-title">我们</view>
     <view class="me-sub">一张只属于你们两个人的餐桌。</view>
   </view>
@@ -111,8 +111,8 @@
   </view>
 
   <view class="app-about">
-    <view class="about-mark">two<text>.</text></view>
-    <view>TWO. · Dinner for two</view>
+    <view class="about-mark">didi<text> 和 33</text></view>
+    <view>DIDI + 33 · Dinner for two</view>
     <view>{{isCloud ? 'Data synced with CloudBase' : 'Prototype v0.1.0 · 数据只保存在这台设备'}}</view>
     <view wx:if="{{!isCloud}}" class="about-reset" bindtap="resetDemo">
       <image class="about-reset__icon" src="/assets/icons/refresh-ink.png" mode="aspectFit"></image>

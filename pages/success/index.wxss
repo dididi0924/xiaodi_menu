@@ -48,7 +48,7 @@
   margin-top: 0;
   text-align: center;
   font-family: Georgia, "Songti SC", serif;
-  font-size: 48rpx;
+  font-size: 46rpx;
   font-weight: 600;
   letter-spacing: -3rpx;
 }
