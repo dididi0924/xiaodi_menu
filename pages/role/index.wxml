@@ -1,5 +1,7 @@
 <view class="role-page">
-  <view class="role-brand" style="top: {{navTop}}px;">two<text>.</text></view>
+  <view class="role-top" style="padding-top: {{navTop}}px;">
+    <view class="role-brand">two<text>.</text></view>
+  </view>
 
   <view class="role-kicker">FIRST, A SMALL CHOICE</view>
   <view class="role-title">今晚，你更想<text>做哪一边？</text></view>
