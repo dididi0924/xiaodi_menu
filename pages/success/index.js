@@ -28,7 +28,7 @@ Page({
       setTimeout(() => wx.reLaunch({ url: '/pages/home/index' }), 400);
       return;
     }
-    const decorated = view.decorateOrder(order, store.get().role);
+    const decorated = view.decorateOrder(order, order.eaterId === store.currentUserId() ? 'eater' : 'cook');
     const colors = ['#E4553D', '#EED9A8', '#68745C', '#D8A76B', '#F7D9D0'];
     const confetti = [];
     for (let i = 0; i < 15; i++) {

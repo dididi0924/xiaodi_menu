@@ -1,0 +1,22 @@
+.role-page { min-height: 100vh; padding: calc(132rpx + env(safe-area-inset-top)) 40rpx calc(40rpx + env(safe-area-inset-bottom)); background: var(--paper); }
+.role-brand { position: absolute; left: 42rpx; color: var(--ink); font-family: Georgia, serif; font-size: 54rpx; font-weight: 600; letter-spacing: -3rpx; }
+.role-brand text { color: var(--tomato); }
+.role-kicker { color: var(--tomato); font-size: 15rpx; font-weight: 600; letter-spacing: 0.16em; }
+.role-title { margin-top: 16rpx; max-width: 600rpx; font-size: 54rpx; font-weight: 700; line-height: 1.16; letter-spacing: -0.055em; }
+.role-title text { display: block; color: var(--tomato); font-family: Georgia, "Songti SC", serif; font-style: italic; font-weight: 400; }
+.role-sub { margin-top: 18rpx; max-width: 600rpx; color: var(--muted); font-size: 20rpx; line-height: 1.7; }
+.role-cards { margin-top: 38rpx; display: flex; flex-direction: column; }
+.role-card + .role-card { margin-top: 20rpx; }
+.role-card { position: relative; padding: 28rpx 24rpx 26rpx; border: 1px solid var(--line); border-radius: 32rpx; background: rgba(255,253,248,0.6); }
+.role-card.is-active { border-color: var(--tomato); box-shadow: 0 0 0 2rpx rgba(184,74,56,0.12); background: #FFFDF8; }
+.role-card__icon { width: 68rpx; height: 68rpx; display: flex; align-items: center; justify-content: center; border-radius: 22rpx; background: var(--paper-deep); }
+.role-card__icon image { width: 38rpx; height: 38rpx; }
+.role-card__kicker { margin-top: 20rpx; color: var(--muted-light); font-size: 13rpx; font-weight: 600; letter-spacing: 0.16em; }
+.role-card__title { margin-top: 6rpx; font-size: 32rpx; font-weight: 700; letter-spacing: -0.03em; }
+.role-card__sub { margin-top: 6rpx; color: var(--muted); font-size: 17rpx; line-height: 1.55; }
+.role-card__check { position: absolute; top: 24rpx; right: 24rpx; width: 40rpx; height: 40rpx; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 50%; color: var(--tomato); font-size: 22rpx; }
+.role-card.is-active .role-card__check { border-color: var(--tomato); background: var(--tomato); color: var(--white); }
+.role-note { margin: 28rpx 4rpx 0; color: var(--muted-light); font-size: 15rpx; line-height: 1.6; }
+.role-next { width: 100%; min-height: 96rpx; margin-top: 30rpx; border-radius: 28rpx; background: var(--ink); color: var(--white); font-size: 23rpx; font-weight: 600; }
+.role-next.is-disabled { opacity: 0.42; }
+.role-next::after { border: 0; }

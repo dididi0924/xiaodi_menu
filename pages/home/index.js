@@ -85,7 +85,9 @@ Page({
     const isCook = role === 'cook';
     const currentUser = store.currentUser();
     const active = store.currentOrder();
-    const activeView = active ? view.decorateOrder(active, role) : null;
+    const activeRole = active ? (active.eaterId === store.currentUserId() ? 'eater' : 'cook') : role;
+    const activeIsCook = activeRole === 'cook';
+    const activeView = active ? view.decorateOrder(active, activeRole) : null;
     const cartCount = store.cartCount();
     const cartEta = store.cartEta();
     const unread = store.unreadCount();
@@ -97,7 +99,7 @@ Page({
     let heroSub;
     let headline = isCook ? '今晚，想做点什么？' : '今晚，想吃点什么？';
     let subline = isCook
-      ? D.MEMBERS.man.name + '点好菜，你回家做。订单会直接送到这里。'
+      ? store.partner().name + '点好菜，你回家做。订单会直接送到这里。'
       : D.MEMBERS.lin.name + ' 18:30 后在家，点好菜，TA 会收到通知。';
     if (waitingPartner) {
       headline = '还差一个人，就能开饭';
@@ -105,15 +107,15 @@ Page({
     }
     if (active) {
       heroAvatars = [D.MEMBERS[active.eaterId], D.MEMBERS[active.cookId]];
-      heroKicker = isCook ? 'NEW ORDER' : 'TONIGHT’S TABLE';
-      if (isCook) {
+      heroKicker = activeIsCook ? 'NEW ORDER' : 'TONIGHT’S TABLE';
+      if (activeIsCook) {
         heroTitle = D.MEMBERS[active.eaterId].name + ' 发来晚餐订单';
         heroSub = active.totalItems + ' 道菜 · ' + activeView.meta.label + (active.message ? ' · “' + active.message.slice(0, 16) + (active.message.length > 16 ? '…' : '') + '”' : '');
       } else {
         heroTitle = active.status === 'pending' ? '订单已送达' : active.status === 'accepted' ? D.MEMBERS[active.cookId].name + ' 接单了' : '厨房里正在忙';
         heroSub = active.totalItems + ' 道菜 · ' + activeView.meta.label + (active.message ? ' · “' + active.message.slice(0, 16) + (active.message.length > 16 ? '…' : '') + '”' : '');
       }
-      if (isCook) {
+      if (activeIsCook) {
         headline = active.status === 'pending' ? '今晚，有人点菜了' : active.status === 'accepted' ? '该开火了' : '厨房里正在忙';
         subline = active.status === 'pending'
           ? D.MEMBERS[active.eaterId].name + ' 点了 ' + active.totalItems + ' 道菜，接单后开始准备。'
@@ -132,7 +134,7 @@ Page({
       heroTitle = '等 TA 加入这张餐桌';
       heroSub = '邀请码在「我们」里，分享给另一半。';
     } else if (isCook) {
-      heroTitle = D.MEMBERS.man.name + ' 还没有点菜';
+      heroTitle = store.partner().name + ' 还没有点菜';
       heroSub = '去菜单看看，或者等 TA 发来今晚的订单。';
     } else {
       heroTitle = D.MEMBERS.lin.name + ' 18:30 后在家';
@@ -221,7 +223,7 @@ Page({
       heroClass: active ? 'hero-card--order' : '',
       cartCount,
       cartEta,
-      cartVisible: !isCook && cartCount > 0,
+      cartVisible: cartCount > 0,
       unread,
       orderDot: !!active
     });
@@ -269,10 +271,6 @@ Page({
   },
 
   quickAdd(e) {
-    if (this.data.isCook) {
-      wx.showToast({ title: '切回' + D.MEMBERS.man.name + '视角再加菜', icon: 'none' });
-      return;
-    }
     const id = e.currentTarget.dataset.id;
     store.addToCart(id, 1, '');
     this.refresh();
@@ -299,10 +297,6 @@ Page({
   },
 
   openCart() {
-    if (this.data.isCook) {
-      wx.showToast({ title: '切换到' + D.MEMBERS.man.name + '视角才能点菜', icon: 'none' });
-      return;
-    }
     wx.navigateTo({ url: '/pages/cart/index' });
   },
 

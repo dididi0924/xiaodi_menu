@@ -51,7 +51,8 @@ Page({
     const role = state.role;
     const isCook = role === 'cook';
     const active = store.currentOrder();
-    const activeOrder = active ? view.decorateOrder(active, role) : null;
+    const activeRole = active ? (active.eaterId === store.currentUserId() ? 'eater' : 'cook') : role;
+    const activeOrder = active ? view.decorateOrder(active, activeRole) : null;
     const history = state.orders
       .filter((o) => o.status === 'served' || o.status === 'cancelled')
       .sort((a, b) => b.createdAt - a.createdAt)
@@ -65,7 +66,8 @@ Page({
       unread: store.unreadCount(),
       orderDot: !!active,
       man: store.getMember('man'),
-      lin: store.getMember('lin')
+      lin: store.getMember('lin'),
+      partner: store.partner()
     });
   },
 
@@ -95,9 +97,8 @@ Page({
   },
 
   async advanceOrder(id) {
-    if (!this.data.isCook) return;
     const current = store.orderById(id);
-    if (!current) return;
+    if (!current || current.eaterId === store.currentUserId()) return;
     const action = current.status === 'pending' ? 'accept' : current.status === 'accepted' ? 'cook' : 'serve';
     let order;
     try {
@@ -144,10 +145,6 @@ Page({
   },
 
   reorder(e) {
-    if (this.data.isCook) {
-      wx.showToast({ title: '切换回' + store.getMember('man').name + '视角再点单', icon: 'none' });
-      return;
-    }
     const added = store.reorder(e.currentTarget.dataset.id);
     if (!added) {
       wx.showToast({ title: '这些菜暂时不在菜单里', icon: 'none' });

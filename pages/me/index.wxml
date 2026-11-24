@@ -82,19 +82,19 @@
     <view wx:else class="pref-empty">还没有设置口味，之后可以在这里补充。</view>
   </view>
 
-  <view class="me-section" wx:if="{{!isCloud}}">
-    <view class="me-section-head"><text>体验双视角</text><text>原型演示用</text></view>
+  <view class="me-section">
+    <view class="me-section-head"><text>主视角</text><text>点菜 / 做饭</text></view>
     <view class="role-switch">
       <view class="role-option {{!isCook ? 'is-active' : ''}}" data-role="eater" bindtap="setRole">
         <image class="role-avatar" src="/assets/avatars/man.png" mode="aspectFill"></image>
-        <view class="role-copy"><view class="role-name">我是{{man.name}}</view><view class="role-sub">点菜的人</view></view>
+        <view class="role-copy"><view class="role-name">点菜视角</view><view class="role-sub">菜单优先</view></view>
       </view>
       <view class="role-option {{isCook ? 'is-active' : ''}}" data-role="cook" bindtap="setRole">
         <image class="role-avatar" src="/assets/avatars/lin.png" mode="aspectFill"></image>
-        <view class="role-copy"><view class="role-name">我是{{lin.name}}</view><view class="role-sub">做饭的人</view></view>
+        <view class="role-copy"><view class="role-name">做饭视角</view><view class="role-sub">厨房优先</view></view>
       </view>
     </view>
-    <view class="role-note">正式版会按微信登录身份固定角色。原型里可以随时切换，查看对方收到的订单。</view>
+    <view class="role-note">这只是默认视角，不限制谁点单。两边都可以点菜，也都可以做饭。</view>
   </view>
 
   <view class="me-section">

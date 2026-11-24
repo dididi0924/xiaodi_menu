@@ -25,6 +25,10 @@ Page({
       this._restoring = true;
       const task = state.loggedIn ? store.cloudEnsureSession() : store.cloudRestore();
       task.then((next) => {
+        if (!next.roleChosen) {
+          wx.reLaunch({ url: '/pages/role/index' });
+          return;
+        }
         wx.reLaunch({ url: next.onboarded ? '/pages/home/index' : '/pages/onboarding/index' });
       }).catch(() => {
         this._restoring = false;

@@ -24,6 +24,8 @@ function applyProfile(profile) {
 function initialState() {
   return {
     version: 3,
+    cloudIdentity: false,
+    roleChosen: false,
     // Auth + onboarding. A fresh install must go through the login page.
     loggedIn: false,
     onboarded: false,
@@ -109,6 +111,7 @@ function login(profile) {
   const next = applyProfile(Object.assign({}, get().profile || DEFAULT_PROFILE, profile || {}));
   get().profile = next;
   get().loggedIn = true;
+  get().roleChosen = true;
   get().onboarded = false;
   get().partnerJoined = false;
   get().guideStep = 1;
@@ -121,6 +124,7 @@ function login(profile) {
 function guard() {
   const s = get();
   if (!s.loggedIn) return '/pages/auth/index';
+  if (!s.roleChosen) return '/pages/role/index';
   if (!s.onboarded) return '/pages/onboarding/index';
   return '';
 }
@@ -144,6 +148,7 @@ function getMember(id) {
 }
 
 function currentUserId() {
+  if (get().cloudIdentity) return 'man';
   return get().role === 'cook' ? 'lin' : 'man';
 }
 
@@ -152,6 +157,7 @@ function currentUser() {
 }
 
 function partner() {
+  if (get().cloudIdentity) return getMember('lin');
   return getMember(currentUserId() === 'man' ? 'lin' : 'man');
 }
 
@@ -510,7 +516,12 @@ function setDishImage(id, image) {
 
 function setRole(role) {
   get().role = role === 'cook' ? 'cook' : 'eater';
+  get().roleChosen = true;
   save();
+}
+
+function chooseRole(role) {
+  setRole(role);
 }
 
 function setPrefNotify(value) {
@@ -539,24 +550,26 @@ function applyCloudState(data) {
   const table = data.table || null;
   const members = (table && table.members) || [];
   const me = members.find((m) => m.isMe) || members[0] || null;
-  const eater = members.find((m) => m.role === 'eater') || (me && me.role !== 'cook' ? me : null);
-  const cook = members.find((m) => m.role === 'cook') || null;
+  const partner = members.find((m) => !m.isMe) || null;
 
   next.loggedIn = true;
+  next.cloudIdentity = true;
   next.profile = { nickname: (me && me.name) || user.nickname || '微信用户', avatar: (me && me.avatar) || user.avatar || '/assets/avatars/man.png' };
-  next.role = me && me.role === 'cook' ? 'cook' : 'eater';
   next.onboarded = !!(user.onboarded && table);
   next.partnerJoined = !!(table && table.partnerJoined);
   next.table = table;
   next.tableId = table ? table.id : '';
   next.user = user;
-  if (eater) {
-    D.MEMBERS.man.name = eater.name;
-    D.MEMBERS.man.avatar = eater.avatar;
+  if (!next.roleChosen) {
+    next.role = me && me.role === 'cook' ? 'cook' : 'eater';
   }
-  if (cook) {
-    D.MEMBERS.lin.name = cook.name;
-    D.MEMBERS.lin.avatar = cook.avatar;
+  if (me) {
+    D.MEMBERS.man.name = me.name;
+    D.MEMBERS.man.avatar = me.avatar;
+  }
+  if (partner) {
+    D.MEMBERS.lin.name = partner.name;
+    D.MEMBERS.lin.avatar = partner.avatar;
   } else {
     D.MEMBERS.lin.name = '等待另一半';
     D.MEMBERS.lin.avatar = '/assets/avatars/lin.png';
@@ -775,6 +788,7 @@ module.exports = {
   addCustomDish,
   setDishImage,
   setRole,
+  chooseRole,
   setPrefNotify,
   setJoined
 };

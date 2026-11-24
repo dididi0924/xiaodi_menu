@@ -62,7 +62,7 @@ Page({
       eta: store.cartEta(),
       empty: items.length === 0,
       isCook: state.role === 'cook',
-      partner: D.MEMBERS.lin,
+      partner: store.partner(),
       notify: state.notify
     });
   },
@@ -101,10 +101,6 @@ Page({
 
   async placeOrder() {
     if (this.data.placing) return;
-    if (this.data.isCook) {
-      wx.showToast({ title: '切换到' + store.getMember('man').name + '视角才能下单', icon: 'none' });
-      return;
-    }
     if (!this.data.items.length) return;
     const state = store.get();
     if (store.isCloud() && !state.partnerJoined) {

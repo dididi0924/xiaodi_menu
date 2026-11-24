@@ -83,10 +83,6 @@ Page({
 
   addToCart() {
     if (!this.data.dish) return;
-    if (store.get().role === 'cook') {
-      wx.showToast({ title: '切换到' + store.getMember('man').name + '视角才能点菜', icon: 'none' });
-      return;
-    }
     store.addToCart(this.data.dish.id, this.data.qty, (this.data.note || '').trim());
     wx.showToast({ title: '已加入今晚菜单', icon: 'none' });
     setTimeout(() => this.goBack(), 260);

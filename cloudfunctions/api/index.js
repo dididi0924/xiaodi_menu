@@ -98,7 +98,7 @@ async function customDishesOf(tableId) {
   }));
 }
 
-function snapshotOrder(order, members, overrides, customDishes) {
+function snapshotOrder(order, members, overrides, customDishes, meOpenid) {
   const byOpenid = {};
   for (const m of members) byOpenid[m.openid] = m;
   const customById = {};
@@ -122,8 +122,8 @@ function snapshotOrder(order, members, overrides, customDishes) {
     orderNo: order.orderNo,
     status: order.status,
     createdAt: stamp(order.createdAt),
-    eaterId: 'man',
-    cookId: 'lin',
+    eaterId: order.eaterOpenid === meOpenid ? 'man' : 'lin',
+    cookId: order.cookOpenid === meOpenid ? 'man' : 'lin',
     eaterName: (byOpenid[order.eaterOpenid] || {}).nickname || 'TA',
     cookName: (byOpenid[order.cookOpenid] || {}).nickname || 'TA',
     eaterAvatar: (byOpenid[order.eaterOpenid] || {}).avatarFileId || '/assets/avatars/man.png',
@@ -151,7 +151,7 @@ async function stateFor(user, meOpenid) {
   const overrides = await overrideMap(table._id);
   const orderRes = await db.collection('orders').where({ tableId: table._id }).limit(50).get();
   const allOrders = (orderRes.data || []).sort((a, b) => stamp(b.createdAt) - stamp(a.createdAt));
-  const orders = allOrders.map((o) => snapshotOrder(o, members, overrides, customDishes));
+  const orders = allOrders.map((o) => snapshotOrder(o, members, overrides, customDishes, meOpenid));
   const notifRes = await db.collection('notifications').where({ recipientOpenid: meOpenid }).limit(50).get();
   const notifications = (notifRes.data || []).sort((a, b) => stamp(b.createdAt) - stamp(a.createdAt)).map((n) => ({
     id: n._id,
@@ -351,7 +351,6 @@ async function setDishImage(openid, payload) {
 async function placeOrder(openid, payload) {
   const member = await memberByOpenid(openid);
   if (!member) throw new AppError('NO_TABLE', '还没有餐桌');
-  if (member.role !== 'eater') throw new AppError('ONLY_EATER_CAN_ORDER', '这张餐桌由点菜的人下单');
   const members = await membersOf(member.tableId);
   const partner = members.find((m) => m.openid !== openid);
   if (!partner) throw new AppError('PARTNER_NOT_JOINED', '等另一半加入后才能下单');

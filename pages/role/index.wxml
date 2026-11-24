@@ -1,0 +1,29 @@
+<view class="role-page">
+  <view class="role-brand" style="top: {{navTop}}px;">two<text>.</text></view>
+
+  <view class="role-kicker">FIRST, A SMALL CHOICE</view>
+  <view class="role-title">今晚，你更想<text>做哪一边？</text></view>
+  <view class="role-sub">选一个主视角。之后两边都能点菜，也都能做饭，随时可以切换。</view>
+
+  <view class="role-cards">
+    <view class="role-card {{selected === 'cook' ? 'is-active' : ''}}" data-role="cook" bindtap="select">
+      <view class="role-card__icon"><image src="/assets/icons/chef-ink.png" mode="aspectFit"></image></view>
+      <view class="role-card__kicker">COOK</view>
+      <view class="role-card__title">我是做饭的</view>
+      <view class="role-card__sub">先看看今晚想做什么，等 TA 点菜。</view>
+      <view class="role-card__check">{{selected === 'cook' ? '✓' : ''}}</view>
+    </view>
+
+    <view class="role-card {{selected === 'eater' ? 'is-active' : ''}}" data-role="eater" bindtap="select">
+      <view class="role-card__icon"><image src="/assets/icons/utensils-ink.png" mode="aspectFit"></image></view>
+      <view class="role-card__kicker">EAT</view>
+      <view class="role-card__title">我是点菜的</view>
+      <view class="role-card__sub">先挑今晚想吃的，把菜单发给 TA。</view>
+      <view class="role-card__check">{{selected === 'eater' ? '✓' : ''}}</view>
+    </view>
+  </view>
+
+  <view class="role-note">只是默认视角，不限制谁点单。之后在「我们」里可以随时切换。</view>
+
+  <button class="role-next {{selected ? '' : 'is-disabled'}}" bindtap="next">进入 TWO.</button>
+</view>

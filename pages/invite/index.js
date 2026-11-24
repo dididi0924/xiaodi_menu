@@ -87,6 +87,10 @@ Page({
       } else {
         store.completeOnboarding();
       }
+      if (!store.get().roleChosen) {
+        wx.reLaunch({ url: '/pages/role/index?from=join' });
+        return;
+      }
       wx.reLaunch({ url: '/pages/home/index' });
     } catch (err) {
       wx.showToast({ title: (err && err.message) || '加入失败', icon: 'none' });
