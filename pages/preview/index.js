@@ -10,6 +10,11 @@ Page({
   },
 
   onLoad() {
+    const state = store.get();
+    if (state.loggedIn) {
+      wx.reLaunch({ url: state.onboarded ? '/pages/home/index' : '/pages/onboarding/index' });
+      return;
+    }
     this.setData({
       navTop: layout.navInset(),
       dishes: D.DISHES.slice(0, 6)
@@ -17,7 +22,12 @@ Page({
   },
 
   start() {
-    wx.reLaunch({ url: store.get().roleChosen ? '/pages/auth/index' : '/pages/role/index' });
+    const state = store.get();
+    if (state.loggedIn) {
+      wx.reLaunch({ url: state.onboarded ? '/pages/home/index' : '/pages/onboarding/index' });
+      return;
+    }
+    wx.reLaunch({ url: state.roleChosen ? '/pages/auth/index' : '/pages/role/index' });
   },
 
   onShareAppMessage() {
