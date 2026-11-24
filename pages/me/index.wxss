@@ -118,8 +118,9 @@
 .switch.is-on .switch-knob { transform: translateX(30rpx); }
 
 .app-about { padding: 46rpx 4rpx 24rpx; text-align: center; color: var(--muted-light); font-size: 15rpx; line-height: 1.7; }
-.about-mark { margin-bottom: 8rpx; font-family: Georgia, serif; font-size: 36rpx; letter-spacing: -2rpx; color: var(--muted); }
-.about-mark text { color: var(--tomato); }
+.about-mark { margin-bottom: 8rpx; display: flex; align-items: baseline; justify-content: center; font-family: Georgia, "Songti SC", serif; font-size: 36rpx; line-height: 1; letter-spacing: 0; color: var(--muted); }
+.about-mark text { line-height: 1; }
+.about-mark .brand-accent { color: var(--tomato); }
 .about-reset { display: inline-flex; align-items: center; gap: 6rpx; margin-top: 6rpx; color: var(--muted-light); font-size: 15rpx; text-decoration: underline; text-underline-offset: 5rpx; }
 .about-reset__icon { width: 18rpx; height: 18rpx; }
 

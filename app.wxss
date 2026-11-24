@@ -343,3 +343,5 @@ text { line-height: inherit; }
 .divider { height: 1px; background: var(--line); }
 .hairline { border-top: 1px solid var(--line); }
 .safe-bottom { height: calc(32rpx + env(safe-area-inset-bottom)); }
+
+.brand-accent { margin-left: 6rpx; }

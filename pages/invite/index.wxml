@@ -3,7 +3,7 @@
     <view class="join-hero">
       <image class="join-hero__img" src="/assets/hero-table.jpg" mode="aspectFill"></image>
       <view class="join-hero__shade"></view>
-      <view class="join-brand" style="top: {{navTop}}px;">didi<text> 和 33</text></view>
+      <view class="join-brand" style="top: {{navTop}}px;"><text>didi</text><text class="brand-accent"> 和 33</text></view>
       <view class="join-close" style="top: {{navTop}}px;" bindtap="goBack">
         <image class="join-close__icon" src="/assets/icons/x-white.png" mode="aspectFit"></image>
       </view>

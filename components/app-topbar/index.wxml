@@ -1,7 +1,7 @@
 <!-- top bar sits below the WeChat capsule, preserving the brand row -->
 <view class="topbar" style="padding-top: {{topInset}}px;">
   <view class="topbar-inner" style="padding-right: {{rightInset}}px;">
-    <view class="brand">didi<text class="brand-dot"> 和 33</text></view>
+    <view class="brand"><text>didi</text><text class="brand-dot"> 和 33</text></view>
     <view class="top-actions">
       <view wx:if="{{showSearch}}" class="icon-btn" bindtap="onSearch" hover-class="icon-btn--pressed" aria-role="button" aria-label="搜索菜单">
         <image class="icon" src="/assets/icons/search-ink.png" mode="aspectFit"></image>

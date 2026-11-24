@@ -10,14 +10,17 @@
   justify-content: space-between;
 }
 .brand {
+  display: flex;
+  align-items: baseline;
   font-family: Georgia, "Songti SC", serif;
   font-size: 44rpx;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: -4rpx;
+  letter-spacing: -1rpx;
   color: #1D1C18;
 }
-.brand-dot { color: #E4553D; }
+.brand text { line-height: 1; }
+.brand-dot { margin-left: 6rpx; color: #E4553D; }
 .top-actions { display: flex; align-items: center; gap: 14rpx; }
 .icon-btn {
   position: relative;

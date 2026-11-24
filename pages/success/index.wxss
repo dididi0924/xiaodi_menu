@@ -46,13 +46,18 @@
 .success-close__icon { width: 28rpx; height: 28rpx; }
 .success-brand {
   margin-top: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
   text-align: center;
   font-family: Georgia, "Songti SC", serif;
   font-size: 46rpx;
   font-weight: 600;
-  letter-spacing: -3rpx;
+  line-height: 1;
+  letter-spacing: 0;
 }
-.success-brand text { color: var(--tomato); }
+.success-brand text { line-height: 1; }
+.success-brand .brand-accent { color: var(--tomato); }
 .success-check {
   width: 104rpx;
   height: 104rpx;

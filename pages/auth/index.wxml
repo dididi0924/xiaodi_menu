@@ -2,7 +2,7 @@
   <view class="auth-hero">
     <image class="auth-hero__img" src="/assets/hero-table.jpg" mode="aspectFill"></image>
     <view class="auth-hero__shade"></view>
-    <view class="auth-brand" style="top: {{navTop}}px;">didi<text> 和 33</text></view>
+    <view class="auth-brand" style="top: {{navTop}}px;"><text>didi</text><text class="brand-accent"> 和 33</text></view>
     <view class="auth-hero__note">A TABLE FOR DIDI + 33</view>
   </view>
 

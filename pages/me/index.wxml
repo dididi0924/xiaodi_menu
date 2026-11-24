@@ -111,7 +111,7 @@
   </view>
 
   <view class="app-about">
-    <view class="about-mark">didi<text> 和 33</text></view>
+    <view class="about-mark"><text>didi</text><text class="brand-accent"> 和 33</text></view>
     <view>DIDI + 33 · Dinner for two</view>
     <view>{{isCloud ? 'Data synced with CloudBase' : 'Prototype v0.1.0 · 数据只保存在这台设备'}}</view>
     <view wx:if="{{!isCloud}}" class="about-reset" bindtap="resetDemo">
