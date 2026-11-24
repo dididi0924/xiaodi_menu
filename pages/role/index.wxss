@@ -23,3 +23,5 @@
 .role-next--pressed { opacity: 0.86; }
 .role-next.is-disabled { opacity: 0.42; }
 
+
+.role-preview { margin-top: 26rpx; color: var(--tomato); font-size: 16rpx; font-weight: 600; text-decoration: underline; text-underline-offset: 5rpx; }

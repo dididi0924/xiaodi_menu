@@ -32,6 +32,7 @@
       </view>
       <view class="auth-name__hint auth-name__hint--below">选头像后会自动跳到昵称；按键盘「完成」直接进入。</view>
       <view class="auth-legal">{{isCloud ? '登录即创建一张私密餐桌 · 双方数据云端同步' : '登录即创建一张私密餐桌 · 数据只保存在当前设备'}}</view>
+      <view class="auth-preview" bindtap="preview">先逛逛菜单，不登录</view>
     </view>
   </view>
 </view>

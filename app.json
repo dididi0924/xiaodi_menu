@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/role/index",
+    "pages/preview/index",
     "pages/auth/index",
     "pages/onboarding/index",
     "pages/home/index",

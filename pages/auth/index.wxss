@@ -49,3 +49,5 @@
 .auth-points { margin-top: 20rpx; color: var(--muted); font-size: 15rpx; letter-spacing: 0.02em; text-align: center; }
 
 .auth-name__hint--below { margin: 18rpx 6rpx 0; text-align: center; line-height: 1.55; }
+
+.auth-preview { margin-top: 18rpx; color: var(--tomato); font-size: 16rpx; font-weight: 600; text-align: center; text-decoration: underline; text-underline-offset: 5rpx; }

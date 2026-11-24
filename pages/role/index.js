@@ -25,6 +25,10 @@ Page({
     this.setData({ selected: e.currentTarget.dataset.role === 'cook' ? 'cook' : 'eater' });
   },
 
+  preview() {
+    wx.navigateTo({ url: '/pages/preview/index' });
+  },
+
   next() {
     if (!this.data.selected) {
       wx.showToast({ title: '先选一个主视角', icon: 'none' });

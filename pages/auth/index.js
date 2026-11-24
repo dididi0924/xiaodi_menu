@@ -41,6 +41,10 @@ Page({
     }
   },
 
+  preview() {
+    wx.navigateTo({ url: '/pages/preview/index' });
+  },
+
   onNickname(e) {
     this.setData({ nickname: e.detail.value });
   },

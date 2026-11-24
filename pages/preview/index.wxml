@@ -1,0 +1,50 @@
+<view class="preview-page">
+  <view class="preview-top" style="padding-top: {{navTop}}px;">
+    <view class="preview-brand"><text>didi</text><text class="brand-accent"> 和 33</text></view>
+  </view>
+
+  <view class="preview-kicker">A TABLE FOR TWO</view>
+  <view class="preview-title">先看看，<text>再决定。</text></view>
+  <view class="preview-sub">不用登录也能看今晚的菜单。浏览不授权，等到建餐桌、点菜时再登录。</view>
+
+  <view class="preview-hero">
+    <image class="preview-hero__img" src="/assets/hero-table.jpg" mode="aspectFill"></image>
+    <view class="preview-hero__shade"></view>
+    <view class="preview-hero__copy">
+      <view class="preview-hero__kicker">TONIGHT'S TABLE</view>
+      <view class="preview-hero__title">一张只属于两个人的菜单</view>
+      <view class="preview-hero__sub">一个人点菜，另一个人做饭；也可以反过来。</view>
+    </view>
+  </view>
+
+  <view class="preview-section">
+    <view class="preview-section__head">
+      <text>今晚的菜单</text>
+      <text>{{total}} 道家常菜</text>
+    </view>
+    <view class="preview-grid">
+      <view wx:for="{{dishes}}" wx:key="id" class="preview-dish">
+        <image class="preview-dish__img" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="preview-dish__info">
+          <view class="preview-dish__name">{{item.name}}</view>
+          <view class="preview-dish__meta">{{item.time}} 分钟 · {{item.category}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="preview-section">
+    <view class="preview-section__head"><text>怎么用</text><text>三个动作</text></view>
+    <view class="preview-steps">
+      <view class="preview-step"><text>01</text><view><view class="preview-step__title">建一张两个人的餐桌</view><view class="preview-step__sub">发给对方一个邀请码。</view></view></view>
+      <view class="preview-step"><text>02</text><view><view class="preview-step__title">点菜，或者做饭</view><view class="preview-step__sub">谁点谁吃，另一人接单。</view></view></view>
+      <view class="preview-step"><text>03</text><view><view class="preview-step__title">接单、开火、上菜</view><view class="preview-step__sub">每一步都同步给对方。</view></view></view>
+    </view>
+  </view>
+
+  <view class="preview-cta">
+    <view class="preview-cta__title">看完了，开始你们的餐桌</view>
+    <view class="preview-cta__sub">登录只发生在建桌或点菜时，浏览阶段不会要求授权。</view>
+    <view class="preview-cta__btn" bindtap="start" aria-role="button">开始使用</view>
+  </view>
+</view>
