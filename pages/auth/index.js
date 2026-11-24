@@ -11,11 +11,12 @@ Page({
     avatar: '/assets/avatars/man.png',
     avatarLoading: false,
     nicknameFocus: false,
-    dishCount: D.DISHES.length
+    dishCount: D.DISHES.length,
+    isCloud: false
   },
 
   onLoad() {
-    this.setData({ navTop: layout.navInset() });
+    this.setData({ navTop: layout.navInset(), isCloud: store.isCloud() });
   },
 
   onShow() {

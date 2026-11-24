@@ -40,5 +40,5 @@
     <view class="empty-state__text">下单、接单和留言的通知，都会出现在这里。</view>
   </view>
 
-  <view class="notif-footer">正式版将同步微信服务通知；当前原型为应用内通知。</view>
+  <view class="notif-footer">下单、接单、上菜和留言都会在这里提醒。</view>
 </view>
