@@ -47,7 +47,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "3.7.12",
-  "appid": "wx81b6e71525ddaf2f",
+  "appid": "wxecba8aa5c66fbb3f",
   "projectname": "didi-33-mini",
   "condition": {
     "miniprogram": {
@@ -67,5 +67,6 @@
   },
   "simulatorPluginLibVersion": {},
   "editorSetting": {},
-  "cloudfunctionRoot": "cloudfunctions/"
+  "cloudfunctionRoot": "cloudfunctions/",
+  "isGameTourist": false
 }

@@ -2,7 +2,7 @@
 
 ## Deploy
 
-1. In WeChat DevTools, open this project and enable 云开发 with env `cloud1-d1g5c1dfgd99f3986`.
+1. In WeChat DevTools, open this project and enable 云开发 with env `cloud1-d4g76baau2970dc4a`.
 2. Right-click `cloudfunctions/api` → **上传并部署：云端安装依赖**.
 3. In 云开发 → 数据库, create these collections (or let the first `api` call create them):
 

@@ -110,7 +110,7 @@ node scripts/preview-mini.js     # 用真实 WXML/WXSS 渲染 430px 预览图到
 
 ## CloudBase（上线分支）
 
-- 云环境：`cloud1-d1g5c1dfgd99f3986`
+- 云环境：`cloud1-d4g76baau2970dc4a`
 - 云函数：`cloudfunctions/api`（`wx-server-sdk`）
 - 客户端：`utils/cloud.js`
 - 集合：users / tables / members / invites / custom_dishes / dish_overrides / orders / notifications / subscription_grants

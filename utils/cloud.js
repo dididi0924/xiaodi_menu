@@ -1,6 +1,6 @@
 // CloudBase access. The cloud function calls getWXContext().OPENID server-side;
 // no AppSecret is ever shipped to the mini program.
-const ENV = 'cloud1-d1g5c1dfgd99f3986';
+const ENV = 'cloud1-d4g76baau2970dc4a';
 let initialized = false;
 
 function available() {
