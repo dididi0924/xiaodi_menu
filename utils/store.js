@@ -35,7 +35,7 @@ function initialState() {
     role: 'eater',
     group: Object.assign({}, D.GROUP, {
       name: DEFAULT_PROFILE.nickname + ' 的餐桌',
-      code: 'DIDI-8F2K',
+      code: 'KOODI-8F2K',
       days: 0
     }),
     // Clean new-user data: no orders, favorites, notifications or test counts.

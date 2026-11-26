@@ -2,13 +2,13 @@
   <view class="auth-hero">
     <image class="auth-hero__img" src="/assets/hero-table.jpg" mode="aspectFill"></image>
     <view class="auth-hero__shade"></view>
-    <view class="auth-brand" style="top: {{navTop}}px;"><text>didi</text><text class="brand-accent"> 和 33</text></view>
-    <view class="auth-hero__note">A TABLE FOR DIDI + 33</view>
+    <view class="auth-brand" style="top: {{navTop}}px;"><text>Koodi</text><text class="brand-accent brand-accent--tight">·两人餐桌</text></view>
+    <view class="auth-hero__note">A TABLE FOR KOODI</view>
   </view>
 
   <view class="auth-panel">
     <view class="auth-card">
-      <view class="auth-kicker">WELCOME TO DIDI + 33</view>
+      <view class="auth-kicker">WELCOME TO KOODI</view>
       <view class="auth-title">今晚，<text>从一张菜单开始。</text></view>
       <view class="auth-sub">登录后，先给这张只属于两个人的餐桌加一道菜，再把邀请发给 TA。</view>
 

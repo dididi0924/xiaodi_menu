@@ -20,7 +20,7 @@
   color: #1D1C18;
 }
 .brand text { line-height: 1; }
-.brand-dot { margin-left: 6rpx; color: #E4553D; }
+.brand-dot { margin-left: 0; color: #E4553D; }
 .top-actions { display: flex; align-items: center; gap: 14rpx; }
 .icon-btn {
   position: relative;

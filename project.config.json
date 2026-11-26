@@ -1,5 +1,5 @@
 {
-  "description": "didi & 33 native mini program page shell",
+  "description": "Koodi·两人餐桌 native mini program page shell",
   "packOptions": {
     "ignore": [
       {
@@ -48,7 +48,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.7.12",
   "appid": "wxecba8aa5c66fbb3f",
-  "projectname": "didi-33-mini",
+  "projectname": "koodi-table-for-two",
   "condition": {
     "miniprogram": {
       "list": [

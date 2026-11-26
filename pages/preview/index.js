@@ -32,7 +32,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '今晚吃什么？来 didi 和 33 看看菜单',
+      title: '今晚吃什么？来 Koodi·两人餐桌 看看菜单',
       path: '/pages/preview/index'
     };
   }

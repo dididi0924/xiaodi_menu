@@ -13,7 +13,7 @@
       <image class="success-close__icon" src="/assets/icons/x-ink.png" mode="aspectFit"></image>
     </view>
 
-    <view class="success-brand"><text>didi</text><text class="brand-accent"> 和 33</text></view>
+    <view class="success-brand"><text>Koodi</text><text class="brand-accent brand-accent--tight">·两人餐桌</text></view>
     <view class="success-check">
       <image class="success-check__icon" src="/assets/icons/check-white.png" mode="aspectFit"></image>
     </view>

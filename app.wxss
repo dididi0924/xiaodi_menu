@@ -345,3 +345,5 @@ text { line-height: inherit; }
 .safe-bottom { height: calc(32rpx + env(safe-area-inset-bottom)); }
 
 .brand-accent { margin-left: 6rpx; }
+
+.brand-accent--tight { margin-left: 0; }
