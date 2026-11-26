@@ -322,7 +322,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '今晚吃什么？来 Koodi·两人餐桌 点菜',
+      title: '今晚吃什么？来 koodi98 点菜',
       path: '/pages/home/index'
     };
   }

@@ -1,5 +1,5 @@
 {
-  "description": "Koodi·两人餐桌 native mini program page shell",
+  "description": "koodi98 native mini program page shell",
   "packOptions": {
     "ignore": [
       {
@@ -48,7 +48,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.7.12",
   "appid": "wxecba8aa5c66fbb3f",
-  "projectname": "koodi-table-for-two",
+  "projectname": "koodi98-mini",
   "condition": {
     "miniprogram": {
       "list": [

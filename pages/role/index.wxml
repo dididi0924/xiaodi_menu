@@ -1,6 +1,6 @@
 <view class="role-page">
   <view class="role-top" style="padding-top: {{navTop}}px;">
-    <view class="role-brand"><text>Koodi</text><text class="brand-accent brand-accent--tight">·两人餐桌</text></view>
+    <view class="role-brand"><text>koodi</text><text class="brand-accent brand-accent--tight">98</text></view>
   </view>
 
   <view class="role-kicker">FIRST, A SMALL CHOICE</view>
@@ -28,5 +28,5 @@
   <view class="role-preview" bindtap="preview">先看看菜单，不登录</view>
   <view class="role-note">只是默认视角，不限制谁点单。之后在「我们」里可以随时切换。</view>
 
-  <view class="role-next {{selected ? '' : 'is-disabled'}}" bindtap="next" hover-class="role-next--pressed" aria-role="button">进入 Koodi·两人餐桌</view>
+  <view class="role-next {{selected ? '' : 'is-disabled'}}" bindtap="next" hover-class="role-next--pressed" aria-role="button">进入 koodi98</view>
 </view>

@@ -1,6 +1,6 @@
 <view class="onboarding-page">
   <view class="onboard-nav" style="padding-top: {{navTop}}px;">
-    <view class="onboard-brand"><text>Koodi</text><text class="brand-accent brand-accent--tight">·两人餐桌</text></view>
+    <view class="onboard-brand"><text>koodi</text><text class="brand-accent brand-accent--tight">98</text></view>
     <view class="onboard-step">{{step}} / 3</view>
   </view>
 

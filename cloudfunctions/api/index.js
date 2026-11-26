@@ -247,7 +247,7 @@ function makeCode() {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let tail = '';
   for (let i = 0; i < 4; i++) tail += alphabet[Math.floor(Math.random() * alphabet.length)];
-  return 'KOODI-' + tail;
+  return 'K98-' + tail;
 }
 
 async function createInvite(openid) {

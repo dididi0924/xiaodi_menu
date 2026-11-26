@@ -1,6 +1,6 @@
 <view class="preview-page">
   <view class="preview-top" style="padding-top: {{navTop}}px;">
-    <view class="preview-brand"><text>Koodi</text><text class="brand-accent brand-accent--tight">·两人餐桌</text></view>
+    <view class="preview-brand"><text>koodi</text><text class="brand-accent brand-accent--tight">98</text></view>
   </view>
 
   <view class="preview-kicker">A TABLE FOR TWO</view>

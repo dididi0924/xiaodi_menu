@@ -1,4 +1,4 @@
-// Koodi·两人餐桌 native mini program data. All content is fictional prototype data.
+// koodi98 native mini program data. All content is fictional prototype data.
 const MEMBERS = {
   man: {
     id: 'man',
@@ -21,7 +21,7 @@ const MEMBERS = {
 const GROUP = {
   id: 'table_two',
   name: '林深 & 小满',
-  code: 'KOODI-8F2K',
+  code: 'K98-8F2K',
   since: '',
   days: 0
 };

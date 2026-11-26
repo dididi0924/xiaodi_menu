@@ -7,7 +7,7 @@ Page({
   data: {
     navTop: 60,
     step: 1,
-    code: 'KOODI-8F2K',
+    code: 'K98-8F2K',
     group: D.GROUP,
     partner: D.MEMBERS.lin,
     categories: ['快手', '下饭', '清淡', '汤羹', '主食'],
@@ -195,7 +195,7 @@ Page({
 
   copyLink() {
     wx.setClipboardData({
-      data: 'https://koodi.example/i/' + this.data.code,
+      data: 'https://koodi98.example/i/' + this.data.code,
       success: () => wx.showToast({ title: '邀请链接已复制', icon: 'none' })
     });
   },
