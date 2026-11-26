@@ -5,7 +5,7 @@
 
   <view class="preview-kicker">A TABLE FOR TWO</view>
   <view class="preview-title">先看看，<text>再决定。</text></view>
-  <view class="preview-sub">不用登录也能看今晚的菜单。浏览不授权，等到建餐桌、点菜时再登录。</view>
+  <view class="preview-sub">koodi98 是两个人的私密餐桌。不用登录也能看今晚的菜单；一个人点菜，另一个人做饭，之后再用邀请码把 TA 加进来。</view>
 
   <view class="preview-hero">
     <image class="preview-hero__img" src="/assets/hero-table.jpg" mode="aspectFill"></image>
