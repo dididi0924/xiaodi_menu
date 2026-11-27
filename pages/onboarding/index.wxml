@@ -104,7 +104,6 @@
       <image class="onboard-share__icon" src="/assets/icons/share-white.png" mode="aspectFit"></image>
       分享邀请链接
     </button>
-    <view class="onboard-copy-link" bindtap="copyLink">复制邀请链接</view>
 
     <view class="onboard-simulate" bindtap="simulateJoin">
       <image class="onboard-simulate__icon" src="/assets/icons/users-ink.png" mode="aspectFit"></image>

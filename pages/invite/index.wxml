@@ -78,10 +78,6 @@
       <image class="invite-share__icon" src="/assets/icons/share-white.png" mode="aspectFit"></image>
       分享邀请链接
     </button>
-    <view class="btn btn--ghost btn--block invite-copy" bindtap="copyLink">
-      <image class="invite-copy__icon" src="/assets/icons/copy-ink.png" mode="aspectFit"></image>
-      复制邀请链接
-    </view>
 
     <view class="invite-hint">邀请链接 7 天内有效，仅限 1 人加入。对方打开后，会看见你为这张餐桌起的名字。</view>
     <view class="invite-preview" bindtap="previewJoin">预览对方收到的邀请页</view>
